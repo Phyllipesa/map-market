@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS `Estantes` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `nome_estante` VARCHAR(10) NOT NULL
+);

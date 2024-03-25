@@ -1,5 +1,5 @@
 -- Grupo 1
-INSERT INTO `Itens_Aba` (`id_aba`, `id_item`) VALUES
+INSERT INTO `item_aba` (`id_aba`, `id_item`) VALUES
     (1, 1),
     (1, 2),
     (1, 3),

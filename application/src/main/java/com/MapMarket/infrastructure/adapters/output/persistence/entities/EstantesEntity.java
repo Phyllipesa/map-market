@@ -1,14 +1,16 @@
-package com.MapMarket.domain.entities;
+package com.MapMarket.infrastructure.adapters.output.persistence.entities;
 
 import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "estantes")
-public class Estantes implements Serializable {
+public class EstantesEntity implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -20,10 +22,13 @@ public class Estantes implements Serializable {
   @Column(nullable = false, length = 10)
   private String nome;
 
-  public Estantes() {
+  @OneToMany(mappedBy = "estante", cascade = CascadeType.ALL)
+  private List<LadosEntity> lados = new ArrayList<>();
+
+  public EstantesEntity() {
   }
 
-  public Estantes(Long id, String nome) {
+  public EstantesEntity(Long id, String nome) {
     this.id = id;
     this.nome = nome;
   }
@@ -44,10 +49,14 @@ public class Estantes implements Serializable {
     this.nome = nome;
   }
 
+  public List<LadosEntity> getLados() {
+    return lados;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Estantes estantes)) return false;
+    if (!(o instanceof EstantesEntity estantes)) return false;
     return Objects.equals(id, estantes.id) && Objects.equals(nome, estantes.nome);
   }
 

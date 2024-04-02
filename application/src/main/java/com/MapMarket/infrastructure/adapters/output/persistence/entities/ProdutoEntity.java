@@ -1,4 +1,4 @@
-package com.MapMarket.domain.entities;
+package com.MapMarket.infrastructure.adapters.output.persistence.entities;
 
 import jakarta.persistence.*;
 
@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "produtos")
-public class Produtos implements Serializable {
+@Table(name = "produto")
+public class ProdutoEntity implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -20,10 +20,10 @@ public class Produtos implements Serializable {
   @Column(nullable = false, length = 100)
   private String nome;
 
-  public Produtos() {
+  public ProdutoEntity() {
   }
 
-  public Produtos(Long id, String nome) {
+  public ProdutoEntity(Long id, String nome) {
     this.id = id;
     this.nome = nome;
   }
@@ -47,8 +47,8 @@ public class Produtos implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Produtos produtos)) return false;
-    return Objects.equals(id, produtos.id) && Objects.equals(nome, produtos.nome);
+    if (!(o instanceof ProdutoEntity produto)) return false;
+    return Objects.equals(id, produto.id) && Objects.equals(nome, produto.nome);
   }
 
   @Override

@@ -1,4 +1,4 @@
-INSERT INTO `produtos` (`nome`) VALUES
+INSERT INTO `produto` (`nome`) VALUES
     ('Arroz'),
     ('Feijão'),
     ('Óleo de soja'),

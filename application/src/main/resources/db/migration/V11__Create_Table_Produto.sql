@@ -1,4 +1,4 @@
-CREATE TABLE `produtos` (
+CREATE TABLE `produto` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `nome` VARCHAR(100) NOT NULL
 );

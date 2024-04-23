@@ -20,12 +20,16 @@ public class ProdutoEntity implements Serializable {
   @Column(nullable = false, length = 100)
   private String nome;
 
+  @Column(nullable = false)
+  private Double preco;
+
   public ProdutoEntity() {
   }
 
-  public ProdutoEntity(Long id, String nome) {
+  public ProdutoEntity(Long id, String nome, Double preco) {
     this.id = id;
     this.nome = nome;
+    this.preco = preco;
   }
 
   public Long getId() {
@@ -44,15 +48,23 @@ public class ProdutoEntity implements Serializable {
     this.nome = nome;
   }
 
+  public Double getPreco() {
+    return preco;
+  }
+
+  public void setPreco(Double preco) {
+    this.preco = preco;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof ProdutoEntity produto)) return false;
-    return Objects.equals(id, produto.id) && Objects.equals(nome, produto.nome);
+    if (!(o instanceof ProdutoEntity that)) return false;
+    return Objects.equals(id, that.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, nome);
+    return Objects.hash(id);
   }
 }

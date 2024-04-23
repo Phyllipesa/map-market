@@ -7,4 +7,6 @@ import java.util.List;
 public interface UseCase<T> {
 
   List<T> findAll() throws ProdutoNotFoundException;
+
+  T findById(Long id) throws ProdutoNotFoundException;
 }

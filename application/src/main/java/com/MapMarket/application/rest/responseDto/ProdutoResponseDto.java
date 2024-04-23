@@ -4,13 +4,15 @@ public class ProdutoResponseDto {
 
   private Long id;
   private String nome;
+  private Double preco;
 
   public ProdutoResponseDto() {
   }
 
-  public ProdutoResponseDto(Long id, String nome) {
+  public ProdutoResponseDto(Long id, String nome, Double preco) {
     this.id = id;
     this.nome = nome;
+    this.preco = preco;
   }
 
   public Long getId() {
@@ -27,5 +29,13 @@ public class ProdutoResponseDto {
 
   public void setNome(String nome) {
     this.nome = nome;
+  }
+
+  public Double getPreco() {
+    return preco;
+  }
+
+  public void setPreco(Double preco) {
+    this.preco = preco;
   }
 }

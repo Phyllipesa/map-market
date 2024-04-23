@@ -6,11 +6,11 @@ import com.MapMarket.domain.ports.input.UseCase;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("api/v1/produto")
@@ -28,5 +28,11 @@ public class ProdutoController {
   public ResponseEntity<List<ProdutoResponseDto>> findAll() {
     List<Produto> produtoList = useCase.findAll();
     return ResponseEntity.ok(entityMapper.parseListObject(produtoList, ProdutoResponseDto.class));
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<ProdutoResponseDto> findById(@PathVariable(value = "id")Long id) {
+    Produto produto = useCase.findById(id);
+    return ResponseEntity.ok(entityMapper.parseObject(produto, ProdutoResponseDto.class));
   }
 }

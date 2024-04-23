@@ -1,24 +1,25 @@
 package com.MapMarket.domain.models;
 
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
-
 import java.util.Objects;
 
 
 public class Produto {
   private Long id;
   private String nome;
+  private Double preco;
 
   public Produto() {
   }
 
-  public Produto(String nome) {
+  public Produto(String nome, Double preco) {
     this.nome = nome;
+    this.preco = preco;
   }
 
-  public Produto(Long id, String nome) {
+  public Produto(Long id, String nome, Double preco) {
     this.id = id;
     this.nome = nome;
+    this.preco = preco;
   }
 
   public Long getId() {
@@ -37,15 +38,23 @@ public class Produto {
     this.nome = nome;
   }
 
+  public Double getPreco() {
+    return preco;
+  }
+
+  public void setPreco(Double preco) {
+    this.preco = preco;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Produto produto)) return false;
-    return Objects.equals(id, produto.id) && Objects.equals(nome, produto.nome);
+    return Objects.equals(id, produto.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, nome);
+    return Objects.hash(id);
   }
 }

@@ -21,7 +21,13 @@ public class ProdutoPersistenceAdapter implements OutputPort<Produto> {
 
   @Override
   public List<Produto> findAll() {
-    logger.info("Finding all products!");
+    logger.info("Finding all products! (Adapter)");
     return entityMapper.parseListObject(produtoRepository.findAll(), Produto.class);
+  }
+
+  @Override
+  public Produto findById(Long id) {
+    logger.info("Finding a product by Id!");
+    return entityMapper.parseObject(produtoRepository.findById(id), Produto.class);
   }
 }

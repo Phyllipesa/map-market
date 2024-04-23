@@ -1,10 +1,10 @@
 package com.MapMarket.domain.ports.output;
 
-import java.util.List;
-
 public interface OutputPort<T> {
 
-  List<T> findAll();
+//  Page<Produto> findAll(P p);
 
   T findById(Long id);
+
+  T create(T t);
 }

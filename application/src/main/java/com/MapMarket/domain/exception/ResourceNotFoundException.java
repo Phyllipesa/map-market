@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.Serial;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class ProdutoNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
   @Serial
   private static final long serialVersionUID = 1L;
 
-  public ProdutoNotFoundException(String e) {
+  public ResourceNotFoundException(String e) {
     super(e);
   }
 
-  public ProdutoNotFoundException(String e, Throwable cause) {
+  public ResourceNotFoundException(String e, Throwable cause) {
     super(e, cause);
   }
 }

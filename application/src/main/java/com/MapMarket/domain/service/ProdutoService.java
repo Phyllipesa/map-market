@@ -28,7 +28,7 @@ public class ProdutoService implements UseCase<Produto> {
 //  }
 
   @Override
-  public Produto findById(Long id) throws ResourceNotFoundException {
+  public Produto findById(Long id) {
     return outputPort.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException(ProdutoConstant.PRODUCT_NOT_FOUND + id));
   }
@@ -38,5 +38,13 @@ public class ProdutoService implements UseCase<Produto> {
     validationProduct.validate(produto);
     return outputPort.create(produto)
         .orElseThrow(() -> new ProductCreationException(ProdutoConstant.ERROR_CREATING_PRODUCT));
+  }
+
+  @Override
+  public Produto update(Long id, Produto produto) {
+    validationProduct.validate(produto);
+    findById(id);
+    return outputPort.update(id, produto)
+        .orElseThrow(() -> new ResourceNotFoundException(ProdutoConstant.PRODUCT_NOT_FOUND + id));
   }
 }

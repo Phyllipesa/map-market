@@ -5,6 +5,7 @@ import com.MapMarket.domain.ports.output.OutputPort;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ProdutoRepository;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -29,13 +30,26 @@ public class ProdutoPersistenceAdapter implements OutputPort<Produto> {
   @Override
   public Optional<Produto> findById(Long id) {
     logger.info("Finding a product by Id!");
-    return Optional.of(entityMapper.parseObject(produtoRepository.findById(id), Produto.class));
+    return Optional.ofNullable(entityMapper.parseObject(produtoRepository.findById(id), Produto.class));
   }
 
   @Override
   public Optional<Produto> create(Produto produto) {
     logger.info("Creating a product!");
     ProdutoEntity entity = entityMapper.parseObject(produto, ProdutoEntity.class);
-    return Optional.of(entityMapper.parseObject(produtoRepository.save(entity), Produto.class));
+    return Optional.ofNullable(entityMapper.parseObject(produtoRepository.save(entity), Produto.class));
+  }
+
+  @Override
+  public Optional<Produto> update(Long id, Produto produto) {
+    logger.info("Updating a product!");
+    ProdutoEntity entity = produtoRepository.getReferenceById(id);
+    updateData(entity, produto);
+    return Optional.ofNullable(entityMapper.parseObject(produtoRepository.save(entity), Produto.class));
+  }
+
+  private void updateData(ProdutoEntity entity, Produto produto) {
+    entity.setNome(produto.getNome());
+    entity.setPreco(produto.getPreco());
   }
 }

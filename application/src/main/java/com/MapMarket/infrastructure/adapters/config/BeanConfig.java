@@ -1,7 +1,6 @@
 package com.MapMarket.infrastructure.adapters.config;
 
-import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
-import com.MapMarket.domain.models.Produto;
+import com.MapMarket.domain.logic.ValidationProduct;
 import com.MapMarket.domain.service.ProdutoService;
 import com.MapMarket.infrastructure.adapters.output.persistence.ProdutoPersistenceAdapter;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
@@ -23,6 +22,10 @@ public class BeanConfig {
     return new EntityMapper();
   }
 
+  @Bean
+  public ValidationProduct validationProduct() {
+    return new ValidationProduct();
+  }
 
   @Bean
   public ProdutoPersistenceAdapter produtoPersistenceAdapter(ProdutoRepository produtoRepository, EntityMapper entityMapper) {
@@ -30,7 +33,7 @@ public class BeanConfig {
   }
 
   @Bean
-  public ProdutoService produtoService(ProdutoPersistenceAdapter produtoPersistenceAdapter) {
-    return new ProdutoService(produtoPersistenceAdapter);
+  public ProdutoService produtoService(ProdutoPersistenceAdapter produtoPersistenceAdapter, ValidationProduct validationProduct) {
+    return new ProdutoService(produtoPersistenceAdapter, validationProduct);
   }
 }

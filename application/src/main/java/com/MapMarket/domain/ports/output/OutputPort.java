@@ -1,10 +1,14 @@
 package com.MapMarket.domain.ports.output;
 
+import com.MapMarket.domain.models.Produto;
+
+import java.util.Optional;
+
 public interface OutputPort<T> {
 
 //  Page<Produto> findAll(P p);
 
-  T findById(Long id);
+  Optional<Produto> findById(Long id);
 
-  T create(T t);
+  Optional<Produto> create(T t);
 }

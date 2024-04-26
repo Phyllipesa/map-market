@@ -1,9 +1,6 @@
 package com.MapMarket.domain.exception.handler;
 
-import com.MapMarket.domain.exception.ExceptionResponse;
-import com.MapMarket.domain.exception.ParameterNotFoundException;
-import com.MapMarket.domain.exception.ProdutoNotFoundException;
-import com.MapMarket.domain.exception.RequiredObjectIsNullException;
+import com.MapMarket.domain.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,7 +26,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
-  @ExceptionHandler(ProdutoNotFoundException.class)
+  @ExceptionHandler(ResourceNotFoundException.class)
   public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
@@ -49,6 +46,28 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     );
 
     return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(NegativePriceException.class)
+  public final ResponseEntity<ExceptionResponse> handleNegativePriceExceptions(Exception e, WebRequest request) {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        e.getMessage(),
+        request.getDescription(false)
+    );
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ProductCreationException.class)
+  public final ResponseEntity<ExceptionResponse> handleProductCreationExceptions(Exception e, WebRequest request) {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        e.getMessage(),
+        request.getDescription(false)
+    );
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(RequiredObjectIsNullException.class)

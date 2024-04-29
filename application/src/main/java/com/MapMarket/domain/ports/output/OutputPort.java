@@ -11,4 +11,5 @@ public interface OutputPort<T> {
   Optional<Produto> findById(Long id);
   Optional<Produto> create(T t);
   Optional<Produto> update(Long id, T t);
+  void delete(Long id);
 }

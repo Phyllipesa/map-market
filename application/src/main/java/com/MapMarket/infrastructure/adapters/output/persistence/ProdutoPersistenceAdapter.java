@@ -48,6 +48,12 @@ public class ProdutoPersistenceAdapter implements OutputPort<Produto> {
     return Optional.ofNullable(entityMapper.parseObject(produtoRepository.save(entity), Produto.class));
   }
 
+  @Override
+  public void delete(Long id) {
+    logger.info("Deleting a book!");
+    produtoRepository.delete(produtoRepository.findById(id).get());
+  }
+
   private void updateData(ProdutoEntity entity, Produto produto) {
     entity.setNome(produto.getNome());
     entity.setPreco(produto.getPreco());

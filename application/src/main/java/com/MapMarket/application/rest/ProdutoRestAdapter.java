@@ -42,7 +42,7 @@ public class ProdutoRestAdapter {
   public ResponseEntity<ProdutoResponseDto> create(@RequestBody ProdutoRequestDto produtoDto) throws ParameterNotFoundException {
     Produto novoProduto = entityMapper.parseObject(produtoDto, Produto.class);
     novoProduto = useCase.create(novoProduto);
-    return ResponseEntity.ok(entityMapper.parseObject(novoProduto, ProdutoResponseDto.class));
+    return ResponseEntity.status(201).body(entityMapper.parseObject(novoProduto, ProdutoResponseDto.class));
   }
 
   @PutMapping("/{id}")
@@ -50,5 +50,11 @@ public class ProdutoRestAdapter {
     Produto produto = entityMapper.parseObject(produtoDto, Produto.class);
     produto = useCase.update(id, produto);
     return ResponseEntity.ok(entityMapper.parseObject(produto, ProdutoResponseDto.class));
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<ProdutoResponseDto> delete(@PathVariable(value = "id")Long id) {
+    useCase.delete(id);
+    return ResponseEntity.noContent().build();
   }
 }

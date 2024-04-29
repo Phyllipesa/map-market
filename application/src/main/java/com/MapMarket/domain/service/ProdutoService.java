@@ -47,4 +47,10 @@ public class ProdutoService implements UseCase<Produto> {
     return outputPort.update(id, produto)
         .orElseThrow(() -> new ResourceNotFoundException(ProdutoConstant.PRODUCT_NOT_FOUND + id));
   }
+
+  @Override
+  public void delete(Long id) {
+    findById(id);
+    outputPort.delete(id);
+  }
 }

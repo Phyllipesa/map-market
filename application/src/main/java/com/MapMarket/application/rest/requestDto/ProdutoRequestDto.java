@@ -1,7 +1,12 @@
 package com.MapMarket.application.rest.requestDto;
 
-public class ProdutoRequestDto {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class ProdutoRequestDto implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1L;
   private String nome;
   private Double preco;
 

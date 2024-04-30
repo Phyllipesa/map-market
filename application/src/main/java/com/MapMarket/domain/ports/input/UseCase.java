@@ -1,10 +1,9 @@
 package com.MapMarket.domain.ports.input;
 
-public interface UseCase<T> {
+public interface UseCase<Input, OutPut> {
 
-//  List<T> findAll(Pageable pageable) throws ResourceNotFoundException;
-  T findById(Long id);
-  T create(T t);
-  T update(Long id, T t);
-   void delete(Long id);
+  OutPut findById(Long id);
+  OutPut create(Input input);
+  OutPut update(Long id, Input input);
+  void delete(Long id);
 }

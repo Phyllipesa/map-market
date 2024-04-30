@@ -1,7 +1,14 @@
 package com.MapMarket.application.rest.responseDto;
 
-public class ProdutoResponseDto {
+import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serial;
+import java.io.Serializable;
+
+public class ProdutoResponseDto extends RepresentationModel<ProdutoResponseDto> implements Serializable {
+
+  @Serial
+  private static final long serialVersionUID = 1L;
   private Long id;
   private String nome;
   private Double preco;

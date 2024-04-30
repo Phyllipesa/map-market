@@ -1,10 +1,15 @@
 package com.MapMarket.domain.models;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 
-public class Produto {
-  private Long id;
+public class Produto implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
+
+  private Long key;
   private String nome;
   private Double preco;
 
@@ -16,18 +21,18 @@ public class Produto {
     this.preco = preco;
   }
 
-  public Produto(Long id, String nome, Double preco) {
-    this.id = id;
+  public Produto(Long key, String nome, Double preco) {
+    this.key = key;
     this.nome = nome;
     this.preco = preco;
   }
 
-  public Long getId() {
-    return id;
+  public Long getKey() {
+    return key;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setKey(Long key) {
+    this.key = key;
   }
 
   public String getNome() {
@@ -50,11 +55,12 @@ public class Produto {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Produto produto)) return false;
-    return Objects.equals(id, produto.id);
+    if (!super.equals(o)) return false;
+    return Objects.equals(key, produto.key);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(super.hashCode(), key);
   }
 }

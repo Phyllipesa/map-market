@@ -1,5 +1,6 @@
 package com.MapMarket.domain.logic;
 
+import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.domain.exception.NegativePriceException;
 import com.MapMarket.domain.exception.ParameterNotFoundException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
@@ -8,15 +9,15 @@ import com.MapMarket.domain.models.Produto;
 
 public class ValidationProduct {
 
-  public void validate(Produto produto) {
-    validateNotNull(produto);
-    validateName(produto.getNome());
-    validateNotNullPrice(produto.getPreco());
-    checkNegativePrice(produto.getPreco());
+  public void validate(ProdutoRequestDto produtoRequestDto) {
+    validateNotNull(produtoRequestDto);
+    validateName(produtoRequestDto.getNome());
+    validateNotNullPrice(produtoRequestDto.getPreco());
+    checkNegativePrice(produtoRequestDto.getPreco());
   }
 
-  public void validateNotNull(Produto produto) {
-    if (produto == null)
+  public void validateNotNull(ProdutoRequestDto produtoRequestDto) {
+    if (produtoRequestDto == null)
       throw new ResourceNotFoundException(ProdutoConstant.NULL_NOT_ALLOWED);
   }
 

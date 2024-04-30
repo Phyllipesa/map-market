@@ -2,15 +2,17 @@ package com.MapMarket.infrastructure.adapters.output.persistence;
 
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.domain.ports.output.OutputPort;
+import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ProdutoRepository;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class ProdutoPersistenceAdapter implements OutputPort<Produto> {
+public class ProdutoPersistenceAdapter implements OutputPort<Produto>, FindAllOutput<Produto> {
 
   private Logger logger = Logger.getLogger(ProdutoPersistenceAdapter.class.getName());
   private final ProdutoRepository produtoRepository;
@@ -21,11 +23,13 @@ public class ProdutoPersistenceAdapter implements OutputPort<Produto> {
     this.entityMapper = entityMapper;
   }
 
-//  @Override
-//  public List<Produto> findAll() {
-//    logger.info("Finding all products! (Adapter)");
-//    return entityMapper.parseListObject(produtoRepository.findAll(), Produto.class);
-//  }
+  @Override
+  public Page<Produto> findAll(Pageable  pageable) {
+    logger.info("Finding all products!");
+
+    Page<ProdutoEntity> page = produtoRepository.findAll(pageable);
+    return page.map(p -> entityMapper.parseObject(p, Produto.class));
+  }
 
   @Override
   public Optional<Produto> findById(Long id) {

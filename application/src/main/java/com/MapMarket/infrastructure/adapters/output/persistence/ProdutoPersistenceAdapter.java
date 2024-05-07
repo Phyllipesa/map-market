@@ -45,16 +45,16 @@ public class ProdutoPersistenceAdapter implements OutputPort<Produto>, FindAllOu
   }
 
   @Override
-  public Optional<Produto> update(Long id, Produto produto) {
+  public Produto update(Long id, Produto produto) {
     logger.info("Updating a product!");
     ProdutoEntity entity = produtoRepository.getReferenceById(id);
     updateData(entity, produto);
-    return Optional.ofNullable(entityMapper.parseObject(produtoRepository.save(entity), Produto.class));
+    return entityMapper.parseObject(produtoRepository.save(entity), Produto.class);
   }
 
   @Override
   public void delete(Long id) {
-    logger.info("Deleting a book!");
+    logger.info("Deleting a product!");
     produtoRepository.delete(produtoRepository.findById(id).get());
   }
 

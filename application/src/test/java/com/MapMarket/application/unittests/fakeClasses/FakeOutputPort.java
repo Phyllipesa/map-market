@@ -4,6 +4,7 @@ import com.MapMarket.application.unittests.mocks.MockProduct;
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.domain.ports.output.OutputPort;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class FakeOutputPort implements OutputPort<Produto> {
@@ -22,11 +23,11 @@ public class FakeOutputPort implements OutputPort<Produto> {
 
   @Override
   public Optional<Produto> create(Produto produto) {
-    if (produto != null) {
-      produto.setId(2L);
-      return Optional.of(produto);
+    if (produto == null || Objects.equals(produto.getNome(), "Exception")) {
+      return Optional.empty();
     }
-    return Optional.empty();
+    produto.setId(2L);
+    return Optional.of(produto);
   }
 
   @Override

@@ -4,13 +4,14 @@ import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.application.unittests.fakeClasses.FakeOutputPort;
 import com.MapMarket.application.unittests.mocks.MockProduct;
+import com.MapMarket.domain.exception.*;
+import com.MapMarket.domain.exception.constants.ProdutoConstant;
 import com.MapMarket.domain.logic.ValidationProduct;
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.domain.service.ProdutoService;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
@@ -19,6 +20,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProductServiceTest {
 
   MockProduct input;
@@ -31,6 +34,7 @@ public class ProductServiceTest {
   }
 
   @Test
+  @Order(0)
   void findById() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, null, null, entityMapper);
@@ -53,13 +57,14 @@ public class ProductServiceTest {
   }
 
   @Test
+  @Order(1)
   void create() {
     //GIVEN
-    var handler = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
     ProdutoRequestDto produtoRequestDto = input.mockRequestDto(2);
 
     //WHEN
-    var result = handler.create(produtoRequestDto);
+    var result = service.create(produtoRequestDto);
 
     //THEN
     assertNotNull(result);
@@ -76,13 +81,14 @@ public class ProductServiceTest {
   }
 
   @Test
+  @Order(2)
   void update() {
     //GIVEN
-    var handler = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
     ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
 
     //WHEN
-    var result = handler.update(1L, produtoRequestDto);
+    var result = service.update(1L, produtoRequestDto);
 
     //THEN
     assertNotNull(result);
@@ -99,19 +105,176 @@ public class ProductServiceTest {
   }
 
   @Test
+  @Order(3)
   void delete() {
     //GIVEN
     FakeOutputPort  fakeOutputPort = mock(FakeOutputPort.class);
-    var handler = new ProdutoService(fakeOutputPort, null, null, null, entityMapper);
+    var service = new ProdutoService(fakeOutputPort, null, null, null, entityMapper);
 
     //WHEN
     when(fakeOutputPort.findById(1L)).thenReturn(Optional.of(mock(Produto.class)));
-    handler.delete(1L);
+    service.delete(1L);
 
     //THEN
     verify(fakeOutputPort, times(1)).findById(1L);
     verify(fakeOutputPort, times(1)).delete(1L);
   }
+
+  @Test
+  @Order(4)
+  void findById_PRODUCT_NOT_FOUND_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, null, null, entityMapper);
+    String expectedMessage = ProdutoConstant.PRODUCT_NOT_FOUND + 2L;
+
+    //WHEN
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+      service.findById(2L);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(5)
+  void create_REQUIRED_OBJECT_IS_NULL_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    String expectedMessage = ProdutoConstant.NULL_NOT_ALLOWED;
+
+    //WHEN
+    Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
+      service.create(null);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(6)
+  void create_PARAMETER_name_NOT_FOUND_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    String expectedMessage = ProdutoConstant.REQUIRED_PARAMETER + "nome" + ProdutoConstant.IS_NULL_OR_BLANK;
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
+    produtoRequestDto.setNome(null);
+
+    //WHEN
+    Exception exception = assertThrows(ParameterNotFoundException.class, () -> {
+      service.create(produtoRequestDto);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(7)
+  void create_NEGATIVE_PRICE_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    String expectedMessage = ProdutoConstant.NEGATIVE_NOT_ALLOWED;
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
+    produtoRequestDto.setPreco(-10.0);
+
+    //WHEN
+    Exception exception = assertThrows(NegativePriceException.class, () -> {
+      service.create(produtoRequestDto);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(8)
+  void create_PARAMETER_preco_NOT_FOUND_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    String expectedMessage = ProdutoConstant.REQUIRED_PARAMETER + "preco" + ProdutoConstant.IS_NULL_OR_BLANK;
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
+    produtoRequestDto.setPreco(null);
+
+    //WHEN
+    Exception exception = assertThrows(ParameterNotFoundException.class, () -> {
+      service.create(produtoRequestDto);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(9)
+  void create_PRODUCT_CREATION_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    String expectedMessage = ProdutoConstant.ERROR_CREATING_PRODUCT;
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
+    produtoRequestDto.setNome("Exception");
+
+    //WHEN
+    Exception exception = assertThrows(ProductCreationException.class, () -> {
+      service.create(produtoRequestDto);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(10)
+  void update_PRODUCT_NOT_FOUND_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
+    String expectedMessage = ProdutoConstant.PRODUCT_NOT_FOUND + 2L;
+
+    //WHEN
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+      service.update(2L,produtoRequestDto);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Test
+  @Order(11)
+  void delete_PRODUCT_NOT_FOUND_EXCEPTION() {
+    //GIVEN
+    var service = new ProdutoService(new FakeOutputPort(), null, new ValidationProduct(), null, entityMapper);
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
+    String expectedMessage = ProdutoConstant.PRODUCT_NOT_FOUND + 2L;
+
+    //WHEN
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+      service.delete(2L);
+    });
+
+    String actualMessage = exception.getMessage();
+
+    //THEN
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+
 
   public ModelMapper modelMapper() {
     ModelMapper modelMapper = new ModelMapper();

@@ -1,4 +1,4 @@
-INSERT INTO `Estantes` (`nome_estante`) VALUES
+INSERT INTO `estantes` (`nome`) VALUES
 ('Estante A'),
 ('Estante B'),
 ('Estante C');

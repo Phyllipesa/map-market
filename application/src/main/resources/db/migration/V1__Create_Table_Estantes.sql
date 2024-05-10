@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `Estantes` (
+CREATE TABLE IF NOT EXISTS `estantes` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `nome_estante` VARCHAR(10) NOT NULL
+    `nome` VARCHAR(10) NOT NULL
 );

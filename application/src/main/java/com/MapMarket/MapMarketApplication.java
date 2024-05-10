@@ -1,4 +1,4 @@
-package com.MapMarket.MapMarket;
+package com.MapMarket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -3,6 +3,7 @@ package com.MapMarket.domain.logic;
 import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.domain.exception.NegativePriceException;
 import com.MapMarket.domain.exception.ParameterNotFoundException;
+import com.MapMarket.domain.exception.RequiredObjectIsNullException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.exception.constants.ProdutoConstant;
 import com.MapMarket.domain.models.Produto;
@@ -18,7 +19,7 @@ public class ValidationProduct {
 
   public void validateNotNull(ProdutoRequestDto produtoRequestDto) {
     if (produtoRequestDto == null)
-      throw new ResourceNotFoundException(ProdutoConstant.NULL_NOT_ALLOWED);
+      throw new RequiredObjectIsNullException(ProdutoConstant.NULL_NOT_ALLOWED);
   }
 
   public void validateName(String nome) {

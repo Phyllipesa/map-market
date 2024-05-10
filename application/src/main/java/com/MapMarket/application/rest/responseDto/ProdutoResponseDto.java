@@ -1,5 +1,6 @@
 package com.MapMarket.application.rest.responseDto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
@@ -9,25 +10,27 @@ public class ProdutoResponseDto extends RepresentationModel<ProdutoResponseDto> 
 
   @Serial
   private static final long serialVersionUID = 1L;
-  private Long id;
+
+  @JsonProperty("id")
+  private Long key;
   private String nome;
   private Double preco;
 
   public ProdutoResponseDto() {
   }
 
-  public ProdutoResponseDto(Long id, String nome, Double preco) {
-    this.id = id;
+  public ProdutoResponseDto(Long key, String nome, Double preco) {
+    this.key = key;
     this.nome = nome;
     this.preco = preco;
   }
 
-  public Long getId() {
-    return id;
+  public Long getKey() {
+    return key;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setKey(Long key) {
+    this.key = key;
   }
 
   public String getNome() {

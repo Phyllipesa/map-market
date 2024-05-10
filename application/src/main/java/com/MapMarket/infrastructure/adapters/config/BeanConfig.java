@@ -22,18 +22,18 @@ public class BeanConfig {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.typeMap(ProdutoEntity.class, Produto.class)
         .addMappings(mapper -> {
-          mapper.map(ProdutoEntity::getId, Produto::setKey);
+          mapper.map(ProdutoEntity::getId, Produto::setId);
         });
     modelMapper.typeMap(Produto.class, ProdutoResponseDto.class)
         .addMappings(mapper -> {
-          mapper.map(Produto::getKey, ProdutoResponseDto::setId);
+          mapper.map(Produto::getId, ProdutoResponseDto::setKey);
         });
     return modelMapper;
   }
 
   @Bean
   public EntityMapper entityMapper() {
-    return new EntityMapper();
+    return new EntityMapper(modelMapper());
   }
 
   @Bean

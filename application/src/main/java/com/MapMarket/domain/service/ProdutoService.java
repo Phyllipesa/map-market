@@ -52,7 +52,7 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
     allProductsDto.map(
         p -> p.add(
             linkTo(methodOn(ProdutoRestAdapter.class)
-                .findById(p.getId())).withSelfRel()));
+                .findById(p.getKey())).withSelfRel()));
 
     Link link = linkTo(
         methodOn(ProdutoRestAdapter.class)
@@ -81,7 +81,7 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
         .orElseThrow(() -> new ProductCreationException(ProdutoConstant.ERROR_CREATING_PRODUCT));
 
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
-    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getId())).withSelfRel());
+    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getKey())).withSelfRel());
     return productDto;
   }
 
@@ -89,11 +89,9 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
   public ProdutoResponseDto update(Long id, ProdutoRequestDto produtoRequestDto) {
     validationProduct.validate(produtoRequestDto);
     findById(id);
-    Produto product =  outputPort.update(id, entityMapper.parseObject(produtoRequestDto, Produto.class))
-        .orElseThrow(() -> new ResourceNotFoundException(ProdutoConstant.PRODUCT_NOT_FOUND + id));
-
+    Produto product =  outputPort.update(id, entityMapper.parseObject(produtoRequestDto, Produto.class));
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
-    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getId())).withSelfRel());
+    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getKey())).withSelfRel());
     return productDto;
   }
 

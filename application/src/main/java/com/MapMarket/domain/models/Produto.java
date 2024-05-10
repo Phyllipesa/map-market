@@ -9,7 +9,7 @@ public class Produto implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  private Long key;
+  private Long id;
   private String nome;
   private Double preco;
 
@@ -21,18 +21,18 @@ public class Produto implements Serializable {
     this.preco = preco;
   }
 
-  public Produto(Long key, String nome, Double preco) {
-    this.key = key;
+  public Produto(Long id, String nome, Double preco) {
+    this.id = id;
     this.nome = nome;
     this.preco = preco;
   }
 
-  public Long getKey() {
-    return key;
+  public Long getId() {
+    return id;
   }
 
-  public void setKey(Long key) {
-    this.key = key;
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getNome() {
@@ -56,11 +56,11 @@ public class Produto implements Serializable {
     if (this == o) return true;
     if (!(o instanceof Produto produto)) return false;
     if (!super.equals(o)) return false;
-    return Objects.equals(key, produto.key);
+    return Objects.equals(id, produto.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode(), key);
+    return Objects.hash(super.hashCode(), id);
   }
 }

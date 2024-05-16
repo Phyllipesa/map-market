@@ -1,6 +1,6 @@
 package com.MapMarket.domain.exception.constants;
 
-public class ProdutoConstant {
+public class Constant {
   public static final String PRODUCT_NOT_FOUND = "Product not found with id ";
   public static final String ERROR_CREATING_PRODUCT = "Error occurred while creating the product";
   public static final String REQUIRED_PARAMETER = "Required parameter '";
@@ -11,6 +11,6 @@ public class ProdutoConstant {
   public static final String NEGATIVE_NOT_ALLOWED = "It is not allowed negative numbers!";
   public static final String THIS_PRODUCT_IS_ALREADY_REGISTERED = "This Product is already registered ";
 
-  private ProdutoConstant() {
+  private Constant() {
   }
 }

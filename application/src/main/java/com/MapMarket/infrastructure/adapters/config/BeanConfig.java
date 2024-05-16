@@ -1,7 +1,7 @@
 package com.MapMarket.infrastructure.adapters.config;
 
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
-import com.MapMarket.domain.logic.ValidationProduct;
+import com.MapMarket.domain.logic.ProductValidator;
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.domain.service.ProdutoService;
@@ -17,7 +17,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 @Configuration
 public class BeanConfig {
 
-  @Bean
   public ModelMapper modelMapper() {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.typeMap(ProdutoEntity.class, Produto.class)
@@ -37,8 +36,8 @@ public class BeanConfig {
   }
 
   @Bean
-  public ValidationProduct validationProduct() {
-    return new ValidationProduct();
+  public ProductValidator validationProduct() {
+    return new ProductValidator();
   }
 
   @Bean
@@ -49,11 +48,11 @@ public class BeanConfig {
   @Bean
   public ProdutoService produtoService(
       ProdutoPersistenceAdapter produtoPersistenceAdapter,
-      ValidationProduct validationProduct,
+      ProductValidator productValidator,
       PagedResourcesAssembler<ProdutoResponseDto> pagedResourcesAssembler,
       EntityMapper entityMapper,
       FindAllOutput<Produto> findAllOutput
   ) {
-    return new ProdutoService(produtoPersistenceAdapter, findAllOutput, validationProduct, pagedResourcesAssembler, entityMapper);
+    return new ProdutoService(produtoPersistenceAdapter, findAllOutput, productValidator, pagedResourcesAssembler, entityMapper);
   }
 }

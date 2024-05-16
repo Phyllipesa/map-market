@@ -5,8 +5,8 @@ import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.domain.exception.ProductCreationException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
-import com.MapMarket.domain.exception.constants.ProdutoConstant;
-import com.MapMarket.domain.logic.ValidationProduct;
+import com.MapMarket.domain.exception.constants.Constant;
+import com.MapMarket.domain.logic.ProductValidator;
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
@@ -27,15 +27,15 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
 
   private final OutputPort<Produto> outputPort;
   private final FindAllOutput<Produto> findAllOutput;
-  private final ValidationProduct validationProduct;
+  private final ProductValidator productValidator;
   private final PagedResourcesAssembler<ProdutoResponseDto> assembler;
   private final EntityMapper entityMapper;
 
-  public ProdutoService(OutputPort<Produto> outputPort, FindAllOutput<Produto> findAllOutput, ValidationProduct validationProduct, PagedResourcesAssembler<ProdutoResponseDto> assembler, EntityMapper entityMapper) {
+  public ProdutoService(OutputPort<Produto> outputPort, FindAllOutput<Produto> findAllOutput, ProductValidator productValidator, PagedResourcesAssembler<ProdutoResponseDto> assembler, EntityMapper entityMapper) {
     this.findAllOutput = findAllOutput;
     this.assembler = assembler;
     this.outputPort = outputPort;
-    this.validationProduct = validationProduct;
+    this.productValidator = productValidator;
     this.entityMapper = entityMapper;
   }
 
@@ -67,7 +67,7 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
   @Override
   public ProdutoResponseDto findById(Long id) {
     Produto product = outputPort.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException(ProdutoConstant.PRODUCT_NOT_FOUND + id));
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.PRODUCT_NOT_FOUND + id));
 
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
     productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(id)).withSelfRel());
@@ -76,9 +76,9 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
 
   @Override
   public ProdutoResponseDto create(ProdutoRequestDto produtoRequestDto) {
-    validationProduct.validate(produtoRequestDto);
+    productValidator.validate(produtoRequestDto);
     Produto product = outputPort.create(entityMapper.parseObject(produtoRequestDto, Produto.class))
-        .orElseThrow(() -> new ProductCreationException(ProdutoConstant.ERROR_CREATING_PRODUCT));
+        .orElseThrow(() -> new ProductCreationException(Constant.ERROR_CREATING_PRODUCT));
 
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
     productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getKey())).withSelfRel());
@@ -87,7 +87,7 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
 
   @Override
   public ProdutoResponseDto update(Long id, ProdutoRequestDto produtoRequestDto) {
-    validationProduct.validate(produtoRequestDto);
+    productValidator.validate(produtoRequestDto);
     findById(id);
     Produto product =  outputPort.update(id, entityMapper.parseObject(produtoRequestDto, Produto.class));
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);

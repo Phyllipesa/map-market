@@ -4,11 +4,9 @@ import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.domain.exception.NegativePriceException;
 import com.MapMarket.domain.exception.ParameterNotFoundException;
 import com.MapMarket.domain.exception.RequiredObjectIsNullException;
-import com.MapMarket.domain.exception.ResourceNotFoundException;
-import com.MapMarket.domain.exception.constants.ProdutoConstant;
-import com.MapMarket.domain.models.Produto;
+import com.MapMarket.domain.exception.constants.Constant;
 
-public class ValidationProduct {
+public class ProductValidator {
 
   public void validate(ProdutoRequestDto produtoRequestDto) {
     validateNotNull(produtoRequestDto);
@@ -19,21 +17,21 @@ public class ValidationProduct {
 
   public void validateNotNull(ProdutoRequestDto produtoRequestDto) {
     if (produtoRequestDto == null)
-      throw new RequiredObjectIsNullException(ProdutoConstant.NULL_NOT_ALLOWED);
+      throw new RequiredObjectIsNullException(Constant.NULL_NOT_ALLOWED);
   }
 
   public void validateName(String nome) {
     if (nome == null || nome.isEmpty() || nome.isBlank())
-      throw new ParameterNotFoundException(ProdutoConstant.REQUIRED_PARAMETER + "nome" + ProdutoConstant.IS_NULL_OR_BLANK);
+      throw new ParameterNotFoundException(Constant.REQUIRED_PARAMETER + "nome" + Constant.IS_NULL_OR_BLANK);
   }
 
   public void checkNegativePrice(Double price) {
-    if (Double.compare(price, ProdutoConstant.D_2) <= ProdutoConstant.INT)
-      throw new NegativePriceException(ProdutoConstant.NEGATIVE_NOT_ALLOWED);
+    if (Double.compare(price, Constant.D_2) <= Constant.INT)
+      throw new NegativePriceException(Constant.NEGATIVE_NOT_ALLOWED);
   }
 
   public void validateNotNullPrice(Double price) {
     if (price == null)
-      throw new ParameterNotFoundException(ProdutoConstant.REQUIRED_PARAMETER + "preco" + ProdutoConstant.IS_NULL_OR_BLANK);
+      throw new ParameterNotFoundException(Constant.REQUIRED_PARAMETER + "preco" + Constant.IS_NULL_OR_BLANK);
   }
 }

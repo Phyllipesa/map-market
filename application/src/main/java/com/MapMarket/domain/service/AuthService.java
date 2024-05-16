@@ -9,6 +9,7 @@ import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
 import com.MapMarket.domain.service.security.jwt.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +43,10 @@ public class AuthService implements AuthUseCase {
 
   @Override
   public TokenVO refreshToken(String username, String refreshToken) {
-    return null;
+    outputPort.findByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
+    TokenVO tokenResponse;
+    tokenResponse = tokenProvider.refreshToken(refreshToken);
+    return tokenResponse;
   }
 }

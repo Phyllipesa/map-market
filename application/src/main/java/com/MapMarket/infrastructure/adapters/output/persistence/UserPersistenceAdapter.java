@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 public class UserPersistenceAdapter implements FindByUserNameOutputPort<User> {
 
-  private final Logger logger = Logger.getLogger(ProdutoPersistenceAdapter.class.getName());
+  private final Logger logger = Logger.getLogger(UserPersistenceAdapter.class.getName());
   private final UserRepository userRepository;
   private final EntityMapper entityMapper;
 

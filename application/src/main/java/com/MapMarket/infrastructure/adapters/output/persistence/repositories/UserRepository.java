@@ -1,7 +1,12 @@
 package com.MapMarket.infrastructure.adapters.output.persistence.repositories;
 
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends JpaRepository<ProdutoEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+
+  @Query("SELECT u FROM User u WHERE u.userName =:userName")
+  UserEntity findByUsername(@Param("userName") String userName);
 }

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class User implements Serializable {
+public class User implements UserDetails, Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -37,6 +37,41 @@ public class User implements Serializable {
       roles.add(permission.getDescription());
     }
     return roles;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
+
+  @Override
+  public String getPassword() {
+    return null;
+  }
+
+  @Override
+  public String getUsername() {
+    return null;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return false;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return false;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return false;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return false;
   }
 
   public Long getId() {

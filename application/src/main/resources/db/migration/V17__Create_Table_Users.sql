@@ -1,4 +1,4 @@
-V8__Insert_Data_In_Users.sqlCREATE TABLE IF NOT EXISTS `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_name` varchar(255) DEFAULT NULL,
   `full_name` varchar(255) DEFAULT NULL,

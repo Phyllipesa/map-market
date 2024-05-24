@@ -3,6 +3,7 @@ package com.MapMarket.domain.service;
 import com.MapMarket.application.rest.requestDto.AccountCredentialsVO;
 import com.MapMarket.application.rest.responseDto.TokenVO;
 import com.MapMarket.domain.exception.InvalidCredentialsException;
+import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.models.User;
 import com.MapMarket.domain.ports.input.AuthUseCase;
 import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
@@ -27,14 +28,21 @@ public class AuthService implements AuthUseCase {
 
   @Override
   public TokenVO signIn(AccountCredentialsVO data) {
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(
-            data.getUsername(),
-            data.getPassword()
-        ));
+    try
+    {
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(
+              data.getUsername(),
+              data.getPassword()
+          ));
+    }
+    catch (Exception e)
+    {
+      throw new InvalidCredentialsException(Constant.INVALID_USER_OR_PASSWORD);
+    }
 
     User user = outputPort.findByUsername(data.getUsername())
-        .orElseThrow(() -> new InvalidCredentialsException("Invalid username/password supplied!"));
+        .orElseThrow(() -> new UsernameNotFoundException(Constant.USERNAME_NOT_FOUND + data.getUsername()));
 
     TokenVO tokenResponse;
     tokenResponse = tokenProvider.createAccessToken(data.getUsername(), user.getRoles());
@@ -44,7 +52,7 @@ public class AuthService implements AuthUseCase {
   @Override
   public TokenVO refreshToken(String username, String refreshToken) {
     outputPort.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
+        .orElseThrow(() -> new UsernameNotFoundException(Constant.USERNAME_NOT_FOUND + username));
     TokenVO tokenResponse;
     tokenResponse = tokenProvider.refreshToken(refreshToken);
     return tokenResponse;

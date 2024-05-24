@@ -1,7 +1,6 @@
 package com.MapMarket.domain.models;
 
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.PermissionEntity;
-import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -46,32 +45,32 @@ public class User implements UserDetails, Serializable {
 
   @Override
   public String getPassword() {
-    return null;
+    return this.password;
   }
 
   @Override
   public String getUsername() {
-    return null;
+    return this.userName;
   }
 
   @Override
   public boolean isAccountNonExpired() {
-    return false;
+    return this.accountNonExpired;
   }
 
   @Override
   public boolean isAccountNonLocked() {
-    return false;
+    return this.accountNonLocked;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return false;
+    return this.credentialsNonExpired;
   }
 
   @Override
   public boolean isEnabled() {
-    return false;
+    return this.enable;
   }
 
   public Long getId() {

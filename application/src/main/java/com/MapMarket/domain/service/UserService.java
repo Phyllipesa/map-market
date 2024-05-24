@@ -1,5 +1,6 @@
 package com.MapMarket.domain.service;
 
+import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.models.User;
 import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,8 @@ public class UserService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String username) {
     return outputPort.findByUsername(username)
-        .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
+        .orElseThrow(() -> new UsernameNotFoundException(Constant.USERNAME_NOT_FOUND + username));
   }
 }

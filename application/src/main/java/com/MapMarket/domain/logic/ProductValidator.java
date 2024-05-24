@@ -22,7 +22,7 @@ public class ProductValidator {
 
   public void validateName(String nome) {
     if (nome == null || nome.isEmpty() || nome.isBlank())
-      throw new ParameterNotFoundException(Constant.REQUIRED_PARAMETER + "nome" + Constant.IS_NULL_OR_BLANK);
+      throw new ParameterNotFoundException(Constant.requiredParameterMessage("nome"));
   }
 
   public void checkNegativePrice(Double price) {
@@ -32,6 +32,6 @@ public class ProductValidator {
 
   public void validateNotNullPrice(Double price) {
     if (price == null)
-      throw new ParameterNotFoundException(Constant.REQUIRED_PARAMETER + "preco" + Constant.IS_NULL_OR_BLANK);
+      throw new ParameterNotFoundException(Constant.requiredParameterMessage("preco"));
   }
 }

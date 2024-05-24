@@ -7,6 +7,6 @@ public class RefreshCredentialsValidator {
 
   public void checkIfParamsIsNotNull(String username, String refreshToken) {
      if(refreshToken == null || refreshToken.isBlank() || username == null || username.isBlank())
-       throw new ParameterNotFoundException(Constant.REQUIRED_PARAMETER + "username/refreshToken" + Constant.IS_NULL_OR_BLANK);
+       throw new ParameterNotFoundException(Constant.requiredCredentialsMessage("username/token"));
   }
 }

@@ -2,6 +2,7 @@ package com.MapMarket.domain.service.security.jwt;
 
 import com.MapMarket.application.rest.responseDto.TokenVO;
 import com.MapMarket.domain.exception.InvalidJwtAuthenticationException;
+import com.MapMarket.domain.exception.constants.Constant;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -109,7 +110,7 @@ public class JwtTokenProvider {
       return !decodedJWT.getExpiresAt().before(new Date());
     }
     catch (Exception e) {
-      throw new InvalidJwtAuthenticationException("Expired or invalid JWT token!");
+      throw new InvalidJwtAuthenticationException(Constant.EXPIRED_OR_INVALID_JWT_TOKEN);
     }
   }
 }

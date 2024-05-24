@@ -9,6 +9,6 @@ public class CredentialsValidator {
   public void checkIfParamsIsNotNull(AccountCredentialsVO data) {
     if (data == null || data.getUsername() == null || data.getUsername().isBlank()
         || data.getPassword() == null || data.getPassword().isBlank())
-      throw new ParameterNotFoundException(Constant.REQUIRED_PARAMETER + "username/password" + Constant.IS_NULL_OR_BLANK );
+      throw new ParameterNotFoundException(Constant.requiredCredentialsMessage("username/password"));
   }
 }

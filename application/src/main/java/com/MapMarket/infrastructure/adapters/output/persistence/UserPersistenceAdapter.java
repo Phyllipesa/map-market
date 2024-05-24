@@ -5,6 +5,7 @@ import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.UserEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -21,10 +22,14 @@ public class UserPersistenceAdapter implements FindByUserNameOutputPort<User> {
   }
 
   @Override
-  public Optional<User> findByUsername(String userName) {
-    logger.info("Finding a user by username!");
+  public Optional<User> findByUsername(String userName) throws UsernameNotFoundException {
+    logger.info("Finding a user by username! PERSISTENCE");
 
     UserEntity userEntity = userRepository.findByUsername(userName);
+    if (userEntity == null) {
+      return Optional.empty();
+    }
+
     return Optional.ofNullable(entityMapper.parseObject(userEntity, User.class));
   }
 }

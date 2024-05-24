@@ -1,11 +1,13 @@
 package com.MapMarket.application.rest.responseDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+@JsonPropertyOrder({ "id", "nome", "preco" })
 public class ProdutoResponseDto extends RepresentationModel<ProdutoResponseDto> implements Serializable {
 
   @Serial

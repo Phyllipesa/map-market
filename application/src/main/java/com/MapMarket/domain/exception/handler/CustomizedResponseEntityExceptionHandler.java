@@ -3,6 +3,7 @@ package com.MapMarket.domain.exception.handler;
 import com.MapMarket.domain.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,5 +80,38 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     );
 
     return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(InvalidJwtAuthenticationException.class)
+  public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationExceptions(Exception e, WebRequest request) {
+
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        e.getMessage(),
+        request.getDescription(false));
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public final ResponseEntity<ExceptionResponse> handleInvalidCredentialsExceptions(Exception e, WebRequest request) {
+
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        e.getMessage(),
+        request.getDescription(false));
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(UsernameNotFoundException.class)
+  public final ResponseEntity<ExceptionResponse> handleUsernameNotFoundException(Exception e, WebRequest request) {
+
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        e.getMessage(),
+        request.getDescription(false));
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
   }
 }

@@ -1,9 +1,9 @@
-package com.MapMarket.application.unittests.mockito.services;
+package com.MapMarket.application.unitTests.mockito.services;
 
 import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
-import com.MapMarket.application.unittests.fakeClasses.FakeOutputPort;
-import com.MapMarket.application.unittests.mocks.MockProduct;
+import com.MapMarket.application.unitTests.fakeClasses.FakeOutputPort;
+import com.MapMarket.application.unitTests.mocks.MockProduct;
 import com.MapMarket.domain.exception.*;
 import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.logic.ProductValidator;

@@ -1,6 +1,6 @@
-package com.MapMarket.application.unittests.fakeClasses;
+package com.MapMarket.application.unitTests.fakeClasses;
 
-import com.MapMarket.application.unittests.mocks.MockProduct;
+import com.MapMarket.application.unitTests.mocks.MockProduct;
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.domain.ports.output.OutputPort;
 

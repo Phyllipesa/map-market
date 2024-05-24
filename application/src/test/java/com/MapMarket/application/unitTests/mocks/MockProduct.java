@@ -1,4 +1,4 @@
-package com.MapMarket.application.unittests.mocks;
+package com.MapMarket.application.unitTests.mocks;
 
 import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;

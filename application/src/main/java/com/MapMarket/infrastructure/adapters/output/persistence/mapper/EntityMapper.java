@@ -16,9 +16,11 @@ public class EntityMapper {
     this.modelMapper = modelMapper;
   }
 
+
+  //O codigo a seguir pode enviar uma InternalAuthenticationServiceException caso um dos GENERICOS seja null
   public <Origin, Destiny> Destiny parseObject(Origin origin, Class<Destiny> destination) {
-    Objects.requireNonNull(origin, "Origin object must not be null");
-    Objects.requireNonNull(destination, "Destination type must not be null");
+    Objects.requireNonNull(origin, "Origin object in EntityMapper must not be null");
+    Objects.requireNonNull(destination, "Destination type in EntityMapper must not be null");
     return modelMapper.map(origin, destination);
   }
 

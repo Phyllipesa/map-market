@@ -170,7 +170,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(5)
-  public void test_IS_NULL_OR_BLANK() throws JsonProcessingException {
+  public void test_create_WITH_PARAMETER_name_NULL() throws JsonProcessingException {
     String payloadNomeAusente = "{\"preco\": \"14.20\"}";
 
     var content =
@@ -188,5 +188,25 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
     assertNotNull(content);
     assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
+  }
+
+  @Test
+  @Order(6)
+  public void test_create_WITH_NULL_REQUEST() throws JsonProcessingException {
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body("")
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    assertNotNull(content);
+    assertTrue(content.contains("Failed to read request"));
   }
 }

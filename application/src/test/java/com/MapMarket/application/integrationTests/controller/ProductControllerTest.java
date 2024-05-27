@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProductControllerTest extends AbstractIntegrationTest {
 
   private static RequestSpecification specification;
-  private static ProdutoRequestDto product;
+  private static ProdutoRequestDto productRequest;
   private static ProdutoResponseDto productResponse;
   private static ObjectMapper objectMapper;
 
@@ -33,9 +33,9 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   public static void setup() {
     objectMapper = new ObjectMapper();
     objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    product = new ProdutoRequestDto();
-    product.setNome("Lentilha");
-    product.setPreco(14.20);
+    productRequest = new ProdutoRequestDto();
+    productRequest.setNome("Lentilha");
+    productRequest.setPreco(14.20);
   }
 
   @Test
@@ -74,7 +74,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
         given()
             .spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(product)
+            .body(productRequest)
             .when()
             .post()
             .then()
@@ -102,7 +102,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     var content =
         given().spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .pathParam("id", 1)
+            .pathParam("id", 73)
             .when()
             .get("{id}")
             .then()
@@ -120,7 +120,52 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
     assertTrue(productResponse.getKey() > 0);
 
-    assertEquals("Arroz", productResponse.getNome());
-    assertEquals(2.50, productResponse.getPreco());
+    assertEquals("Lentilha", productResponse.getNome());
+    assertEquals(14.20, productResponse.getPreco());
   }
+
+  @Test
+  @Order(3)
+  public void testUpdate() throws JsonProcessingException {
+    productRequest.setNome("Castanha do vamo para");
+    productRequest.setPreco(15.00);
+
+    var content =
+        given().spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(productRequest)
+            .pathParam("id", 73)
+            .when()
+            .put("{id}")
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString();
+
+    productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
+
+    assertNotNull(productResponse);
+    assertNotNull(productResponse.getKey());
+    assertNotNull(productResponse.getNome());
+    assertNotNull(productResponse.getPreco());
+
+    assertTrue(productResponse.getKey() > 0);
+
+    assertEquals("Castanha do vamo para", productResponse.getNome());
+    assertEquals(15.00, productResponse.getPreco());
+  }
+
+  @Test
+  @Order(4)
+  public void testDelete() throws JsonProcessingException {
+    given().spec(specification)
+        .contentType(TestConfigs.CONTENT_TYPE_JSON)
+        .pathParam("id", 73)
+        .when()
+        .delete("{id}")
+        .then()
+        .statusCode(204);
+  }
+
 }

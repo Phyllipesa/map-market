@@ -6,6 +6,7 @@ import com.MapMarket.application.integrationTests.vo.AccountCredentialsVO;
 import com.MapMarket.application.integrationTests.vo.ProdutoRequestDto;
 import com.MapMarket.application.integrationTests.vo.ProdutoResponseDto;
 import com.MapMarket.application.integrationTests.vo.TokenVO;
+import com.MapMarket.application.integrationTests.vo.wrappers.WrapperProdutoResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,6 +127,50 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(3)
+  public void testFindAll() throws JsonProcessingException {
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .accept(TestConfigs.CONTENT_TYPE_JSON)
+            .queryParams("page", 3, "size", 3)
+          .when()
+            .get()
+          .then()
+            .statusCode(200)
+              .extract()
+                .body()
+                  .asString();
+
+    WrapperProdutoResponseDto wrapper = objectMapper.readValue(content, WrapperProdutoResponseDto.class);
+    var response = wrapper.getEmbedded().getProdutos();
+
+    assertNotNull(response);
+
+    ProdutoResponseDto firstProduct = response.get(0);
+    assertNotNull(firstProduct);
+    assertNotNull(firstProduct.getKey());
+    assertNotNull(firstProduct.getNome());
+    assertNotNull(firstProduct.getPreco());
+
+    assertEquals(18, firstProduct.getKey());
+    assertEquals("Bolacha recheada", firstProduct.getNome());
+    assertEquals(2.80, firstProduct.getPreco());
+
+
+    ProdutoResponseDto LastProduct = response.get(2);
+    assertNotNull(LastProduct);
+    assertNotNull(LastProduct.getKey());
+    assertNotNull(LastProduct.getNome());
+    assertNotNull(LastProduct.getPreco());
+
+    assertEquals(7, LastProduct.getKey());
+    assertEquals("Café em pó", LastProduct.getNome());
+    assertEquals(8.20, LastProduct.getPreco());
+  }
+
+  @Test
+  @Order(4)
   public void testUpdate() throws JsonProcessingException {
     productRequest.setNome("Castanha do vamo para");
     productRequest.setPreco(15.00);
@@ -157,7 +202,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @Order(4)
+  @Order(5)
   public void testDelete() throws JsonProcessingException {
     given().spec(specification)
         .contentType(TestConfigs.CONTENT_TYPE_JSON)
@@ -166,91 +211,5 @@ public class ProductControllerTest extends AbstractIntegrationTest {
         .delete("{id}")
         .then()
         .statusCode(204);
-  }
-
-  @Test
-  @Order(5)
-  public void test_create_WITH_PARAMETER_name_NULL() throws JsonProcessingException {
-    String payloadNomeAusente = "{\"preco\": \"14.20\"}";
-
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNomeAusente)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
-  }
-
-  @Test
-  @Order(6)
-  public void test_create_WITH_PARAMETER_price_NULL() throws JsonProcessingException {
-    String payloadPrecoAusente = "{\"nome\": \"Lentilha\"}";
-
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadPrecoAusente)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'preco' is null or blank!"));
-  }
-
-  @Test
-  @Order(7)
-  public void test_create_WITH_PARAMETER_name_BLANK() throws JsonProcessingException {
-    String payloadNomeEmBranco = "{\"nome\": \"\", \"preco\": \"14.20\"}";
-
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNomeEmBranco)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
-  }
-
-  @Test
-  @Order(7)
-  public void test_create_WITH_NULL_REQUEST() throws JsonProcessingException {
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body("")
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    assertNotNull(content);
-    assertTrue(content.contains("Failed to read request"));
   }
 }

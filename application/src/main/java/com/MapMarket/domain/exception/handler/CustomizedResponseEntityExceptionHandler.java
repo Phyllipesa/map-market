@@ -17,7 +17,7 @@ import java.util.Date;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(Exception.class)
-  public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerAllExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
         e.getMessage(),
@@ -28,7 +28,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  public final ResponseEntity<ExceptionResponse> handleNotFoundExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerNotFoundExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
         e.getMessage(),
@@ -39,7 +39,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(ParameterNotFoundException.class)
-  public final ResponseEntity<ExceptionResponse> handleParameterNotFoundExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerParameterNotFoundExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
         e.getMessage(),
@@ -50,7 +50,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(NegativePriceException.class)
-  public final ResponseEntity<ExceptionResponse> handleNegativePriceExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerNegativePriceExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
         e.getMessage(),
@@ -61,7 +61,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(ProductCreationException.class)
-  public final ResponseEntity<ExceptionResponse> handleProductCreationExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerProductCreationExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
         e.getMessage(),
@@ -72,7 +72,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(RequiredObjectIsNullException.class)
-  public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerBadRequestExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
         e.getMessage(),
@@ -83,7 +83,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(InvalidJwtAuthenticationException.class)
-  public final ResponseEntity<ExceptionResponse> handleInvalidJwtAuthenticationExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerInvalidJwtAuthenticationExceptions(Exception e, WebRequest request) {
 
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
@@ -94,7 +94,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(InvalidCredentialsException.class)
-  public final ResponseEntity<ExceptionResponse> handleInvalidCredentialsExceptions(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerInvalidCredentialsExceptions(Exception e, WebRequest request) {
 
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),
@@ -105,7 +105,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   }
 
   @ExceptionHandler(UsernameNotFoundException.class)
-  public final ResponseEntity<ExceptionResponse> handleUsernameNotFoundException(Exception e, WebRequest request) {
+  public final ResponseEntity<ExceptionResponse> handlerUsernameNotFoundException(Exception e, WebRequest request) {
 
     ExceptionResponse exceptionResponse = new ExceptionResponse(
         new Date(),

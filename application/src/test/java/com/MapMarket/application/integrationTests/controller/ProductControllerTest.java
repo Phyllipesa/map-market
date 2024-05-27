@@ -192,6 +192,28 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(6)
+  public void test_create_WITH_PARAMETER_price_NULL() throws JsonProcessingException {
+    String payloadPrecoAusente = "{\"nome\": \"Lentilha\"}";
+
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(payloadPrecoAusente)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'preco' is null or blank!"));
+  }
+
+  @Test
+  @Order(7)
   public void test_create_WITH_NULL_REQUEST() throws JsonProcessingException {
     var content =
         given()

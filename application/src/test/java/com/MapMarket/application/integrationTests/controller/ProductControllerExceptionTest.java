@@ -28,7 +28,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
   @Test
   @Order(0)
-  public void authorization() throws JsonProcessingException {
+  public void authorization() {
     AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
 
     var accessToken =
@@ -59,8 +59,10 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(1)
   public void test_create_WITH_PARAMETER_name_NULL() {
+    //GIVEN
     String payloadNomeAusente = "{\"preco\": \"14.20\"}";
 
+    //WHEN
     var content =
         given()
             .spec(specification)
@@ -74,6 +76,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //THEN
     assertNotNull(content);
     assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
   }
@@ -81,8 +84,10 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(2)
   public void test_create_WITH_PARAMETER_price_NULL() {
+    //GIVEN
     String payloadPrecoAusente = "{\"nome\": \"Lentilha\"}";
 
+    //WHEN
     var content =
         given()
             .spec(specification)
@@ -96,6 +101,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //THEN
     assertNotNull(content);
     assertTrue(content.contains("Required parameter 'preco' is null or blank!"));
   }
@@ -103,8 +109,10 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(3)
   public void test_create_WITH_PARAMETER_name_BLANK() {
+    //GIVEN
     String payloadNomeEmBranco = "{\"nome\": \"\", \"preco\": \"14.20\"}";
 
+    //WHEN
     var content =
         given()
             .spec(specification)
@@ -118,6 +126,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //THEN
     assertNotNull(content);
     assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
   }
@@ -125,8 +134,10 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(4)
   public void test_create_WITH_PARAMETER_price_BLANK() {
+    //GIVEN
     String payloadPrecoEmBranco = "{\"nome\": \"Lentilha\", \"preco\": \"\"}";
 
+    //WHEN
     var content =
         given()
             .spec(specification)
@@ -140,6 +151,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //THEN
     assertNotNull(content);
     assertTrue(content.contains("Required parameter 'preco' is null or blank!"));
   }
@@ -147,6 +159,8 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(5)
   public void test_create_WITH_NULL_REQUEST() {
+    //GIVEN
+    //WHEN
     var content =
         given()
             .spec(specification)
@@ -160,6 +174,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //THEN
     assertNotNull(content);
     assertTrue(content.contains("Failed to read request"));
   }

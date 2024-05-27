@@ -41,7 +41,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(0)
-  public void authorization() throws JsonProcessingException {
+  public void authorization() {
     AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
 
     var accessToken =
@@ -71,6 +71,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(1)
   public void testCreate() throws JsonProcessingException {
+    //GIVEN
     var content =
         given()
             .spec(specification)
@@ -84,8 +85,10 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //WHEN
     productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
 
+    //THEN
     assertNotNull(productResponse);
     assertNotNull(productResponse.getKey());
     assertNotNull(productResponse.getNome());
@@ -100,6 +103,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(2)
   public void testFindById() throws JsonProcessingException {
+    //GIVEN
     var content =
         given().spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
@@ -112,8 +116,10 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //WHEN
     productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
 
+    //THEN
     assertNotNull(productResponse);
     assertNotNull(productResponse.getKey());
     assertNotNull(productResponse.getNome());
@@ -128,6 +134,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(3)
   public void testFindAll() throws JsonProcessingException {
+    //GIVEN
     var content =
         given()
             .spec(specification)
@@ -142,9 +149,11 @@ public class ProductControllerTest extends AbstractIntegrationTest {
                 .body()
                   .asString();
 
+    //WHEN
     WrapperProdutoResponseDto wrapper = objectMapper.readValue(content, WrapperProdutoResponseDto.class);
     var response = wrapper.getEmbedded().getProdutos();
 
+    //THEN
     assertNotNull(response);
 
     ProdutoResponseDto firstProduct = response.get(0);
@@ -172,6 +181,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(4)
   public void testUpdate() throws JsonProcessingException {
+    //GIVEN
     productRequest.setNome("Castanha do vamo para");
     productRequest.setPreco(15.00);
 
@@ -188,8 +198,10 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //WHEN
     productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
 
+    //THEN
     assertNotNull(productResponse);
     assertNotNull(productResponse.getKey());
     assertNotNull(productResponse.getNome());
@@ -204,6 +216,9 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(5)
   public void testDelete() throws JsonProcessingException {
+    //GIVEN
+    //WHEN
+    //THEN
     given().spec(specification)
         .contentType(TestConfigs.CONTENT_TYPE_JSON)
         .pathParam("id", 73)

@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductServiceTest {
+class ProductServiceTest {
 
   MockProduct input;
   private final EntityMapper entityMapper = entityMapper();
@@ -128,9 +128,7 @@ public class ProductServiceTest {
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
     //WHEN
-    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-      service.findById(2L);
-    });
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> service.findById(2L));
 
     String actualMessage = exception.getMessage();
 
@@ -140,15 +138,15 @@ public class ProductServiceTest {
 
   @Test
   @Order(5)
-  void create_REQUIRED_OBJECT_IS_NULL_EXCEPTION() {
+  void create_PARAMETER_name_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.NULL_NOT_ALLOWED;
+    String expectedMessage = Constant.requiredParameterMessage("nome");
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
+    produtoRequestDto.setNome(null);
 
     //WHEN
-    Exception exception = assertThrows(RequiredObjectIsNullException.class, () -> {
-      service.create(null);
-    });
+    Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(produtoRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -158,17 +156,15 @@ public class ProductServiceTest {
 
   @Test
   @Order(6)
-  void create_PARAMETER_name_NOT_FOUND_EXCEPTION() {
+  void create_NEGATIVE_PRICE_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.REQUIRED_PARAMETER + "nome" + Constant.IS_NULL_OR_BLANK;
+    String expectedMessage = Constant.NEGATIVE_NOT_ALLOWED;
     ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setNome(null);
+    produtoRequestDto.setPreco(-10.0);
 
     //WHEN
-    Exception exception = assertThrows(ParameterNotFoundException.class, () -> {
-      service.create(produtoRequestDto);
-    });
+    Exception exception = assertThrows(NegativePriceException.class, () -> service.create(produtoRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -178,17 +174,15 @@ public class ProductServiceTest {
 
   @Test
   @Order(7)
-  void create_NEGATIVE_PRICE_EXCEPTION() {
+  void create_PARAMETER_preco_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.NEGATIVE_NOT_ALLOWED;
+    String expectedMessage = Constant.requiredParameterMessage("preco");
     ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setPreco(-10.0);
+    produtoRequestDto.setPreco(null);
 
     //WHEN
-    Exception exception = assertThrows(NegativePriceException.class, () -> {
-      service.create(produtoRequestDto);
-    });
+    Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(produtoRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -198,17 +192,15 @@ public class ProductServiceTest {
 
   @Test
   @Order(8)
-  void create_PARAMETER_preco_NOT_FOUND_EXCEPTION() {
+  void create_PRODUCT_CREATION_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.REQUIRED_PARAMETER + "preco" + Constant.IS_NULL_OR_BLANK;
+    String expectedMessage = Constant.ERROR_CREATING_PRODUCT;
     ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setPreco(null);
+    produtoRequestDto.setNome("Exception");
 
     //WHEN
-    Exception exception = assertThrows(ParameterNotFoundException.class, () -> {
-      service.create(produtoRequestDto);
-    });
+    Exception exception = assertThrows(ProductCreationException.class, () -> service.create(produtoRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -218,17 +210,14 @@ public class ProductServiceTest {
 
   @Test
   @Order(9)
-  void create_PRODUCT_CREATION_EXCEPTION() {
+  void update_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.ERROR_CREATING_PRODUCT;
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setNome("Exception");
+    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
+    String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
     //WHEN
-    Exception exception = assertThrows(ProductCreationException.class, () -> {
-      service.create(produtoRequestDto);
-    });
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> service.update(2L,produtoRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -238,35 +227,13 @@ public class ProductServiceTest {
 
   @Test
   @Order(10)
-  void update_PRODUCT_NOT_FOUND_EXCEPTION() {
-    //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
-    String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
-
-    //WHEN
-    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-      service.update(2L,produtoRequestDto);
-    });
-
-    String actualMessage = exception.getMessage();
-
-    //THEN
-    assertTrue(actualMessage.contains(expectedMessage));
-  }
-
-  @Test
-  @Order(11)
   void delete_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
     //WHEN
-    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-      service.delete(2L);
-    });
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> service.delete(2L));
 
     String actualMessage = exception.getMessage();
 
@@ -279,13 +246,9 @@ public class ProductServiceTest {
   public ModelMapper modelMapper() {
     ModelMapper modelMapper = new ModelMapper();
     modelMapper.typeMap(ProdutoEntity.class, Produto.class)
-        .addMappings(mapper -> {
-          mapper.map(ProdutoEntity::getId, Produto::setId);
-        });
+        .addMappings(mapper -> mapper.map(ProdutoEntity::getId, Produto::setId));
     modelMapper.typeMap(Produto.class, ProdutoResponseDto.class)
-        .addMappings(mapper -> {
-          mapper.map(Produto::getId, ProdutoResponseDto::setKey);
-        });
+        .addMappings(mapper -> mapper.map(Produto::getId, ProdutoResponseDto::setKey));
     return modelMapper;
   }
 

@@ -227,4 +227,34 @@ public class ProductControllerTest extends AbstractIntegrationTest {
         .then()
         .statusCode(204);
   }
+
+  @Test
+  @Order(6)
+  public void test_HATEAOS() {
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .accept(TestConfigs.CONTENT_TYPE_JSON)
+            .queryParams("page", 0, "size", 10)
+            .when()
+            .get()
+            .then()
+            .statusCode(200)
+            .extract()
+            .body()
+            .asString();
+
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/6\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/5\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/26\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/18\"}}}"));
+
+    assertTrue(content.contains("\"first\":{\"href\":\"http://localhost:8888/api/v1/produto?page=0&size=10&sort=nome,asc\"}"));
+    assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/v1/produto?page=0&size=10\"}"));
+    assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/v1/produto?page=1&size=10&sort=nome,asc\"}"));
+    assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/v1/produto?page=7&size=10&sort=nome,asc\"}}"));
+
+    assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":72,\"totalPages\":8,\"number\":0}}"));
+  }
 }

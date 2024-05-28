@@ -107,4 +107,25 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     assertNotNull(content);
     assertTrue(content.contains("Credentials 'username/password' is null or blank!"));
   }
+
+  @Test
+  @Order(4)
+  public void test_signing_WITH_NULL_CREDENTIALS() {
+
+    var content =
+        given()
+            .basePath("/auth/signin")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    assertNotNull(content);
+    assertTrue(content.contains("Failed to read request"));
+  }
 }

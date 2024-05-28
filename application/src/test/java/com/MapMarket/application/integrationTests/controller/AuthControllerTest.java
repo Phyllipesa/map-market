@@ -22,7 +22,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(1)
-  public void testSignin() throws JsonProcessingException {
+  public void testSignin() {
     AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
 
     tokenVO = given()
@@ -44,7 +44,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(2)
-  public void testRefresh() throws JsonProcessingException {
+  public void testRefresh() {
     AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
 
     var newtokenVO = given()

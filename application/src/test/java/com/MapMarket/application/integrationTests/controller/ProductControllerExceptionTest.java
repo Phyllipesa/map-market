@@ -197,4 +197,23 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
     assertNotNull(content);
     assertTrue(content.contains("Product not found with id 85"));
   }
+
+  @Test
+  @Order(7)
+  public void test_findAll_WITHOUT_TOKEN() {
+    RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
+        .setBasePath("api/v1/produto")
+        .setPort(TestConfigs.SERVER_PORT)
+        .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+        .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+        .build();
+
+    given()
+        .spec(specificationWithoutToken)
+        .contentType(TestConfigs.CONTENT_TYPE_JSON)
+        .when()
+        .get()
+        .then()
+        .statusCode(403);
+  }
 }

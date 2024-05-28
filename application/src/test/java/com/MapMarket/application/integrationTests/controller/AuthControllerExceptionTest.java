@@ -214,4 +214,28 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     assertNotNull(content);
     assertTrue(content.contains("No static resource auth/refresh."));
   }
+
+  @Test
+  @Order(8)
+  public void test_RefreshToken_WITH_USER_AND_WITH_BLANK_TOKEN() {
+    //WHEN
+    var content =
+        given()
+            .basePath("/auth/refresh")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("username", "cmUSER")
+            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, " ")
+            .when()
+            .put("{username}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Credentials 'username/token' is null or blank!"));
+  }
 }

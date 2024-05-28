@@ -63,9 +63,32 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @Order(3)
+  @Order(2)
   public void test_signing_WITH_PARAMETER_username_BLANK() {
     String payloadWithNullPass = "{\"username\": \"\", \"password\": \"blabla\"}";
+
+    var content =
+        given()
+            .basePath("/auth/signin")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(payloadWithNullPass)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    assertNotNull(content);
+    assertTrue(content.contains("Credentials 'username/password' is null or blank!"));
+  }
+
+  @Test
+  @Order(3)
+  public void test_signing_WITH_PARAMETER_password_BLANK() {
+    String payloadWithNullPass = "{\"username\": \"blabla1\", \"password\": \"\"}";
 
     var content =
         given()

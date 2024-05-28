@@ -4,7 +4,6 @@ import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import com.MapMarket.application.integrationTests.vo.AccountCredentialsVO;
 import com.MapMarket.application.integrationTests.vo.TokenVO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -54,7 +53,6 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
         .build();
   }
-
 
   @Test
   @Order(1)
@@ -177,5 +175,26 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
     //THEN
     assertNotNull(content);
     assertTrue(content.contains("Failed to read request"));
+  }
+
+  @Test
+  @Order(6)
+  public void test_findById_NOT_FOUND() {
+    //WHEN
+    var content =
+        given().spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 85)
+            .when()
+            .get("{id}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Product not found with id 85"));
   }
 }

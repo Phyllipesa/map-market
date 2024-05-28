@@ -215,7 +215,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(5)
-  public void testDelete() throws JsonProcessingException {
+  public void testDelete() {
     //GIVEN
     //WHEN
     //THEN

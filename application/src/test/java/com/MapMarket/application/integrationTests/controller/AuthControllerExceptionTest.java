@@ -238,4 +238,27 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     assertNotNull(content);
     assertTrue(content.contains("Credentials 'username/token' is null or blank!"));
   }
+
+  @Test
+  @Order(9)
+  public void test_RefreshToken_WITH_USER_AND_WITH_NULL_TOKEN() {
+    //WHEN
+    var content =
+        given()
+            .basePath("/auth/refresh")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("username", "cmUSER")
+            .when()
+            .put("{username}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Required header 'Authorization' is not present."));
+  }
 }

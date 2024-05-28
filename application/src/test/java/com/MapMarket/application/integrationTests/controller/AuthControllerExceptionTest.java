@@ -167,4 +167,28 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     assertNotNull(content);
     assertTrue(content.contains("Username not found: bender"));
   }
+
+  @Test
+  @Order(6)
+  public void test_RefreshToken_WITH_BLANK_USER_AND_WITH_TOKEN() {
+    //WHEN
+    var content =
+        given()
+            .basePath("/auth/refresh")
+            .port(TestConfigs.SERVER_PORT)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("username", " ")
+            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjbVVTRVIiLCJyb2xlcyI6W10sImV4cCI6MTcxNjkxNzk0NSwiaWF0IjoxNzE2OTA3MTQ1fQ.wF-27DruWhl1we-kKZgQyMk84_5xqkXwbtnIgLSxpf8")
+            .when()
+            .put("{username}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Credentials 'username/token' is null or blank!"));
+  }
 }

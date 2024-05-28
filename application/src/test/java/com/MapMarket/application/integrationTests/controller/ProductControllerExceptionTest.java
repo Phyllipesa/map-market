@@ -201,6 +201,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(7)
   public void test_findAll_WITHOUT_TOKEN() {
+    //WHEN
     RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
         .setBasePath("api/v1/produto")
         .setPort(TestConfigs.SERVER_PORT)
@@ -208,6 +209,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
         .build();
 
+    //THEN
     given()
         .spec(specificationWithoutToken)
         .contentType(TestConfigs.CONTENT_TYPE_JSON)

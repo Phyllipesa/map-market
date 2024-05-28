@@ -231,6 +231,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(6)
   public void test_HATEAOS() {
+    //WHEN
     var content =
         given()
             .spec(specification)
@@ -245,6 +246,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .body()
             .asString();
 
+    //THEN
     assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/6\"}}}"));
     assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/5\"}}}"));
     assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/26\"}}}"));

@@ -4,7 +4,6 @@ import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import com.MapMarket.application.integrationTests.vo.AccountCredentialsVO;
 import com.MapMarket.application.integrationTests.vo.TokenVO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,10 @@ public class AuthControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(1)
   public void testSignin() {
+    //GIVEN
     AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
 
+    //WHEN
     tokenVO = given()
         .basePath("/auth/signin")
           .port(TestConfigs.SERVER_PORT)
@@ -38,6 +39,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
               .body()
                 .as(TokenVO.class);
 
+    //THEN
     assertNotNull(tokenVO.getAccessToken());
     assertNotNull(tokenVO.getRefreshToken());
   }
@@ -45,8 +47,10 @@ public class AuthControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(2)
   public void testRefresh() {
+    //GIVEN
     AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
 
+    //WHEN
     var newtokenVO = given()
         .basePath("/auth/refresh")
         .port(TestConfigs.SERVER_PORT)
@@ -61,6 +65,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
               .body()
                 .as(TokenVO.class);
 
+    //THEN
     assertNotNull(newtokenVO.getAccessToken());
     assertNotNull(newtokenVO.getRefreshToken());
   }

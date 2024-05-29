@@ -1,16 +1,16 @@
 package com.MapMarket.domain.logic;
 
-import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
+import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.domain.exception.NegativePriceException;
 import com.MapMarket.domain.exception.ParameterNotFoundException;
 import com.MapMarket.domain.exception.constants.Constant;
 
 public class ProductValidator {
 
-  public void validate(ProdutoRequestDto produtoRequestDto) {
-    validateName(produtoRequestDto.getNome());
-    validateNotNullPrice(produtoRequestDto.getPreco());
-    checkNegativePrice(produtoRequestDto.getPreco());
+  public void validate(ProductRequestDto productRequestDto) {
+    validateName(productRequestDto.getNome());
+    validateNotNullPrice(productRequestDto.getPreco());
+    checkNegativePrice(productRequestDto.getPreco());
   }
 
   public void validateName(String nome) {

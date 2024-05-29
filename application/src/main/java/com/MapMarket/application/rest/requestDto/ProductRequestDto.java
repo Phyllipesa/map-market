@@ -3,17 +3,17 @@ package com.MapMarket.application.rest.requestDto;
 import java.io.Serial;
 import java.io.Serializable;
 
-public class ProdutoRequestDto implements Serializable {
+public class ProductRequestDto implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
   private String nome;
   private Double preco;
 
-  public ProdutoRequestDto() {
+  public ProductRequestDto() {
   }
 
-  public ProdutoRequestDto(String nome, Double preco) {
+  public ProductRequestDto(String nome, Double preco) {
     this.nome = nome;
     this.preco = preco;
   }

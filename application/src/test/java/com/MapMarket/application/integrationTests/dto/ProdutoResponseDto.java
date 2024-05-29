@@ -1,4 +1,4 @@
-package com.MapMarket.application.integrationTests.vo;
+package com.MapMarket.application.integrationTests.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

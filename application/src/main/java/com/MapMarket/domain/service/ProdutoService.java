@@ -1,7 +1,7 @@
 package com.MapMarket.domain.service;
 
 import com.MapMarket.application.rest.ProdutoRestAdapter;
-import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
+import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.domain.exception.ProductCreationException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
@@ -23,7 +23,7 @@ import org.springframework.hateoas.PagedModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoResponseDto>, FindAllUseCase<ProdutoResponseDto> {
+public class ProdutoService implements UseCase<ProductRequestDto, ProdutoResponseDto>, FindAllUseCase<ProdutoResponseDto> {
 
   private final OutputPort<Produto> outputPort;
   private final FindAllOutput<Produto> findAllOutput;
@@ -73,9 +73,9 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
   }
 
   @Override
-  public ProdutoResponseDto create(ProdutoRequestDto produtoRequestDto) {
-    productValidator.validate(produtoRequestDto);
-    Produto product = outputPort.create(entityMapper.parseObject(produtoRequestDto, Produto.class))
+  public ProdutoResponseDto create(ProductRequestDto productRequestDto) {
+    productValidator.validate(productRequestDto);
+    Produto product = outputPort.create(entityMapper.parseObject(productRequestDto, Produto.class))
         .orElseThrow(() -> new ProductCreationException(Constant.ERROR_CREATING_PRODUCT));
 
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
@@ -84,10 +84,10 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
   }
 
   @Override
-  public ProdutoResponseDto update(Long id, ProdutoRequestDto produtoRequestDto) {
-    productValidator.validate(produtoRequestDto);
+  public ProdutoResponseDto update(Long id, ProductRequestDto productRequestDto) {
+    productValidator.validate(productRequestDto);
     findById(id);
-    Produto product =  outputPort.update(id, entityMapper.parseObject(produtoRequestDto, Produto.class));
+    Produto product =  outputPort.update(id, entityMapper.parseObject(productRequestDto, Produto.class));
     ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
     productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getKey())).withSelfRel());
     return productDto;

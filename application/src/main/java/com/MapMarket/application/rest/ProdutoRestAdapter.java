@@ -1,6 +1,6 @@
 package com.MapMarket.application.rest;
 
-import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
+import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/produto")
 public class ProdutoRestAdapter {
 
-  private final UseCase<ProdutoRequestDto, ProdutoResponseDto> useCase;
+  private final UseCase<ProductRequestDto, ProdutoResponseDto> useCase;
   private final FindAllUseCase<ProdutoResponseDto> findAllUseCase;
 
-  public ProdutoRestAdapter(UseCase<ProdutoRequestDto, ProdutoResponseDto> useCase, FindAllUseCase<ProdutoResponseDto> findAllUseCase) {
+  public ProdutoRestAdapter(UseCase<ProductRequestDto, ProdutoResponseDto> useCase, FindAllUseCase<ProdutoResponseDto> findAllUseCase) {
     this.findAllUseCase = findAllUseCase;
     this.useCase = useCase;
   }
@@ -40,12 +40,12 @@ public class ProdutoRestAdapter {
   }
 
   @PostMapping
-  public ResponseEntity<ProdutoResponseDto> create(@RequestBody ProdutoRequestDto produtoDto) {
+  public ResponseEntity<ProdutoResponseDto> create(@RequestBody ProductRequestDto produtoDto) {
     return ResponseEntity.status(201).body(useCase.create(produtoDto));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProdutoResponseDto> update(@PathVariable(value = "id")Long id, @RequestBody ProdutoRequestDto produtoDto) {
+  public ResponseEntity<ProdutoResponseDto> update(@PathVariable(value = "id")Long id, @RequestBody ProductRequestDto produtoDto) {
     return ResponseEntity.ok(useCase.update(id, produtoDto));
   }
 

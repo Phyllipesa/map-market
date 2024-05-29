@@ -2,8 +2,8 @@ package com.MapMarket.application.integrationTests.controller;
 
 import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
-import com.MapMarket.application.integrationTests.vo.AccountCredentialsVO;
-import com.MapMarket.application.integrationTests.vo.TokenVO;
+import com.MapMarket.application.integrationTests.dto.AccountCredentialsDto;
+import com.MapMarket.application.integrationTests.dto.TokenDto;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -28,7 +28,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(0)
   public void authorization() {
-    AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
 
     var accessToken =
         given()
@@ -42,7 +42,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
             .statusCode(200)
             .extract()
             .body()
-            .as(TokenVO.class)
+            .as(TokenDto.class)
             .getAccessToken();
 
     specification = new RequestSpecBuilder()

@@ -2,8 +2,8 @@ package com.MapMarket.application.integrationTests.controller;
 
 import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
-import com.MapMarket.application.integrationTests.vo.AccountCredentialsVO;
-import com.MapMarket.application.integrationTests.vo.TokenVO;
+import com.MapMarket.application.integrationTests.dto.AccountCredentialsDto;
+import com.MapMarket.application.integrationTests.dto.TokenDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -18,16 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AuthControllerExceptionTest extends AbstractIntegrationTest {
 
-  private static TokenVO tokenVO;
+  private static TokenDto tokenDto;
 
   @Test
   @Order(0)
   public void test_signing() {
     //GIVEN
-    AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
 
     //WHEN
-    tokenVO = given()
+    tokenDto = given()
         .basePath("/auth/signin")
         .port(TestConfigs.SERVER_PORT)
         .contentType(TestConfigs.CONTENT_TYPE_JSON)
@@ -38,11 +38,11 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
         .statusCode(200)
         .extract()
         .body()
-        .as(TokenVO.class);
+        .as(TokenDto.class);
 
     //THEN
-    assertNotNull(tokenVO.getAccessToken());
-    assertNotNull(tokenVO.getRefreshToken());
+    assertNotNull(tokenDto.getAccessToken());
+    assertNotNull(tokenDto.getRefreshToken());
   }
 
   @Test
@@ -183,7 +183,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .pathParam("username", "bender")
-            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, tokenVO.getAccessToken())
+            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, tokenDto.getAccessToken())
             .when()
             .put("{username}")
             .then()
@@ -207,7 +207,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .pathParam("username", " ")
-            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, tokenVO.getAccessToken())
+            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, tokenDto.getAccessToken())
             .when()
             .put("{username}")
             .then()
@@ -230,7 +230,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
             .basePath("/auth/refresh")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, tokenVO.getAccessToken())
+            .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, tokenDto.getAccessToken())
             .when()
             .put()
             .then()

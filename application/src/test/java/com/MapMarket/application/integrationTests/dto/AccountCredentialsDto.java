@@ -1,9 +1,9 @@
-package com.MapMarket.application.integrationTests.vo;
+package com.MapMarket.application.integrationTests.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public class AccountCredentialsVO implements Serializable {
+public class AccountCredentialsDto implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -11,9 +11,9 @@ public class AccountCredentialsVO implements Serializable {
   private String password;
 
 
-  public AccountCredentialsVO() {}
+  public AccountCredentialsDto() {}
 
-  public AccountCredentialsVO(String username, String password) {
+  public AccountCredentialsDto(String username, String password) {
     this.username = username;
     this.password = password;
   }
@@ -37,7 +37,7 @@ public class AccountCredentialsVO implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof AccountCredentialsVO that)) return false;
+    if (!(o instanceof AccountCredentialsDto that)) return false;
     return Objects.equals(username, that.username) && Objects.equals(password, that.password);
   }
 

@@ -1,6 +1,6 @@
 package com.MapMarket.application.unitTests.mockito.services;
 
-import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
+import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.application.unitTests.fakeClasses.FakeOutputPort;
 import com.MapMarket.application.unitTests.mocks.MockProduct;
@@ -59,10 +59,10 @@ class ProductServiceTest {
   void create() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(2);
+    ProductRequestDto productRequestDto = input.mockRequestDto(2);
 
     //WHEN
-    var result = service.create(produtoRequestDto);
+    var result = service.create(productRequestDto);
 
     //THEN
     assertNotNull(result);
@@ -83,10 +83,10 @@ class ProductServiceTest {
   void update() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
+    ProductRequestDto productRequestDto = input.mockRequestDto(3);
 
     //WHEN
-    var result = service.update(1L, produtoRequestDto);
+    var result = service.update(1L, productRequestDto);
 
     //THEN
     assertNotNull(result);

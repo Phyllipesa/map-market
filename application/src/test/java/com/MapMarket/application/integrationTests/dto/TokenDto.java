@@ -1,10 +1,10 @@
-package com.MapMarket.application.integrationTests.vo;
+package com.MapMarket.application.integrationTests.dto;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-public class TokenVO implements Serializable {
+public class TokenDto implements Serializable {
   private static final long serialVersionUID = 1L;
   private String username;
   private Boolean authenticated;
@@ -13,7 +13,7 @@ public class TokenVO implements Serializable {
   private String accessToken;
   private String refreshToken;
 
-  public TokenVO(String username, Boolean authenticated, Date created, Date expiration, String accessToken, String refreshToken) {
+  public TokenDto(String username, Boolean authenticated, Date created, Date expiration, String accessToken, String refreshToken) {
     this.username = username;
     this.authenticated = authenticated;
     this.created = created;
@@ -22,7 +22,7 @@ public class TokenVO implements Serializable {
     this.refreshToken = refreshToken;
   }
 
-  public TokenVO() {
+  public TokenDto() {
   }
 
   public String getUsername() {
@@ -76,8 +76,8 @@ public class TokenVO implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof TokenVO tokenVO)) return false;
-    return Objects.equals(username, tokenVO.username) && Objects.equals(authenticated, tokenVO.authenticated) && Objects.equals(created, tokenVO.created) && Objects.equals(expiration, tokenVO.expiration) && Objects.equals(accessToken, tokenVO.accessToken) && Objects.equals(refreshToken, tokenVO.refreshToken);
+    if (!(o instanceof TokenDto tokenDto)) return false;
+    return Objects.equals(username, tokenDto.username) && Objects.equals(authenticated, tokenDto.authenticated) && Objects.equals(created, tokenDto.created) && Objects.equals(expiration, tokenDto.expiration) && Objects.equals(accessToken, tokenDto.accessToken) && Objects.equals(refreshToken, tokenDto.refreshToken);
   }
 
   @Override

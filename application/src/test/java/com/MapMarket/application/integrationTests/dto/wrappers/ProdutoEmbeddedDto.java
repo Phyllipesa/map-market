@@ -1,6 +1,6 @@
-package com.MapMarket.application.integrationTests.vo.wrappers;
+package com.MapMarket.application.integrationTests.dto.wrappers;
 
-import com.MapMarket.application.integrationTests.vo.ProdutoResponseDto;
+import com.MapMarket.application.integrationTests.dto.ProdutoResponseDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serial;
@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class ProdutoEmbeddedVO implements Serializable {
+public class ProdutoEmbeddedDto implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("produtoResponseDtoList")
   private List<ProdutoResponseDto> produtos;
 
-  public ProdutoEmbeddedVO() {}
+  public ProdutoEmbeddedDto() {}
 
   public List<ProdutoResponseDto> getProdutos() {
     return produtos;
@@ -28,7 +28,7 @@ public class ProdutoEmbeddedVO implements Serializable {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof ProdutoEmbeddedVO that)) return false;
+    if (!(o instanceof ProdutoEmbeddedDto that)) return false;
     return Objects.equals(produtos, that.produtos);
   }
 

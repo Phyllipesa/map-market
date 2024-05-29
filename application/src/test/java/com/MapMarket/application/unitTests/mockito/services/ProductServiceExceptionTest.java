@@ -1,6 +1,6 @@
 package com.MapMarket.application.unitTests.mockito.services;
 
-import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
+import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.application.unitTests.fakeClasses.FakeOutputPort;
 import com.MapMarket.application.unitTests.mocks.MockProduct;
@@ -56,11 +56,11 @@ class ProductServiceExceptionTest {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.requiredParameterMessage("nome");
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setNome(null);
+    ProductRequestDto productRequestDto = input.mockRequestDto(0);
+    productRequestDto.setNome(null);
 
     //WHEN
-    Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(produtoRequestDto));
+    Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(productRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -74,11 +74,11 @@ class ProductServiceExceptionTest {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.NEGATIVE_NOT_ALLOWED;
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setPreco(-10.0);
+    ProductRequestDto productRequestDto = input.mockRequestDto(0);
+    productRequestDto.setPreco(-10.0);
 
     //WHEN
-    Exception exception = assertThrows(NegativePriceException.class, () -> service.create(produtoRequestDto));
+    Exception exception = assertThrows(NegativePriceException.class, () -> service.create(productRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -92,11 +92,11 @@ class ProductServiceExceptionTest {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.requiredParameterMessage("preco");
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setPreco(null);
+    ProductRequestDto productRequestDto = input.mockRequestDto(0);
+    productRequestDto.setPreco(null);
 
     //WHEN
-    Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(produtoRequestDto));
+    Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(productRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -110,11 +110,11 @@ class ProductServiceExceptionTest {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.ERROR_CREATING_PRODUCT;
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(0);
-    produtoRequestDto.setNome("Exception");
+    ProductRequestDto productRequestDto = input.mockRequestDto(0);
+    productRequestDto.setNome("Exception");
 
     //WHEN
-    Exception exception = assertThrows(ProductCreationException.class, () -> service.create(produtoRequestDto));
+    Exception exception = assertThrows(ProductCreationException.class, () -> service.create(productRequestDto));
 
     String actualMessage = exception.getMessage();
 
@@ -127,11 +127,11 @@ class ProductServiceExceptionTest {
   void update_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    ProdutoRequestDto produtoRequestDto = input.mockRequestDto(3);
+    ProductRequestDto productRequestDto = input.mockRequestDto(3);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
     //WHEN
-    Exception exception = assertThrows(ResourceNotFoundException.class, () -> service.update(2L,produtoRequestDto));
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> service.update(2L, productRequestDto));
 
     String actualMessage = exception.getMessage();
 

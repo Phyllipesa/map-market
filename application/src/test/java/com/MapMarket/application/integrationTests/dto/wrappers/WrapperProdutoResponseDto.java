@@ -1,4 +1,4 @@
-package com.MapMarket.application.integrationTests.vo.wrappers;
+package com.MapMarket.application.integrationTests.dto.wrappers;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,15 +11,15 @@ public class WrapperProdutoResponseDto implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonProperty("_embedded")
-  private ProdutoEmbeddedVO embedded;
+  private ProdutoEmbeddedDto embedded;
 
   public WrapperProdutoResponseDto() {}
 
-  public ProdutoEmbeddedVO getEmbedded() {
+  public ProdutoEmbeddedDto getEmbedded() {
     return embedded;
   }
 
-  public void setEmbedded(ProdutoEmbeddedVO embedded) {
+  public void setEmbedded(ProdutoEmbeddedDto embedded) {
     this.embedded = embedded;
   }
 

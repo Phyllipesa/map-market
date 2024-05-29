@@ -1,6 +1,6 @@
 package com.MapMarket.application.unitTests.mocks;
 
-import com.MapMarket.application.rest.requestDto.ProdutoRequestDto;
+import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
 import com.MapMarket.domain.models.Produto;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
@@ -18,7 +18,7 @@ public class MockProduct {
     return mockModel(0);
   }
 
-  public ProdutoRequestDto mockRequestDto() {
+  public ProductRequestDto mockRequestDto() {
     return mockRequestDto(0);
   }
 
@@ -58,8 +58,8 @@ public class MockProduct {
     return product;
   }
 
-  public ProdutoRequestDto mockRequestDto(Integer number) {
-    ProdutoRequestDto product = new ProdutoRequestDto();
+  public ProductRequestDto mockRequestDto(Integer number) {
+    ProductRequestDto product = new ProductRequestDto();
     product.setNome("Product Name Test" + number);
     product.setPreco(14.50);
     return product;

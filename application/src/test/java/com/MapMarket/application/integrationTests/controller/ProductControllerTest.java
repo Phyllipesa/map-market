@@ -2,11 +2,11 @@ package com.MapMarket.application.integrationTests.controller;
 
 import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
-import com.MapMarket.application.integrationTests.vo.AccountCredentialsVO;
-import com.MapMarket.application.integrationTests.vo.ProdutoRequestDto;
-import com.MapMarket.application.integrationTests.vo.ProdutoResponseDto;
-import com.MapMarket.application.integrationTests.vo.TokenVO;
-import com.MapMarket.application.integrationTests.vo.wrappers.WrapperProdutoResponseDto;
+import com.MapMarket.application.integrationTests.dto.AccountCredentialsDto;
+import com.MapMarket.application.integrationTests.dto.ProdutoRequestDto;
+import com.MapMarket.application.integrationTests.dto.ProdutoResponseDto;
+import com.MapMarket.application.integrationTests.dto.TokenDto;
+import com.MapMarket.application.integrationTests.dto.wrappers.WrapperProdutoResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +42,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
   @Test
   @Order(0)
   public void authorization() {
-    AccountCredentialsVO user = new AccountCredentialsVO("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
 
     var accessToken =
         given()
@@ -56,7 +56,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .statusCode(200)
             .extract()
             .body()
-            .as(TokenVO.class)
+            .as(TokenDto.class)
             .getAccessToken();
 
     specification = new RequestSpecBuilder()

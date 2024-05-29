@@ -1,4 +1,4 @@
-package com.MapMarket.application.integrationTests.vo;
+package com.MapMarket.application.integrationTests.dto;
 
 import java.io.Serial;
 import java.io.Serializable;

@@ -35,7 +35,7 @@ jobs:
 
     - name: Push to Docker Hub Container Registry
       run: 
-        docker tag ${{ secrets.DOCKER_USERNAME }}/map-market ${{ secrets.DOCKER_USERNAME }}/rest-with-spring-boot-udm:${{ github.run_id }}
+        docker tag ${{ secrets.DOCKER_USERNAME }}/map-market ${{ secrets.DOCKER_USERNAME }}/map-market:${{ github.run_id }}
         
         docker push ${{ secrets.DOCKER_USERNAME }}/map-market:${{ github.run_id }}
         

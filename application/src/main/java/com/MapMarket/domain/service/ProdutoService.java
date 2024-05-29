@@ -42,9 +42,7 @@ public class ProdutoService implements UseCase<ProdutoRequestDto, ProdutoRespons
   @Override
   public PagedModel<EntityModel<ProdutoResponseDto>> findAll(Pageable pageable) {
     Page<Produto> allProducts = findAllOutput.findAll(pageable);
-    if (allProducts.isEmpty()) {
-      throw new ResourceNotFoundException("Não foram encontrados produtos");
-    }
+    if (allProducts.isEmpty()) throw new ResourceNotFoundException("Não foram encontrados produtos");
 
     Page<ProdutoResponseDto> allProductsDto = allProducts.map(
         p -> entityMapper.parseObject(p, ProdutoResponseDto.class));

@@ -156,6 +156,31 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
   @Test
   @Order(5)
+  public void test_create_PARAMETER_price_WITH_NEGATIVE_NUMBER() {
+    //GIVEN
+    String payloadPrecoEmBranco = "{\"nome\": \"Lentilha\", \"preco\": \"-1.0\"}";
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(payloadPrecoEmBranco)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("It is not allowed negative numbers!"));
+  }
+
+  @Test
+  @Order(6)
   public void test_create_WITH_NULL_REQUEST() {
     //GIVEN
     //WHEN
@@ -178,7 +203,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @Order(6)
+  @Order(7)
   public void test_findById_NOT_FOUND() {
     //WHEN
     var content =
@@ -199,7 +224,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @Order(7)
+  @Order(8)
   public void test_findAll_WITHOUT_TOKEN() {
     //WHEN
     RequestSpecification specificationWithoutToken = new RequestSpecBuilder()

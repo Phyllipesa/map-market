@@ -35,8 +35,8 @@ jobs:
 
     - name: Push to Docker Hub Container Registry
       run: 
-        docker tag ${{ secrets.DOCKER_USERNAME }}/map-market ${{ secrets.DOCKER_USERNAME }}/map-market:${{ github.run_id }}
+        docker tag ${{ secrets.DOCKER_USERNAME }}/MapMarket  ${{ secrets.DOCKER_USERNAME }}/MapMarket:${{ github.run_id }}
         
-        docker push ${{ secrets.DOCKER_USERNAME }}/map-market:${{ github.run_id }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/MapMarket:${{ github.run_id }}
         
-        docker push ${{ secrets.DOCKER_USERNAME }}/map-market:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}/MapMarket:latest

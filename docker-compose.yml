@@ -2,7 +2,7 @@ version: '3.9'
 services:
   db:
     image: mysql:8.0.31
-    container_name: db_map_market
+    container_name: map_market_db
     command: mysqld --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -22,7 +22,7 @@ services:
       
   backend:
     image: vaiento/map-market
-    container_name: app_map_market
+    container_name: map_market_app
     restart: always
     build: ./application
     working_dir: /application

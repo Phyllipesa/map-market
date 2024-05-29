@@ -106,10 +106,12 @@ public class JwtTokenProvider {
 
   public boolean validateToken(String token) {
     DecodedJWT decodedJWT = decodedToken(token);
-    try {
+    try
+    {
       return !decodedJWT.getExpiresAt().before(new Date());
     }
-    catch (Exception e) {
+    catch (Exception e)
+    {
       throw new InvalidJwtAuthenticationException(Constant.EXPIRED_OR_INVALID_JWT_TOKEN);
     }
   }

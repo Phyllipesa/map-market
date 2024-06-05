@@ -1,40 +1,40 @@
 package com.MapMarket.application.unitTests.fakeClasses;
 
 import com.MapMarket.application.unitTests.mocks.MockProduct;
-import com.MapMarket.domain.models.Produto;
+import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.ports.output.OutputPort;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class FakeOutputPort implements OutputPort<Produto> {
+public class FakeOutputPort implements OutputPort<Product> {
 
   MockProduct mockProduct = new MockProduct();
 
   @Override
-  public Optional<Produto> findById(Long id) {
+  public Optional<Product> findById(Long id) {
     if (id == 1) {
-      Produto produto = mockProduct.mockModel();
-      produto.setId(1L);
-      return Optional.of(produto);
+      Product product = mockProduct.mockModel();
+      product.setId(1L);
+      return Optional.of(product);
     }
     return Optional.empty();
   }
 
   @Override
-  public Optional<Produto> create(Produto produto) {
-    if (produto == null || Objects.equals(produto.getNome(), "Exception")) {
+  public Optional<Product> create(Product product) {
+    if (product == null || Objects.equals(product.getName(), "Exception")) {
       return Optional.empty();
     }
-    produto.setId(2L);
-    return Optional.of(produto);
+    product.setId(2L);
+    return Optional.of(product);
   }
 
   @Override
-  public Produto update(Long id, Produto produto) {
-    produto.setId(id);
-    produto.setPreco(11.20);
-    return produto;
+  public Product update(Long id, Product product) {
+    product.setId(id);
+    product.setPrice(11.20);
+    return product;
   }
 
   @Override

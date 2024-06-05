@@ -3,10 +3,10 @@ package com.MapMarket.application.integrationTests.controller;
 import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import com.MapMarket.application.integrationTests.dto.AccountCredentialsDto;
-import com.MapMarket.application.integrationTests.dto.ProdutoRequestDto;
-import com.MapMarket.application.integrationTests.dto.ProdutoResponseDto;
+import com.MapMarket.application.integrationTests.dto.ProductRequestDto;
+import com.MapMarket.application.integrationTests.dto.ProductResponseDto;
 import com.MapMarket.application.integrationTests.dto.TokenDto;
-import com.MapMarket.application.integrationTests.dto.wrappers.WrapperProdutoResponseDto;
+import com.MapMarket.application.integrationTests.dto.wrappers.WrapperProductResponseDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,17 +26,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ProductControllerTest extends AbstractIntegrationTest {
 
   private static RequestSpecification specification;
-  private static ProdutoRequestDto productRequest;
-  private static ProdutoResponseDto productResponse;
+  private static ProductRequestDto productRequest;
+  private static ProductResponseDto productResponse;
   private static ObjectMapper objectMapper;
 
   @BeforeAll
   public static void setup() {
     objectMapper = new ObjectMapper();
     objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-    productRequest = new ProdutoRequestDto();
-    productRequest.setNome("Lentilha");
-    productRequest.setPreco(14.20);
+    productRequest = new ProductRequestDto();
+    productRequest.setName("Lentilha");
+    productRequest.setPrice(14.20);
   }
 
   @Test
@@ -61,7 +61,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
     specification = new RequestSpecBuilder()
         .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
-        .setBasePath("api/v1/produto")
+        .setBasePath("api/v1/product")
         .setPort(TestConfigs.SERVER_PORT)
         .addFilter(new RequestLoggingFilter(LogDetail.ALL))
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -86,18 +86,18 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .asString();
 
     //WHEN
-    productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
+    productResponse = objectMapper.readValue(content, ProductResponseDto.class);
 
     //THEN
     assertNotNull(productResponse);
     assertNotNull(productResponse.getKey());
-    assertNotNull(productResponse.getNome());
-    assertNotNull(productResponse.getPreco());
+    assertNotNull(productResponse.getName());
+    assertNotNull(productResponse.getPrice());
 
     assertTrue(productResponse.getKey() > 0);
 
-    assertEquals("Lentilha", productResponse.getNome());
-    assertEquals(14.20, productResponse.getPreco());
+    assertEquals("Lentilha", productResponse.getName());
+    assertEquals(14.20, productResponse.getPrice());
   }
 
   @Test
@@ -117,18 +117,18 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .asString();
 
     //WHEN
-    productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
+    productResponse = objectMapper.readValue(content, ProductResponseDto.class);
 
     //THEN
     assertNotNull(productResponse);
     assertNotNull(productResponse.getKey());
-    assertNotNull(productResponse.getNome());
-    assertNotNull(productResponse.getPreco());
+    assertNotNull(productResponse.getName());
+    assertNotNull(productResponse.getPrice());
 
     assertTrue(productResponse.getKey() > 0);
 
-    assertEquals("Lentilha", productResponse.getNome());
-    assertEquals(14.20, productResponse.getPreco());
+    assertEquals("Lentilha", productResponse.getName());
+    assertEquals(14.20, productResponse.getPrice());
   }
 
   @Test
@@ -150,40 +150,40 @@ public class ProductControllerTest extends AbstractIntegrationTest {
                   .asString();
 
     //WHEN
-    WrapperProdutoResponseDto wrapper = objectMapper.readValue(content, WrapperProdutoResponseDto.class);
-    var response = wrapper.getEmbedded().getProdutos();
+    WrapperProductResponseDto wrapper = objectMapper.readValue(content, WrapperProductResponseDto.class);
+    var response = wrapper.getEmbedded().getProducts();
 
     //THEN
     assertNotNull(response);
 
-    ProdutoResponseDto firstProduct = response.get(0);
+    ProductResponseDto firstProduct = response.get(0);
     assertNotNull(firstProduct);
     assertNotNull(firstProduct.getKey());
-    assertNotNull(firstProduct.getNome());
-    assertNotNull(firstProduct.getPreco());
+    assertNotNull(firstProduct.getName());
+    assertNotNull(firstProduct.getPrice());
 
     assertEquals(18, firstProduct.getKey());
-    assertEquals("Bolacha recheada", firstProduct.getNome());
-    assertEquals(2.80, firstProduct.getPreco());
+    assertEquals("Bolacha recheada", firstProduct.getName());
+    assertEquals(2.80, firstProduct.getPrice());
 
 
-    ProdutoResponseDto LastProduct = response.get(2);
+    ProductResponseDto LastProduct = response.get(2);
     assertNotNull(LastProduct);
     assertNotNull(LastProduct.getKey());
-    assertNotNull(LastProduct.getNome());
-    assertNotNull(LastProduct.getPreco());
+    assertNotNull(LastProduct.getName());
+    assertNotNull(LastProduct.getPrice());
 
     assertEquals(7, LastProduct.getKey());
-    assertEquals("Café em pó", LastProduct.getNome());
-    assertEquals(8.20, LastProduct.getPreco());
+    assertEquals("Café em pó", LastProduct.getName());
+    assertEquals(8.20, LastProduct.getPrice());
   }
 
   @Test
   @Order(4)
   public void testUpdate() throws JsonProcessingException {
     //GIVEN
-    productRequest.setNome("Castanha do vamo para");
-    productRequest.setPreco(15.00);
+    productRequest.setName("Castanha do vamo para");
+    productRequest.setPrice(15.00);
 
     var content =
         given().spec(specification)
@@ -199,18 +199,18 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .asString();
 
     //WHEN
-    productResponse = objectMapper.readValue(content, ProdutoResponseDto.class);
+    productResponse = objectMapper.readValue(content, ProductResponseDto.class);
 
     //THEN
     assertNotNull(productResponse);
     assertNotNull(productResponse.getKey());
-    assertNotNull(productResponse.getNome());
-    assertNotNull(productResponse.getPreco());
+    assertNotNull(productResponse.getName());
+    assertNotNull(productResponse.getPrice());
 
     assertTrue(productResponse.getKey() > 0);
 
-    assertEquals("Castanha do vamo para", productResponse.getNome());
-    assertEquals(15.00, productResponse.getPreco());
+    assertEquals("Castanha do vamo para", productResponse.getName());
+    assertEquals(15.00, productResponse.getPrice());
   }
 
   @Test
@@ -247,15 +247,15 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .asString();
 
     //THEN
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/6\"}}}"));
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/5\"}}}"));
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/26\"}}}"));
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/produto/18\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/6\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/5\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/26\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/18\"}}}"));
 
-    assertTrue(content.contains("\"first\":{\"href\":\"http://localhost:8888/api/v1/produto?page=0&size=10&sort=nome,asc\"}"));
-    assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/v1/produto?page=0&size=10\"}"));
-    assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/v1/produto?page=1&size=10&sort=nome,asc\"}"));
-    assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/v1/produto?page=7&size=10&sort=nome,asc\"}}"));
+    assertTrue(content.contains("\"first\":{\"href\":\"http://localhost:8888/api/v1/product?page=0&size=10&sort=name,asc\"}"));
+    assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/v1/product?page=0&size=10\"}"));
+    assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/v1/product?page=1&size=10&sort=name,asc\"}"));
+    assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/v1/product?page=7&size=10&sort=name,asc\"}}"));
 
     assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":72,\"totalPages\":8,\"number\":0}}"));
   }

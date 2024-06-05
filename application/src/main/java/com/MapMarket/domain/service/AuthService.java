@@ -1,7 +1,7 @@
 package com.MapMarket.domain.service;
 
-import com.MapMarket.application.rest.requestDto.AccountCredentialsVO;
-import com.MapMarket.application.rest.responseDto.TokenVO;
+import com.MapMarket.application.rest.requestDto.AccountCredentialsDto;
+import com.MapMarket.application.rest.responseDto.TokenDto;
 import com.MapMarket.domain.exception.InvalidCredentialsException;
 import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.models.User;
@@ -27,7 +27,7 @@ public class AuthService implements AuthUseCase {
   }
 
   @Override
-  public TokenVO signIn(AccountCredentialsVO data) {
+  public TokenDto signIn(AccountCredentialsDto data) {
     try
     {
       authenticationManager.authenticate(
@@ -44,16 +44,16 @@ public class AuthService implements AuthUseCase {
     User user = outputPort.findByUsername(data.getUsername())
         .orElseThrow(() -> new UsernameNotFoundException(Constant.USERNAME_NOT_FOUND + data.getUsername()));
 
-    TokenVO tokenResponse;
+    TokenDto tokenResponse;
     tokenResponse = tokenProvider.createAccessToken(data.getUsername(), user.getRoles());
     return tokenResponse;
   }
 
   @Override
-  public TokenVO refreshToken(String username, String refreshToken) {
+  public TokenDto refreshToken(String username, String refreshToken) {
     outputPort.findByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException(Constant.USERNAME_NOT_FOUND + username));
-    TokenVO tokenResponse;
+    TokenDto tokenResponse;
     tokenResponse = tokenProvider.refreshToken(refreshToken);
     return tokenResponse;
   }

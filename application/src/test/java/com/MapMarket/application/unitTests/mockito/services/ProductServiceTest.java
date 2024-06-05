@@ -1,13 +1,13 @@
 package com.MapMarket.application.unitTests.mockito.services;
 
 import com.MapMarket.application.rest.requestDto.ProductRequestDto;
-import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
+import com.MapMarket.application.rest.responseDto.ProductResponseDto;
 import com.MapMarket.application.unitTests.fakeClasses.FakeOutputPort;
 import com.MapMarket.application.unitTests.mocks.MockProduct;
 import com.MapMarket.domain.logic.ProductValidator;
-import com.MapMarket.domain.models.Produto;
-import com.MapMarket.domain.service.ProdutoService;
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
+import com.MapMarket.domain.models.Product;
+import com.MapMarket.domain.service.ProductService;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
@@ -35,7 +35,7 @@ class ProductServiceTest {
   @Order(0)
   void findById() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, null, null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, null, null, entityMapper);
 
     //WHEN
     var result = service.findById(1L);
@@ -43,22 +43,22 @@ class ProductServiceTest {
     //THEN
     assertNotNull(result);
     assertNotNull(result.getKey());
-    assertNotNull(result.getNome());
-    assertNotNull(result.getPreco());
+    assertNotNull(result.getName());
+    assertNotNull(result.getPrice());
     assertNotNull(result.getLinks());
 
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test0", result.getNome());
-    assertEquals(14.50, result.getPreco());
+    assertEquals("Product Name Test0", result.getName());
+    assertEquals(14.50, result.getPrice());
   }
 
   @Test
   @Order(1)
   void create() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     ProductRequestDto productRequestDto = input.mockRequestDto(2);
 
     //WHEN
@@ -67,22 +67,22 @@ class ProductServiceTest {
     //THEN
     assertNotNull(result);
     assertNotNull(result.getKey());
-    assertNotNull(result.getNome());
-    assertNotNull(result.getPreco());
+    assertNotNull(result.getName());
+    assertNotNull(result.getPrice());
     assertNotNull(result.getLinks());
 
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(2L, result.getKey());
-    assertEquals("Product Name Test2", result.getNome());
-    assertEquals(14.50, result.getPreco());
+    assertEquals("Product Name Test2", result.getName());
+    assertEquals(14.50, result.getPrice());
   }
 
   @Test
   @Order(2)
   void update() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     ProductRequestDto productRequestDto = input.mockRequestDto(3);
 
     //WHEN
@@ -91,15 +91,15 @@ class ProductServiceTest {
     //THEN
     assertNotNull(result);
     assertNotNull(result.getKey());
-    assertNotNull(result.getNome());
-    assertNotNull(result.getPreco());
+    assertNotNull(result.getName());
+    assertNotNull(result.getPrice());
     assertNotNull(result.getLinks());
 
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test3", result.getNome());
-    assertEquals(11.20, result.getPreco());
+    assertEquals("Product Name Test3", result.getName());
+    assertEquals(11.20, result.getPrice());
   }
 
   @Test
@@ -107,10 +107,10 @@ class ProductServiceTest {
   void delete() {
     //GIVEN
     FakeOutputPort  fakeOutputPort = mock(FakeOutputPort.class);
-    var service = new ProdutoService(fakeOutputPort, null, null, null, entityMapper);
+    var service = new ProductService(fakeOutputPort, null, null, null, entityMapper);
 
     //WHEN
-    when(fakeOutputPort.findById(1L)).thenReturn(Optional.of(mock(Produto.class)));
+    when(fakeOutputPort.findById(1L)).thenReturn(Optional.of(mock(Product.class)));
     service.delete(1L);
 
     //THEN
@@ -120,10 +120,10 @@ class ProductServiceTest {
 
   public ModelMapper modelMapper() {
     ModelMapper modelMapper = new ModelMapper();
-    modelMapper.typeMap(ProdutoEntity.class, Produto.class)
-        .addMappings(mapper -> mapper.map(ProdutoEntity::getId, Produto::setId));
-    modelMapper.typeMap(Produto.class, ProdutoResponseDto.class)
-        .addMappings(mapper -> mapper.map(Produto::getId, ProdutoResponseDto::setKey));
+    modelMapper.typeMap(ProductEntity.class, Product.class)
+        .addMappings(mapper -> mapper.map(ProductEntity::getId, Product::setId));
+    modelMapper.typeMap(Product.class, ProductResponseDto.class)
+        .addMappings(mapper -> mapper.map(Product::getId, ProductResponseDto::setKey));
     return modelMapper;
   }
 

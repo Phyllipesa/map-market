@@ -1,6 +1,6 @@
 package com.MapMarket.domain.service.security.jwt;
 
-import com.MapMarket.application.rest.responseDto.TokenVO;
+import com.MapMarket.application.rest.responseDto.TokenDto;
 import com.MapMarket.domain.exception.InvalidJwtAuthenticationException;
 import com.MapMarket.domain.exception.constants.Constant;
 import com.auth0.jwt.JWT;
@@ -44,15 +44,15 @@ public class JwtTokenProvider {
     algorithm = Algorithm.HMAC256(secretKey.getBytes());
   }
 
-  public TokenVO createAccessToken(String username, List<String> roles) {
+  public TokenDto createAccessToken(String username, List<String> roles) {
     Date now = new Date();
     Date validity = new Date(now.getTime() + validityInMilliseconds);
     var accessToken = getAccessToken(username, roles, now, validity);
     var refreshToken = getRefreshToken(username, roles, now);
-    return new TokenVO(username, true, now, validity, accessToken, refreshToken);
+    return new TokenDto(username, true, now, validity, accessToken, refreshToken);
   }
 
-  public TokenVO refreshToken(String refreshToken) {
+  public TokenDto refreshToken(String refreshToken) {
     if (refreshToken.contains("Bearer ")) refreshToken = refreshToken.substring("Bearer ".length());
     JWTVerifier verifier = JWT.require(algorithm).build();
     DecodedJWT decodedJWT = verifier.verify(refreshToken);

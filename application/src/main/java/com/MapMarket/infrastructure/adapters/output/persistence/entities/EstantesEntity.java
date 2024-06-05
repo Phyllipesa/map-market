@@ -20,7 +20,7 @@ public class EstantesEntity implements Serializable {
   private Long id;
 
   @Column(nullable = false, length = 10)
-  private String nome;
+  private String name;
 
   @OneToMany(mappedBy = "estante", cascade = CascadeType.ALL)
   private List<LadosEntity> lados = new ArrayList<>();
@@ -28,9 +28,9 @@ public class EstantesEntity implements Serializable {
   public EstantesEntity() {
   }
 
-  public EstantesEntity(Long id, String nome) {
+  public EstantesEntity(Long id, String name) {
     this.id = id;
-    this.nome = nome;
+    this.name = name;
   }
 
   public Long getId() {
@@ -41,12 +41,12 @@ public class EstantesEntity implements Serializable {
     this.id = id;
   }
 
-  public String getNome() {
-    return nome;
+  public String getName() {
+    return name;
   }
 
-  public void setNome(String nome) {
-    this.nome = nome;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public List<LadosEntity> getLados() {
@@ -57,11 +57,11 @@ public class EstantesEntity implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof EstantesEntity estantes)) return false;
-    return Objects.equals(id, estantes.id) && Objects.equals(nome, estantes.nome);
+    return Objects.equals(id, estantes.id) && Objects.equals(name, estantes.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, nome);
+    return Objects.hash(id, name);
   }
 }

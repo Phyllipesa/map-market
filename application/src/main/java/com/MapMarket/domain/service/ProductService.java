@@ -1,13 +1,13 @@
 package com.MapMarket.domain.service;
 
-import com.MapMarket.application.rest.ProdutoRestAdapter;
+import com.MapMarket.application.rest.ProductRestAdapter;
 import com.MapMarket.application.rest.requestDto.ProductRequestDto;
-import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
+import com.MapMarket.application.rest.responseDto.ProductResponseDto;
 import com.MapMarket.domain.exception.ProductCreationException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.logic.ProductValidator;
-import com.MapMarket.domain.models.Produto;
+import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
 import com.MapMarket.domain.ports.output.FindAllOutput;
@@ -23,15 +23,15 @@ import org.springframework.hateoas.PagedModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class ProdutoService implements UseCase<ProductRequestDto, ProdutoResponseDto>, FindAllUseCase<ProdutoResponseDto> {
+public class ProductService implements UseCase<ProductRequestDto, ProductResponseDto>, FindAllUseCase<ProductResponseDto> {
 
-  private final OutputPort<Produto> outputPort;
-  private final FindAllOutput<Produto> findAllOutput;
+  private final OutputPort<Product> outputPort;
+  private final FindAllOutput<Product> findAllOutput;
   private final ProductValidator productValidator;
-  private final PagedResourcesAssembler<ProdutoResponseDto> assembler;
+  private final PagedResourcesAssembler<ProductResponseDto> assembler;
   private final EntityMapper entityMapper;
 
-  public ProdutoService(OutputPort<Produto> outputPort, FindAllOutput<Produto> findAllOutput, ProductValidator productValidator, PagedResourcesAssembler<ProdutoResponseDto> assembler, EntityMapper entityMapper) {
+  public ProductService(OutputPort<Product> outputPort, FindAllOutput<Product> findAllOutput, ProductValidator productValidator, PagedResourcesAssembler<ProductResponseDto> assembler, EntityMapper entityMapper) {
     this.findAllOutput = findAllOutput;
     this.assembler = assembler;
     this.outputPort = outputPort;
@@ -40,20 +40,20 @@ public class ProdutoService implements UseCase<ProductRequestDto, ProdutoRespons
   }
 
   @Override
-  public PagedModel<EntityModel<ProdutoResponseDto>> findAll(Pageable pageable) {
-    Page<Produto> allProducts = findAllOutput.findAll(pageable);
+  public PagedModel<EntityModel<ProductResponseDto>> findAll(Pageable pageable) {
+    Page<Product> allProducts = findAllOutput.findAll(pageable);
     if (allProducts.isEmpty()) throw new ResourceNotFoundException("Não foram encontrados produtos");
 
-    Page<ProdutoResponseDto> allProductsDto = allProducts.map(
-        p -> entityMapper.parseObject(p, ProdutoResponseDto.class));
+    Page<ProductResponseDto> allProductsDto = allProducts.map(
+        p -> entityMapper.parseObject(p, ProductResponseDto.class));
 
     allProductsDto.map(
         p -> p.add(
-            linkTo(methodOn(ProdutoRestAdapter.class)
+            linkTo(methodOn(ProductRestAdapter.class)
                 .findById(p.getKey())).withSelfRel()));
 
     Link link = linkTo(
-        methodOn(ProdutoRestAdapter.class)
+        methodOn(ProductRestAdapter.class)
             .findAll(
                 pageable.getPageNumber(),
                 pageable.getPageSize()
@@ -63,33 +63,33 @@ public class ProdutoService implements UseCase<ProductRequestDto, ProdutoRespons
   }
 
   @Override
-  public ProdutoResponseDto findById(Long id) {
-    Produto product = outputPort.findById(id)
+  public ProductResponseDto findById(Long id) {
+    Product product = outputPort.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException(Constant.PRODUCT_NOT_FOUND + id));
 
-    ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
-    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(id)).withSelfRel());
+    ProductResponseDto productDto = entityMapper.parseObject(product, ProductResponseDto.class);
+    productDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(id)).withSelfRel());
     return productDto;
   }
 
   @Override
-  public ProdutoResponseDto create(ProductRequestDto productRequestDto) {
+  public ProductResponseDto create(ProductRequestDto productRequestDto) {
     productValidator.validate(productRequestDto);
-    Produto product = outputPort.create(entityMapper.parseObject(productRequestDto, Produto.class))
+    Product product = outputPort.create(entityMapper.parseObject(productRequestDto, Product.class))
         .orElseThrow(() -> new ProductCreationException(Constant.ERROR_CREATING_PRODUCT));
 
-    ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
-    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getKey())).withSelfRel());
+    ProductResponseDto productDto = entityMapper.parseObject(product, ProductResponseDto.class);
+    productDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(productDto.getKey())).withSelfRel());
     return productDto;
   }
 
   @Override
-  public ProdutoResponseDto update(Long id, ProductRequestDto productRequestDto) {
+  public ProductResponseDto update(Long id, ProductRequestDto productRequestDto) {
     productValidator.validate(productRequestDto);
     findById(id);
-    Produto product =  outputPort.update(id, entityMapper.parseObject(productRequestDto, Produto.class));
-    ProdutoResponseDto productDto = entityMapper.parseObject(product, ProdutoResponseDto.class);
-    productDto.add(linkTo(methodOn(ProdutoRestAdapter.class).findById(productDto.getKey())).withSelfRel());
+    Product product =  outputPort.update(id, entityMapper.parseObject(productRequestDto, Product.class));
+    ProductResponseDto productDto = entityMapper.parseObject(product, ProductResponseDto.class);
+    productDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(productDto.getKey())).withSelfRel());
     return productDto;
   }
 

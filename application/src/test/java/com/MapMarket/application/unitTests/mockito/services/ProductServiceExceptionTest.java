@@ -1,7 +1,7 @@
 package com.MapMarket.application.unitTests.mockito.services;
 
 import com.MapMarket.application.rest.requestDto.ProductRequestDto;
-import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
+import com.MapMarket.application.rest.responseDto.ProductResponseDto;
 import com.MapMarket.application.unitTests.fakeClasses.FakeOutputPort;
 import com.MapMarket.application.unitTests.mocks.MockProduct;
 import com.MapMarket.domain.exception.NegativePriceException;
@@ -10,9 +10,9 @@ import com.MapMarket.domain.exception.ProductCreationException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.logic.ProductValidator;
-import com.MapMarket.domain.models.Produto;
-import com.MapMarket.domain.service.ProdutoService;
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
+import com.MapMarket.domain.models.Product;
+import com.MapMarket.domain.service.ProductService;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
@@ -38,7 +38,7 @@ class ProductServiceExceptionTest {
   @Order(4)
   void findById_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, null, null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, null, null, entityMapper);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
     //WHEN
@@ -54,10 +54,10 @@ class ProductServiceExceptionTest {
   @Order(5)
   void create_PARAMETER_name_NOT_FOUND_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.requiredParameterMessage("nome");
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    String expectedMessage = Constant.requiredParameterMessage("name");
     ProductRequestDto productRequestDto = input.mockRequestDto(0);
-    productRequestDto.setNome(null);
+    productRequestDto.setName(null);
 
     //WHEN
     Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(productRequestDto));
@@ -70,12 +70,12 @@ class ProductServiceExceptionTest {
 
   @Test
   @Order(6)
-  void create_NEGATIVE_PRICE_EXCEPTION() {
+  void create_NEGATIVE_price_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.NEGATIVE_NOT_ALLOWED;
     ProductRequestDto productRequestDto = input.mockRequestDto(0);
-    productRequestDto.setPreco(-10.0);
+    productRequestDto.setPrice(-10.0);
 
     //WHEN
     Exception exception = assertThrows(NegativePriceException.class, () -> service.create(productRequestDto));
@@ -88,12 +88,12 @@ class ProductServiceExceptionTest {
 
   @Test
   @Order(7)
-  void create_PARAMETER_preco_NOT_FOUND_EXCEPTION() {
+  void create_PARAMETER_price_NOT_FOUND_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
-    String expectedMessage = Constant.requiredParameterMessage("preco");
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    String expectedMessage = Constant.requiredParameterMessage("price");
     ProductRequestDto productRequestDto = input.mockRequestDto(0);
-    productRequestDto.setPreco(null);
+    productRequestDto.setPrice(null);
 
     //WHEN
     Exception exception = assertThrows(ParameterNotFoundException.class, () -> service.create(productRequestDto));
@@ -108,10 +108,10 @@ class ProductServiceExceptionTest {
   @Order(8)
   void create_PRODUCT_CREATION_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.ERROR_CREATING_PRODUCT;
     ProductRequestDto productRequestDto = input.mockRequestDto(0);
-    productRequestDto.setNome("Exception");
+    productRequestDto.setName("Exception");
 
     //WHEN
     Exception exception = assertThrows(ProductCreationException.class, () -> service.create(productRequestDto));
@@ -126,7 +126,7 @@ class ProductServiceExceptionTest {
   @Order(9)
   void update_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     ProductRequestDto productRequestDto = input.mockRequestDto(3);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
@@ -143,7 +143,7 @@ class ProductServiceExceptionTest {
   @Order(10)
   void delete_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
-    var service = new ProdutoService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
 
     //WHEN
@@ -157,10 +157,10 @@ class ProductServiceExceptionTest {
 
   public ModelMapper modelMapper() {
     ModelMapper modelMapper = new ModelMapper();
-    modelMapper.typeMap(ProdutoEntity.class, Produto.class)
-        .addMappings(mapper -> mapper.map(ProdutoEntity::getId, Produto::setId));
-    modelMapper.typeMap(Produto.class, ProdutoResponseDto.class)
-        .addMappings(mapper -> mapper.map(Produto::getId, ProdutoResponseDto::setKey));
+    modelMapper.typeMap(ProductEntity.class, Product.class)
+        .addMappings(mapper -> mapper.map(ProductEntity::getId, Product::setId));
+    modelMapper.typeMap(Product.class, ProductResponseDto.class)
+        .addMappings(mapper -> mapper.map(Product::getId, ProductResponseDto::setKey));
     return modelMapper;
   }
 

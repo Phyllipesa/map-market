@@ -47,7 +47,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     specification = new RequestSpecBuilder()
         .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
-        .setBasePath("api/v1/produto")
+        .setBasePath("api/v1/product")
         .setPort(TestConfigs.SERVER_PORT)
         .addFilter(new RequestLoggingFilter(LogDetail.ALL))
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -58,14 +58,14 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   @Order(1)
   public void test_create_WITH_PARAMETER_name_NULL() {
     //GIVEN
-    String payloadNomeAusente = "{\"preco\": \"14.20\"}";
+    String payloadNameNull = "{\"price\": \"14.20\"}";
 
     //WHEN
     var content =
         given()
             .spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNomeAusente)
+            .body(payloadNameNull)
             .when()
             .post()
             .then()
@@ -76,21 +76,21 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
+    assertTrue(content.contains("Required parameter 'name' is null or blank!"));
   }
 
   @Test
   @Order(2)
   public void test_create_WITH_PARAMETER_price_NULL() {
     //GIVEN
-    String payloadPrecoAusente = "{\"nome\": \"Lentilha\"}";
+    String payloadPriceNull = "{\"name\": \"Lentilha\"}";
 
     //WHEN
     var content =
         given()
             .spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadPrecoAusente)
+            .body(payloadPriceNull)
             .when()
             .post()
             .then()
@@ -101,21 +101,21 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'preco' is null or blank!"));
+    assertTrue(content.contains("Required parameter 'price' is null or blank!"));
   }
 
   @Test
   @Order(3)
   public void test_create_WITH_PARAMETER_name_BLANK() {
     //GIVEN
-    String payloadNomeEmBranco = "{\"nome\": \"\", \"preco\": \"14.20\"}";
+    String payloadBlanckName = "{\"name\": \"\", \"price\": \"14.20\"}";
 
     //WHEN
     var content =
         given()
             .spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNomeEmBranco)
+            .body(payloadBlanckName)
             .when()
             .post()
             .then()
@@ -126,21 +126,21 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'nome' is null or blank!"));
+    assertTrue(content.contains("Required parameter 'name' is null or blank!"));
   }
 
   @Test
   @Order(4)
   public void test_create_WITH_PARAMETER_price_BLANK() {
     //GIVEN
-    String payloadPrecoEmBranco = "{\"nome\": \"Lentilha\", \"preco\": \"\"}";
+    String payloadBlanckPrice = "{\"name\": \"Lentilha\", \"price\": \"\"}";
 
     //WHEN
     var content =
         given()
             .spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadPrecoEmBranco)
+            .body(payloadBlanckPrice)
             .when()
             .post()
             .then()
@@ -151,21 +151,21 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'preco' is null or blank!"));
+    assertTrue(content.contains("Required parameter 'price' is null or blank!"));
   }
 
   @Test
   @Order(5)
   public void test_create_PARAMETER_price_WITH_NEGATIVE_NUMBER() {
     //GIVEN
-    String payloadPrecoEmBranco = "{\"nome\": \"Lentilha\", \"preco\": \"-1.0\"}";
+    String payloadNegativePrice = "{\"name\": \"Lentilha\", \"price\": \"-1.0\"}";
 
     //WHEN
     var content =
         given()
             .spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadPrecoEmBranco)
+            .body(payloadNegativePrice)
             .when()
             .post()
             .then()
@@ -228,7 +228,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   public void test_findAll_WITHOUT_TOKEN() {
     //WHEN
     RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
-        .setBasePath("api/v1/produto")
+        .setBasePath("api/v1/product")
         .setPort(TestConfigs.SERVER_PORT)
         .addFilter(new RequestLoggingFilter(LogDetail.ALL))
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))

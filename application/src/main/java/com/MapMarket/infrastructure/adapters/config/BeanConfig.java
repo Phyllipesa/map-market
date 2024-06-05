@@ -1,25 +1,25 @@
 package com.MapMarket.infrastructure.adapters.config;
 
 import com.MapMarket.application.rest.AuthRestAdapter;
-import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
+import com.MapMarket.application.rest.responseDto.ProductResponseDto;
 import com.MapMarket.domain.logic.CredentialsValidator;
 import com.MapMarket.domain.logic.ProductValidator;
 import com.MapMarket.domain.logic.RefreshCredentialsValidator;
-import com.MapMarket.domain.models.Produto;
+import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.models.User;
 import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
 import com.MapMarket.domain.ports.output.OutputPort;
 import com.MapMarket.domain.service.AuthService;
-import com.MapMarket.domain.service.ProdutoService;
+import com.MapMarket.domain.service.ProductService;
 import com.MapMarket.domain.service.UserService;
 import com.MapMarket.domain.service.security.jwt.JwtTokenFilter;
 import com.MapMarket.domain.service.security.jwt.JwtTokenProvider;
-import com.MapMarket.infrastructure.adapters.output.persistence.ProdutoPersistenceAdapter;
+import com.MapMarket.infrastructure.adapters.output.persistence.ProductPersistenceAdapter;
 import com.MapMarket.infrastructure.adapters.output.persistence.UserPersistenceAdapter;
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
-import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ProdutoRepository;
+import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ProductRepository;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -34,13 +34,13 @@ public class BeanConfig {
 
   public ModelMapper modelMapper() {
     ModelMapper modelMapper = new ModelMapper();
-    modelMapper.typeMap(ProdutoEntity.class, Produto.class)
+    modelMapper.typeMap(ProductEntity.class, Product.class)
         .addMappings(mapper -> {
-          mapper.map(ProdutoEntity::getId, Produto::setId);
+          mapper.map(ProductEntity::getId, Product::setId);
         });
-    modelMapper.typeMap(Produto.class, ProdutoResponseDto.class)
+    modelMapper.typeMap(Product.class, ProductResponseDto.class)
         .addMappings(mapper -> {
-          mapper.map(Produto::getId, ProdutoResponseDto::setKey);
+          mapper.map(Product::getId, ProductResponseDto::setKey);
         });
     return modelMapper;
   }
@@ -66,19 +66,19 @@ public class BeanConfig {
   }
 
   @Bean
-  public ProdutoPersistenceAdapter produtoPersistenceAdapter(ProdutoRepository produtoRepository, EntityMapper entityMapper) {
-    return new ProdutoPersistenceAdapter(produtoRepository, entityMapper);
+  public ProductPersistenceAdapter produtoPersistenceAdapter(ProductRepository productRepository, EntityMapper entityMapper) {
+    return new ProductPersistenceAdapter(productRepository, entityMapper);
   }
 
   @Bean
-  public ProdutoService produtoService(
-      OutputPort<Produto> outputPort,
-      FindAllOutput<Produto> findAllOutput,
+  public ProductService produtoService(
+      OutputPort<Product> outputPort,
+      FindAllOutput<Product> findAllOutput,
       ProductValidator productValidator,
-      PagedResourcesAssembler<ProdutoResponseDto> pagedResourcesAssembler,
+      PagedResourcesAssembler<ProductResponseDto> pagedResourcesAssembler,
       EntityMapper entityMapper
   ) {
-    return new ProdutoService(outputPort, findAllOutput, productValidator, pagedResourcesAssembler, entityMapper);
+    return new ProductService(outputPort, findAllOutput, productValidator, pagedResourcesAssembler, entityMapper);
   }
 
   @Bean

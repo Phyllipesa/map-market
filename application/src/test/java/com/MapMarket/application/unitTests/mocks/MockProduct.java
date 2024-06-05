@@ -1,20 +1,20 @@
 package com.MapMarket.application.unitTests.mocks;
 
 import com.MapMarket.application.rest.requestDto.ProductRequestDto;
-import com.MapMarket.application.rest.responseDto.ProdutoResponseDto;
-import com.MapMarket.domain.models.Produto;
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProdutoEntity;
+import com.MapMarket.application.rest.responseDto.ProductResponseDto;
+import com.MapMarket.domain.models.Product;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MockProduct {
 
-  public ProdutoEntity mockEntity() {
+  public ProductEntity mockEntity() {
     return mockEntity(0);
   }
 
-  public Produto mockModel() {
+  public Product mockModel() {
     return mockModel(0);
   }
 
@@ -22,54 +22,54 @@ public class MockProduct {
     return mockRequestDto(0);
   }
 
-  public ProdutoResponseDto mockResponseDto() {
+  public ProductResponseDto mockResponseDto() {
     return mockResponseDto(0);
   }
 
-  public List<Produto> mockModelList() {
-    List<Produto> products = new ArrayList<Produto>();
+  public List<Product> mockModelList() {
+    List<Product> products = new ArrayList<Product>();
     for (int i = 0; i < 14; i++) {
       products.add(mockModel(i));
     }
     return products;
   }
 
-  public List<ProdutoResponseDto> mockVOList() {
-    List<ProdutoResponseDto> products = new ArrayList<>();
+  public List<ProductResponseDto> mockVOList() {
+    List<ProductResponseDto> products = new ArrayList<>();
     for (int i = 0; i < 14; i++) {
       products.add(mockResponseDto(i));
     }
     return products;
   }
 
-  public ProdutoEntity mockEntity(Integer number) {
-    ProdutoEntity product = new ProdutoEntity();
+  public ProductEntity mockEntity(Integer number) {
+    ProductEntity product = new ProductEntity();
     product.setId(number.longValue());
-    product.setNome("Product Name Test" + number);
-    product.setPreco(14.50);
+    product.setName("Product Name Test" + number);
+    product.setPrice(14.50);
     return product;
   }
 
-  public Produto mockModel(Integer number) {
-    Produto product = new Produto();
+  public Product mockModel(Integer number) {
+    Product product = new Product();
     product.setId(number.longValue());
-    product.setNome("Product Name Test" + number);
-    product.setPreco(14.50);
+    product.setName("Product Name Test" + number);
+    product.setPrice(14.50);
     return product;
   }
 
   public ProductRequestDto mockRequestDto(Integer number) {
     ProductRequestDto product = new ProductRequestDto();
-    product.setNome("Product Name Test" + number);
-    product.setPreco(14.50);
+    product.setName("Product Name Test" + number);
+    product.setPrice(14.50);
     return product;
   }
 
-  public ProdutoResponseDto mockResponseDto(Integer number) {
-    ProdutoResponseDto product = new ProdutoResponseDto();
+  public ProductResponseDto mockResponseDto(Integer number) {
+    ProductResponseDto product = new ProductResponseDto();
     product.setKey(number.longValue());
-    product.setNome("Product Name Test" + number);
-    product.setPreco(14.50);
+    product.setName("Product Name Test" + number);
+    product.setPrice(14.50);
     return product;
   }
 }

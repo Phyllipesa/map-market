@@ -7,8 +7,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "produto")
-public class ProdutoEntity implements Serializable {
+@Table(name = "product")
+public class ProductEntity implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -18,18 +18,18 @@ public class ProdutoEntity implements Serializable {
   private Long id;
 
   @Column(nullable = false, length = 100)
-  private String nome;
+  private String name;
 
   @Column(nullable = false)
-  private Double preco;
+  private Double price;
 
-  public ProdutoEntity() {
+  public ProductEntity() {
   }
 
-  public ProdutoEntity(Long id, String nome, Double preco) {
+  public ProductEntity(Long id, String name, Double price) {
     this.id = id;
-    this.nome = nome;
-    this.preco = preco;
+    this.name = name;
+    this.price = price;
   }
 
   public Long getId() {
@@ -40,26 +40,26 @@ public class ProdutoEntity implements Serializable {
     this.id = id;
   }
 
-  public String getNome() {
-    return nome;
+  public String getName() {
+    return name;
   }
 
-  public void setNome(String nome) {
-    this.nome = nome;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public Double getPreco() {
-    return preco;
+  public Double getPrice() {
+    return price;
   }
 
-  public void setPreco(Double preco) {
-    this.preco = preco;
+  public void setPrice(Double price) {
+    this.price = price;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof ProdutoEntity that)) return false;
+    if (!(o instanceof ProductEntity that)) return false;
     return Objects.equals(id, that.id);
   }
 

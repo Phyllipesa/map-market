@@ -7,9 +7,9 @@ security:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/map_market
+        url: jdbc:mysql://localhost:3306/map_market_dev
         username: root
-        password: 1234567
+        password: admin789
     jpa:
         open-in-view: true
         hibernate:

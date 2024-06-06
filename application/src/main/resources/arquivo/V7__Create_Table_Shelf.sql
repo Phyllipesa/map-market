@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `prateleiras` (
+CREATE TABLE IF NOT EXISTS `shelf` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `id_lado` INT NOT NULL,
     `lance` INT NOT NULL,

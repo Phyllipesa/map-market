@@ -4,13 +4,11 @@ import jakarta.persistence.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "estantes")
-public class EstantesEntity implements Serializable {
+@Table(name = "shelving_unit")
+public class ShelvingUnitEntity implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -22,13 +20,10 @@ public class EstantesEntity implements Serializable {
   @Column(nullable = false, length = 10)
   private String name;
 
-  @OneToMany(mappedBy = "estante", cascade = CascadeType.ALL)
-  private List<LadosEntity> lados = new ArrayList<>();
-
-  public EstantesEntity() {
+  public ShelvingUnitEntity() {
   }
 
-  public EstantesEntity(Long id, String name) {
+  public ShelvingUnitEntity(Long id, String name) {
     this.id = id;
     this.name = name;
   }
@@ -49,15 +44,11 @@ public class EstantesEntity implements Serializable {
     this.name = name;
   }
 
-  public List<LadosEntity> getLados() {
-    return lados;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof EstantesEntity estantes)) return false;
-    return Objects.equals(id, estantes.id) && Objects.equals(name, estantes.name);
+    if (!(o instanceof ShelvingUnitEntity shelvingUnitEntity)) return false;
+    return Objects.equals(id, shelvingUnitEntity.id) && Objects.equals(name, shelvingUnitEntity.name);
   }
 
   @Override

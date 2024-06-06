@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "location")
+@Table(name = "locations")
 public class Location implements Serializable {
 
   @Serial

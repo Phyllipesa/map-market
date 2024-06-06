@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class ProductEntity implements Serializable {
 
   @Serial
@@ -20,7 +20,7 @@ public class ProductEntity implements Serializable {
   @Column(nullable = false, length = 100)
   private String name;
 
-  @Column(nullable = false)
+  @Column(nullable = false, precision = 10, scale = 2)
   private Double price;
 
   public ProductEntity() {

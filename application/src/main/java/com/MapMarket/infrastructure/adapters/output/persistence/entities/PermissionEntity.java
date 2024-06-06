@@ -5,11 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.security.Permission;
 import java.util.Objects;
 
 @Entity
-@Table(name = "permission")
+@Table(name = "permissions")
 public class PermissionEntity implements GrantedAuthority, Serializable {
 
   @Serial

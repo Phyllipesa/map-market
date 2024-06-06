@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "shelving_unit")
+@Table(name = "shelving_units")
 public class ShelvingUnitEntity implements Serializable {
 
   @Serial

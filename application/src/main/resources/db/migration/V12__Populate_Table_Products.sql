@@ -1,4 +1,4 @@
-INSERT INTO `product` (`name`, `price`) VALUES
+INSERT INTO `products` (`name`, `price`) VALUES
     ('Arroz', 2.50),
     ('Feijão', 4.00),
     ('Óleo de soja', 7.90),

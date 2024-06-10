@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class ProductPersistenceAdapter implements OutputPort<Product>, FindAllOutput<Product> {
 
-  private Logger logger = Logger.getLogger(ProductPersistenceAdapter.class.getName());
+  private final Logger logger = Logger.getLogger(ProductPersistenceAdapter.class.getName());
   private final ProductRepository productRepository;
   private final EntityMapper entityMapper;
 

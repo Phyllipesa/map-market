@@ -1,5 +1,5 @@
 
-INSERT INTO Location (shelving_unit_id, side, part, shelf, product_id) VALUES
+INSERT INTO locations (shelving_unit_id, side, part, shelf, product_id) VALUES
 (1, 'A', 1, 1, 1),
 (1, 'A', 1, 2, 2),
 (1, 'A', 1, 3, 3),

@@ -20,7 +20,7 @@ public class ProductEntity implements Serializable {
   @Column(nullable = false, length = 100)
   private String name;
 
-  @Column(nullable = false, precision = 10, scale = 2)
+  @Column(nullable = false)
   private Double price;
 
   public ProductEntity() {

@@ -1,15 +1,15 @@
 package com.MapMarket.application.rest.requestDto;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class AccountCredentialsDto implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
-
   private String username;
   private String password;
-
 
   public AccountCredentialsDto() {}
 

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "locations")
-public class Location implements Serializable {
+public class LocationEntity implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -19,24 +19,24 @@ public class Location implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "shelving_unit_id")
-  private Long shelvingUnitId;
+  private ShelvingUnitEntity shelvingUnit;
   private String side;
   private Long part;
   private Long shelf;
   @ManyToOne
   @JoinColumn(name = "product_id")
-  private Long productId;
+  private ProductEntity product;
 
-  public Location() {
+  public LocationEntity() {
   }
 
-  public Location(Long id, Long shelvingUnitId, String side, Long part, Long shelf, Long productId) {
+  public LocationEntity(Long id, ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, ProductEntity product) {
     this.id = id;
-    this.shelvingUnitId = shelvingUnitId;
+    this.shelvingUnit = shelvingUnit;
     this.side = side;
     this.part = part;
     this.shelf = shelf;
-    this.productId = productId;
+    this.product = product;
   }
 
   public Long getId() {
@@ -47,12 +47,12 @@ public class Location implements Serializable {
     this.id = id;
   }
 
-  public Long getShelvingUnitId() {
-    return shelvingUnitId;
+  public ShelvingUnitEntity getShelvingUnit() {
+    return shelvingUnit;
   }
 
-  public void setShelvingUnitId(Long shelvingUnitId) {
-    this.shelvingUnitId = shelvingUnitId;
+  public void setShelvingUnit(ShelvingUnitEntity shelvingUnit) {
+    this.shelvingUnit = shelvingUnit;
   }
 
   public String getSide() {
@@ -79,28 +79,28 @@ public class Location implements Serializable {
     this.shelf = shelf;
   }
 
-  public Long getProductId() {
-    return productId;
+  public ProductEntity getProduct() {
+    return product;
   }
 
-  public void setProductId(Long productId) {
-    this.productId = productId;
+  public void setProduct(ProductEntity product) {
+    this.product = product;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Location location)) return false;
-    return Objects.equals(id, location.id)
-        && Objects.equals(shelvingUnitId, location.shelvingUnitId)
-        && Objects.equals(side, location.side)
-        && Objects.equals(part, location.part)
-        && Objects.equals(shelf, location.shelf)
-        && Objects.equals(productId, location.productId);
+    if (!(o instanceof LocationEntity locationEntity)) return false;
+    return Objects.equals(id, locationEntity.id)
+        && Objects.equals(shelvingUnit, locationEntity.shelvingUnit)
+        && Objects.equals(side, locationEntity.side)
+        && Objects.equals(part, locationEntity.part)
+        && Objects.equals(shelf, locationEntity.shelf)
+        && Objects.equals(product, locationEntity.product);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, shelvingUnitId, side, part, shelf, productId);
+    return Objects.hash(id, shelvingUnit, side, part, shelf, product);
   }
 }

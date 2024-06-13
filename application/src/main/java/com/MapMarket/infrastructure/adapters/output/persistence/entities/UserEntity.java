@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-public class UserEntity implements UserDetails {
+public class UserEntity implements UserDetails, Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -45,7 +45,7 @@ public class UserEntity implements UserDetails {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-      name = "user_permission",
+      name = "user_permissions",
       joinColumns = {
           @JoinColumn (name = "id_user")},
       inverseJoinColumns = {

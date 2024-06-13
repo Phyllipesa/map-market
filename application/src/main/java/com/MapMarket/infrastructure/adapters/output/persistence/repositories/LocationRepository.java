@@ -9,4 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface LocationRepository extends JpaRepository<LocationEntity, Long> {
   @Query("SELECT l FROM LocationEntity l JOIN FETCH l.product")
   Page<LocationEntity> findAllLocationsWithProducts(Pageable pageable);
+
+  @Query("SELECT l FROM LocationEntity l WHERE l.product_id =:id")
+  LocationEntity findLocationByProductId(Long id);
 }

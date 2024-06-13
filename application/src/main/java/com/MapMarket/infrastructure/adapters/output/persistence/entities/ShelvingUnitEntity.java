@@ -17,15 +17,23 @@ public class ShelvingUnitEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 10)
-  private String name;
+  @Column(nullable = false)
+  private Long unit;
+
+  @Column(name = "side_A", nullable = false, length = 180)
+  private String sideA;
+
+  @Column(name = "side_B", nullable = false, length = 180)
+  private String sideB;
 
   public ShelvingUnitEntity() {
   }
 
-  public ShelvingUnitEntity(Long id, String name) {
+  public ShelvingUnitEntity(Long id, Long unit, String sideA, String sideB) {
     this.id = id;
-    this.name = name;
+    this.unit = unit;
+    this.sideA = sideA;
+    this.sideB = sideB;
   }
 
   public Long getId() {
@@ -36,23 +44,39 @@ public class ShelvingUnitEntity implements Serializable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public Long getUnit() {
+    return unit;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setUnit(Long unit) {
+    this.unit = unit;
+  }
+
+  public String getSideA() {
+    return sideA;
+  }
+
+  public void setSideA(String sideA) {
+    this.sideA = sideA;
+  }
+
+  public String getSideB() {
+    return sideB;
+  }
+
+  public void setSideB(String sideB) {
+    this.sideB = sideB;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof ShelvingUnitEntity shelvingUnitEntity)) return false;
-    return Objects.equals(id, shelvingUnitEntity.id) && Objects.equals(name, shelvingUnitEntity.name);
+    if (!(o instanceof ShelvingUnitEntity that)) return false;
+    return Objects.equals(id, that.id) && Objects.equals(unit, that.unit) && Objects.equals(sideA, that.sideA) && Objects.equals(sideB, that.sideB);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(id, unit, sideA, sideB);
   }
 }

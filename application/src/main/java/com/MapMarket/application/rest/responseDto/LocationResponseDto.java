@@ -1,13 +1,14 @@
 package com.MapMarket.application.rest.responseDto;
 
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ShelvingUnitEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
 
+@JsonPropertyOrder({ "id", "shelvingUnit", "side", "part", "shelf", "product"})
 public class LocationResponseDto extends RepresentationModel<LocationResponseDto> implements Serializable {
 
   @Serial
@@ -15,22 +16,22 @@ public class LocationResponseDto extends RepresentationModel<LocationResponseDto
 
   @JsonProperty("id")
   private Long key;
-  private ShelvingUnitEntity shelvingUnit;
+  private Long shelvingUnit;
   private String side;
   private Long part;
   private Long shelf;
-  private ProductEntity product;
+  private ProductResponseDto productResponseDto;
 
   public LocationResponseDto() {
   }
 
-  public LocationResponseDto(Long id, ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, ProductEntity product) {
+  public LocationResponseDto(Long id, ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, ProductResponseDto productResponseDto) {
     this.key = id;
-    this.shelvingUnit = shelvingUnit;
+    this.shelvingUnit = shelvingUnit.getId();
     this.side = side;
     this.part = part;
     this.shelf = shelf;
-    this.product = product;
+    this.productResponseDto = productResponseDto;
   }
 
   public Long getKey() {
@@ -41,11 +42,11 @@ public class LocationResponseDto extends RepresentationModel<LocationResponseDto
     this.key = key;
   }
 
-  public ShelvingUnitEntity getShelvingUnit() {
+  public Long getShelvingUnit() {
     return shelvingUnit;
   }
 
-  public void setShelvingUnit(ShelvingUnitEntity shelvingUnit) {
+  public void setShelvingUnit(Long shelvingUnit) {
     this.shelvingUnit = shelvingUnit;
   }
 
@@ -73,11 +74,11 @@ public class LocationResponseDto extends RepresentationModel<LocationResponseDto
     this.shelf = shelf;
   }
 
-  public ProductEntity getProduct() {
-    return product;
+  public ProductResponseDto getProduct() {
+    return productResponseDto;
   }
 
-  public void setProduct(ProductEntity product) {
-    this.product = product;
+  public void setProduct(ProductResponseDto productResponseDto) {
+    this.productResponseDto = productResponseDto;
   }
 }

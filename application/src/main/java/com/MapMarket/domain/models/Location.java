@@ -14,18 +14,18 @@ public class Location implements Serializable {
   private String side;
   private Long part;
   private Long shelf;
-  private Long productId;
+  private Product product;
 
   public Location() {
   }
 
-  public Location(Long id, Long shelvingUnitId, String side, Long part, Long shelf, Long productId) {
+  public Location(Long id, Long shelvingUnitId, String side, Long part, Long shelf, Product product) {
     this.id = id;
     this.shelvingUnitId = shelvingUnitId;
     this.side = side;
     this.part = part;
     this.shelf = shelf;
-    this.productId = productId;
+    this.product = product;
   }
 
   public Long getId() {
@@ -68,28 +68,23 @@ public class Location implements Serializable {
     this.shelf = shelf;
   }
 
-  public Long getProductId() {
-    return productId;
+  public Product getProduct() {
+    return product;
   }
 
-  public void setProductId(Long productId) {
-    this.productId = productId;
+  public void setProduct(Product product) {
+    this.product = product;
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof Location locationEntity)) return false;
-    return Objects.equals(id, locationEntity.id)
-        && Objects.equals(shelvingUnitId, locationEntity.shelvingUnitId)
-        && Objects.equals(side, locationEntity.side)
-        && Objects.equals(part, locationEntity.part)
-        && Objects.equals(shelf, locationEntity.shelf)
-        && Objects.equals(productId, locationEntity.productId);
+    if (!(o instanceof Location location)) return false;
+    return Objects.equals(id, location.id) && Objects.equals(shelvingUnitId, location.shelvingUnitId) && Objects.equals(side, location.side) && Objects.equals(part, location.part) && Objects.equals(shelf, location.shelf) && Objects.equals(product, location.product);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, shelvingUnitId, side, part, shelf, productId);
+    return Objects.hash(id, shelvingUnitId, side, part, shelf, product);
   }
 }

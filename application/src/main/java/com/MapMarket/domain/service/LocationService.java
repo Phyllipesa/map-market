@@ -1,11 +1,15 @@
 package com.MapMarket.domain.service;
 
 import com.MapMarket.application.rest.LocationRestAdapter;
+import com.MapMarket.application.rest.ProductRestAdapter;
+import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.models.Location;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
+import com.MapMarket.domain.ports.input.UseCase;
 import com.MapMarket.domain.ports.output.FindAllOutput;
+import com.MapMarket.domain.ports.output.OutputPort;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,15 +18,18 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class LocationService implements FindAllUseCase<LocationResponseDto> {
+public class LocationService implements UseCase<LocationRequestDto, LocationResponseDto>, FindAllUseCase<LocationResponseDto> {
 
+  private final OutputPort<Location> outputPort;
   private final FindAllOutput<Location> findAllOutput;
   private final PagedResourcesAssembler<LocationResponseDto> assembler;
   private final EntityMapper entityMapper;
 
-  public LocationService(FindAllOutput<Location> findAllOutput, PagedResourcesAssembler<LocationResponseDto> assembler, EntityMapper entityMapper) {
+  public LocationService(OutputPort<Location> outputPort, FindAllOutput<Location> findAllOutput, PagedResourcesAssembler<LocationResponseDto> assembler, EntityMapper entityMapper) {
+    this.outputPort = outputPort;
     this.findAllOutput = findAllOutput;
     this.assembler = assembler;
     this.entityMapper = entityMapper;
@@ -49,5 +56,30 @@ public class LocationService implements FindAllUseCase<LocationResponseDto> {
             )
     ).withSelfRel();
     return assembler.toModel(allLocationResponseDto, link);
+  }
+
+  @Override
+  public LocationResponseDto findById(Long id) {
+    Location location = outputPort.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException("No product registered with id " + id));
+
+    LocationResponseDto locationDto = entityMapper.parseObject(location, LocationResponseDto.class);
+    locationDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(id)).withSelfRel());
+    return locationDto;
+  }
+
+  @Override
+  public LocationResponseDto create(LocationRequestDto locationRequestDto) {
+    return null;
+  }
+
+  @Override
+  public LocationResponseDto update(Long id, LocationRequestDto locationRequestDto) {
+    return null;
+  }
+
+  @Override
+  public void delete(Long id) {
+
   }
 }

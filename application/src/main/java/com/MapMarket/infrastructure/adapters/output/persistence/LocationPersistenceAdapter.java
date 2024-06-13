@@ -18,22 +18,23 @@ public class LocationPersistenceAdapter implements OutputPort<Location>, FindAll
     private final LocationRepository locationRepository;
     private final EntityMapper entityMapper;
 
-    public LocationPersistenceAdapter(LocationRepository locationRepository, EntityMapper entityMapper) {
+  public LocationPersistenceAdapter(LocationRepository locationRepository, EntityMapper entityMapper) {
         this.locationRepository = locationRepository;
         this.entityMapper = entityMapper;
     }
 
   @Override
   public Page<Location> findAll(Pageable pageable) {
-    logger.info("Finding all locations!");
+    logger.info("Finding all registers!");
 
-    Page<LocationEntity> page = locationRepository.findAll(pageable);
+    Page<LocationEntity> page = locationRepository.findAllLocationsWithProducts(pageable);
     return page.map(p -> entityMapper.parseObject(p, Location.class));
   }
 
   @Override
   public Optional<Location> findById(Long id) {
-    return Optional.empty();
+    logger.info("locating a product by Id!");
+    return Optional.ofNullable(entityMapper.parseObject(locationRepository.findById(id), Location.class));
   }
 
   @Override

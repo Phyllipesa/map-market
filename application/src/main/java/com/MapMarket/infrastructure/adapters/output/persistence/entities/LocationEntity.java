@@ -17,13 +17,14 @@ public class LocationEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "shelving_unit_id")
   private ShelvingUnitEntity shelvingUnit;
   private String side;
   private Long part;
   private Long shelf;
-  @ManyToOne
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "product_id")
   private ProductEntity product;
 

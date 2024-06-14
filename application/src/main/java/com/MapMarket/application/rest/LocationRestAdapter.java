@@ -3,6 +3,7 @@ package com.MapMarket.application.rest;
 import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
+import com.MapMarket.domain.ports.input.FindLocationByProductIdUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +19,16 @@ public class LocationRestAdapter {
 
   private final UseCase<LocationRequestDto, LocationResponseDto> useCase;
   private final FindAllUseCase<LocationResponseDto> findAllUseCase;
+  private final FindLocationByProductIdUseCase<LocationResponseDto> findLocationByProductId;
 
-  public LocationRestAdapter(UseCase<LocationRequestDto, LocationResponseDto> useCase, FindAllUseCase<LocationResponseDto> findAllUseCase) {
-    this.findAllUseCase = findAllUseCase;
+  public LocationRestAdapter(
+      UseCase<LocationRequestDto, LocationResponseDto> useCase,
+      FindAllUseCase<LocationResponseDto> findAllUseCase,
+      FindLocationByProductIdUseCase<LocationResponseDto> findLocationByProductId
+  ) {
     this.useCase = useCase;
+    this.findAllUseCase = findAllUseCase;
+    this.findLocationByProductId = findLocationByProductId;
   }
 
   @GetMapping
@@ -37,5 +44,10 @@ public class LocationRestAdapter {
   @GetMapping("/{id}")
   public ResponseEntity<LocationResponseDto> findById(@PathVariable(value = "id")Long id) {
     return ResponseEntity.ok(useCase.findById(id));
+  }
+
+  @GetMapping("/product/{id}")
+  public ResponseEntity<LocationResponseDto> findLocationByProductId(@PathVariable(value = "id")Long id) {
+    return ResponseEntity.ok(findLocationByProductId.findLocationByProductId(id));
   }
 }

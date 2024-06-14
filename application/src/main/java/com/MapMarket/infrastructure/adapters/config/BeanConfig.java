@@ -11,6 +11,7 @@ import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.models.User;
 import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
+import com.MapMarket.domain.ports.output.FindLocationByProductIdOutputPort;
 import com.MapMarket.domain.ports.output.OutputPort;
 import com.MapMarket.domain.service.AuthService;
 import com.MapMarket.domain.service.LocationService;
@@ -81,57 +82,94 @@ public class BeanConfig {
   }
 
   @Bean
-  public ProductPersistenceAdapter productPersistenceAdapter(ProductRepository productRepository, EntityMapper entityMapper) {
+  public ProductPersistenceAdapter productPersistenceAdapter(
+      ProductRepository productRepository,
+      EntityMapper entityMapper
+  ) {
     return new ProductPersistenceAdapter(productRepository, entityMapper);
   }
 
   @Bean
-  public ProductService productService(OutputPort<Product> outputPort, FindAllOutput<Product> findAllOutput, ProductValidator productValidator, PagedResourcesAssembler<ProductResponseDto> pagedResourcesAssembler, EntityMapper entityMapper) {
+  public ProductService productService(
+      OutputPort<Product> outputPort,
+      FindAllOutput<Product> findAllOutput,
+      ProductValidator productValidator,
+      PagedResourcesAssembler<ProductResponseDto> pagedResourcesAssembler,
+      EntityMapper entityMapper
+  ) {
     return new ProductService(outputPort, findAllOutput, productValidator, pagedResourcesAssembler, entityMapper);
   }
 
   @Bean
-  public UserPersistenceAdapter userPersistenceAdapter(UserRepository userRepository, EntityMapper entityMapper) {
+  public UserPersistenceAdapter userPersistenceAdapter(
+      UserRepository userRepository,
+      EntityMapper entityMapper
+  ) {
     return new UserPersistenceAdapter(userRepository, entityMapper);
   }
 
   @Bean
-  public UserService userService(FindByUserNameOutputPort<User> outputPort) {
+  public UserService userService(
+      FindByUserNameOutputPort<User> outputPort
+  ) {
     return new UserService(outputPort);
   }
 
   @Bean
-  public JwtTokenProvider jwtTokenProvider(UserDetailsService userDetailsService) {
+  public JwtTokenProvider jwtTokenProvider(
+      UserDetailsService userDetailsService
+  ) {
     return new JwtTokenProvider(userDetailsService);
   }
 
   @Bean
-  public JwtTokenFilter jwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+  public JwtTokenFilter jwtTokenFilter(
+      JwtTokenProvider jwtTokenProvider
+  ) {
     return new JwtTokenFilter(jwtTokenProvider);
   }
 
   @Bean
-  AuthenticationManager authenticationManagerBean(AuthenticationConfiguration authenticationConfiguration) throws  Exception {
+  public AuthenticationManager authenticationManagerBean(
+      AuthenticationConfiguration authenticationConfiguration
+  ) throws  Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
   @Bean
-  public AuthService authService(FindByUserNameOutputPort<User> outputPort, AuthenticationManager authenticationManager, JwtTokenProvider  jwtTokenProvider) {
+  public AuthService authService(
+      FindByUserNameOutputPort<User> outputPort,
+      AuthenticationManager authenticationManager,
+      JwtTokenProvider  jwtTokenProvider
+  ) {
     return new AuthService(outputPort, authenticationManager, jwtTokenProvider);
   }
 
   @Bean
-  public AuthRestAdapter authRestAdapter(AuthService authService, CredentialsValidator credentialsValidator, RefreshCredentialsValidator  refreshCredentialsValidator) {
+  public AuthRestAdapter authRestAdapter(
+      AuthService authService,
+      CredentialsValidator credentialsValidator,
+      RefreshCredentialsValidator  refreshCredentialsValidator
+  ) {
     return new AuthRestAdapter(authService, credentialsValidator, refreshCredentialsValidator);
   }
 
   @Bean
-  public LocationPersistenceAdapter locationPersistenceAdapter(LocationRepository locationRepository, EntityMapper entityMapper) {
+  public LocationPersistenceAdapter locationPersistenceAdapter(
+      LocationRepository locationRepository,
+      EntityMapper entityMapper
+  ) {
     return new LocationPersistenceAdapter(locationRepository, entityMapper);
   }
 
   @Bean
-  public LocationService locationService(OutputPort<Location> outputPort, FindAllOutput<Location> findAllOutput, PagedResourcesAssembler<LocationResponseDto> pagedResourcesAssembler, EntityMapper entityMapper) {
-    return new LocationService(outputPort, findAllOutput, pagedResourcesAssembler, entityMapper);
+  public LocationService locationService(
+      OutputPort<Location> outputPort,
+      FindAllOutput<Location> findAllOutput,
+      FindLocationByProductIdOutputPort<Location> findLocationByProductIdOutputPort,
+      PagedResourcesAssembler<LocationResponseDto> pagedResourcesAssembler,
+      EntityMapper entityMapper
+  ) {
+    return new LocationService(outputPort, findAllOutput, findLocationByProductIdOutputPort, pagedResourcesAssembler, entityMapper);
   }
 }

@@ -14,17 +14,17 @@ public class LocationRequestDto implements Serializable {
   private String side;
   private Long part;
   private Long shelf;
-  private ProductEntity product;
+  private Long productId;
 
   public LocationRequestDto() {
   }
 
-  public LocationRequestDto(ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, ProductEntity product) {
+  public LocationRequestDto(ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, Long productId) {
     this.shelvingUnit = shelvingUnit;
     this.side = side;
     this.part = part;
     this.shelf = shelf;
-    this.product = product;
+    this.productId = productId;
   }
 
   public ShelvingUnitEntity getShelvingUnit() {
@@ -59,11 +59,11 @@ public class LocationRequestDto implements Serializable {
     this.shelf = shelf;
   }
 
-  public ProductEntity getProduct() {
-    return product;
+  public Long getProductId() {
+    return productId;
   }
 
-  public void setProduct(ProductEntity product) {
-    this.product = product;
+  public void setProductId(Long productId) {
+    this.productId = productId;
   }
 }

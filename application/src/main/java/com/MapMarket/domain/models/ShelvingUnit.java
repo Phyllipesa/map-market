@@ -16,8 +16,7 @@ public class ShelvingUnit implements Serializable {
   public ShelvingUnit() {
   }
 
-  public ShelvingUnit(Long id, Long unit, String sideA, String sideB) {
-    this.id = id;
+  public ShelvingUnit(Long unit, String sideA, String sideB) {
     this.unit = unit;
     this.sideA = sideA;
     this.sideB = sideB;

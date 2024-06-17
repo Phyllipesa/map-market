@@ -19,8 +19,7 @@ public class Location implements Serializable {
   public Location() {
   }
 
-  public Location(Long id, Long shelvingUnitId, String side, Long part, Long shelf, Product product) {
-    this.id = id;
+  public Location(Long shelvingUnitId, String side, Long part, Long shelf, Product product) {
     this.shelvingUnitId = shelvingUnitId;
     this.side = side;
     this.part = part;

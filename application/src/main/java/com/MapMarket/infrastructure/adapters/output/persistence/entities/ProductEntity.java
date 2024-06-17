@@ -26,8 +26,7 @@ public class ProductEntity implements Serializable {
   public ProductEntity() {
   }
 
-  public ProductEntity(Long id, String name, Double price) {
-    this.id = id;
+  public ProductEntity(String name, Double price) {
     this.name = name;
     this.price = price;
   }

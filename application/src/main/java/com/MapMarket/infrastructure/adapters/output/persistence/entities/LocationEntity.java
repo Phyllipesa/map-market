@@ -31,8 +31,7 @@ public class LocationEntity implements Serializable {
   public LocationEntity() {
   }
 
-  public LocationEntity(Long id, ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, ProductEntity product) {
-    this.id = id;
+  public LocationEntity(ShelvingUnitEntity shelvingUnit, String side, Long part, Long shelf, ProductEntity product) {
     this.shelvingUnit = shelvingUnit;
     this.side = side;
     this.part = part;

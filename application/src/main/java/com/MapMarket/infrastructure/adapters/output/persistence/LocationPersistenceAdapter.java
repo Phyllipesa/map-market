@@ -2,8 +2,7 @@ package com.MapMarket.infrastructure.adapters.output.persistence;
 
 import com.MapMarket.domain.models.Location;
 import com.MapMarket.domain.ports.output.FindAllOutput;
-import com.MapMarket.domain.ports.output.FindLocationByProductIdOutputPort;
-import com.MapMarket.domain.ports.output.OutputPort;
+import com.MapMarket.domain.ports.output.LocationOutputPort;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.LocationEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.LocationRepository;
@@ -13,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-public class LocationPersistenceAdapter implements OutputPort<Location>, FindAllOutput<Location>, FindLocationByProductIdOutputPort<Location> {
+public class LocationPersistenceAdapter implements LocationOutputPort<Location>, FindAllOutput<Location> {
 
     private final Logger logger = Logger.getLogger(LocationPersistenceAdapter.class.getName());
     private final LocationRepository locationRepository;
@@ -51,8 +50,10 @@ public class LocationPersistenceAdapter implements OutputPort<Location>, FindAll
   }
 
   @Override
-  public Location update(Long id, Location location) {
-    return null;
+  public Location update(Location location) {
+    logger.info("Updating a product location!");
+    LocationEntity  locationEntity = entityMapper.parseObject(location, LocationEntity.class);
+    return entityMapper.parseObject(locationRepository.save(locationEntity), Location.class);
   }
 
   @Override

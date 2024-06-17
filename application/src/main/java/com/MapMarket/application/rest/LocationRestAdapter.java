@@ -3,8 +3,7 @@ package com.MapMarket.application.rest;
 import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
-import com.MapMarket.domain.ports.input.FindLocationByProductIdUseCase;
-import com.MapMarket.domain.ports.input.UseCase;
+import com.MapMarket.domain.ports.input.LocationUseCase;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,18 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/location")
 public class LocationRestAdapter {
 
-  private final UseCase<LocationRequestDto, LocationResponseDto> useCase;
+  private final LocationUseCase<LocationRequestDto, LocationResponseDto> useCase;
   private final FindAllUseCase<LocationResponseDto> findAllUseCase;
-  private final FindLocationByProductIdUseCase<LocationResponseDto> findLocationByProductId;
 
   public LocationRestAdapter(
-      UseCase<LocationRequestDto, LocationResponseDto> useCase,
-      FindAllUseCase<LocationResponseDto> findAllUseCase,
-      FindLocationByProductIdUseCase<LocationResponseDto> findLocationByProductId
+      LocationUseCase<LocationRequestDto, LocationResponseDto> useCase,
+      FindAllUseCase<LocationResponseDto> findAllUseCase
   ) {
     this.useCase = useCase;
     this.findAllUseCase = findAllUseCase;
-    this.findLocationByProductId = findLocationByProductId;
   }
 
   @GetMapping
@@ -48,11 +44,16 @@ public class LocationRestAdapter {
 
   @GetMapping("/product/{id}")
   public ResponseEntity<LocationResponseDto> findLocationByProductId(@PathVariable(value = "id")Long id) {
-    return ResponseEntity.ok(findLocationByProductId.findLocationByProductId(id));
+    return ResponseEntity.ok(useCase.findLocationByProductId(id));
   }
 
   @PostMapping
   public ResponseEntity<LocationResponseDto> create(@RequestBody LocationRequestDto locationRequestDto) {
     return ResponseEntity.ok(useCase.create(locationRequestDto));
+  }
+
+  @PutMapping("/{locationId}/{productId}")
+  public ResponseEntity<LocationResponseDto> update(@PathVariable Long locationId, @PathVariable Long productId) {
+    return ResponseEntity.ok(useCase.update(locationId, productId));
   }
 }

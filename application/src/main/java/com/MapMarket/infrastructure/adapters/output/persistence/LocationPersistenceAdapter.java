@@ -45,10 +45,9 @@ public class LocationPersistenceAdapter implements OutputPort<Location>, FindAll
 
   @Override
   public Optional<Location> create(Location location) {
-    // Verificar se a ShelvingUnit existe.
-    // Verificar se o SIDE B existe.
-    // Verificar se o SIDE B existe.
-    return Optional.empty();
+    logger.info("Register a product!");
+    LocationEntity  locationEntity = entityMapper.parseObject(location, LocationEntity.class);
+    return Optional.ofNullable(entityMapper.parseObject(locationRepository.save(locationEntity), Location.class));
   }
 
   @Override

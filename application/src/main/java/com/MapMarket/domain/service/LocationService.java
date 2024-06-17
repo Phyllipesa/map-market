@@ -1,16 +1,15 @@
 package com.MapMarket.domain.service;
 
 import com.MapMarket.application.rest.LocationRestAdapter;
-import com.MapMarket.application.rest.ProductRestAdapter;
 import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.models.Location;
+import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
-import com.MapMarket.domain.ports.input.FindLocationByProductIdUseCase;
-import com.MapMarket.domain.ports.input.UseCase;
+import com.MapMarket.domain.ports.input.LocationUseCase;
 import com.MapMarket.domain.ports.output.FindAllOutput;
-import com.MapMarket.domain.ports.output.FindLocationByProductIdOutputPort;
+import com.MapMarket.domain.ports.output.LocationOutputPort;
 import com.MapMarket.domain.ports.output.OutputPort;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import org.springframework.data.domain.Page;
@@ -23,18 +22,18 @@ import org.springframework.hateoas.PagedModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class LocationService implements UseCase<LocationRequestDto, LocationResponseDto>, FindAllUseCase<LocationResponseDto>, FindLocationByProductIdUseCase<LocationResponseDto> {
+public class LocationService implements LocationUseCase<LocationRequestDto, LocationResponseDto>, FindAllUseCase<LocationResponseDto> {
 
-  private final OutputPort<Location> outputPort;
+  private final LocationOutputPort<Location> outputPort;
+  private final OutputPort<Product> productOutputPort;
   private final FindAllOutput<Location> findAllOutput;
-  private final FindLocationByProductIdOutputPort<Location> findLocationByProductIdOutputPort;
   private final PagedResourcesAssembler<LocationResponseDto> assembler;
   private final EntityMapper entityMapper;
 
-  public LocationService(OutputPort<Location> outputPort, FindAllOutput<Location> findAllOutput, FindLocationByProductIdOutputPort<Location> findLocationByProductIdOutputPort, PagedResourcesAssembler<LocationResponseDto> assembler, EntityMapper entityMapper) {
+  public LocationService(LocationOutputPort<Location> outputPort, OutputPort<Product> productOutputPort, FindAllOutput<Location> findAllOutput, PagedResourcesAssembler<LocationResponseDto> assembler, EntityMapper entityMapper) {
     this.outputPort = outputPort;
+    this.productOutputPort = productOutputPort;
     this.findAllOutput = findAllOutput;
-    this.findLocationByProductIdOutputPort = findLocationByProductIdOutputPort;
     this.assembler = assembler;
     this.entityMapper = entityMapper;
   }
@@ -68,16 +67,16 @@ public class LocationService implements UseCase<LocationRequestDto, LocationResp
         .orElseThrow(() -> new ResourceNotFoundException("No register with id " + id));
 
     LocationResponseDto locationDto = entityMapper.parseObject(location, LocationResponseDto.class);
-    locationDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(id)).withSelfRel());
+    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).findById(id)).withSelfRel());
     return locationDto;
   }
 
   public LocationResponseDto findLocationByProductId(Long id) {
-    Location location = findLocationByProductIdOutputPort.findLocationByProductId(id)
+    Location location = outputPort.findLocationByProductId(id)
         .orElseThrow(() -> new ResourceNotFoundException("No product registered with id " + id));
 
     LocationResponseDto locationDto = entityMapper.parseObject(location, LocationResponseDto.class);
-    locationDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(id)).withSelfRel());
+    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).findLocationByProductId(id)).withSelfRel());
     return locationDto;
   }
 
@@ -87,12 +86,24 @@ public class LocationService implements UseCase<LocationRequestDto, LocationResp
     Location  locationSaved = outputPort.create(location)
         .orElseThrow(() -> new ResourceNotFoundException("Error saving location"));
 
+    LocationResponseDto locationDto = entityMapper.parseObject(locationSaved, LocationResponseDto.class);
+    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).create(null)).withSelfRel());
     return entityMapper.parseObject(outputPort.create(locationSaved), LocationResponseDto.class);
   }
 
   @Override
-  public LocationResponseDto update(Long id, LocationRequestDto locationRequestDto) {
-    return null;
+  public LocationResponseDto update(Long locationId, Long productId) {
+    Location location =  outputPort.findById(locationId)
+        .orElseThrow(() -> new ResourceNotFoundException("No register with id " + locationId));
+
+    Product product =  productOutputPort.findById(productId)
+        .orElseThrow(() -> new ResourceNotFoundException("No product found with id " + productId));
+
+    location.setProduct(product);
+
+    LocationResponseDto locationDto = entityMapper.parseObject(outputPort.update(location), LocationResponseDto.class);
+    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).update(locationId, productId)).withSelfRel());
+    return locationDto;
   }
 
   @Override

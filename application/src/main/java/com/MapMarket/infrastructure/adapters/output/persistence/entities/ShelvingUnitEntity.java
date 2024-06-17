@@ -23,7 +23,7 @@ public class ShelvingUnitEntity implements Serializable {
   @Column(name = "side_A", nullable = false, length = 180)
   private String sideA;
 
-  @Column(name = "side_B", nullable = false, length = 180)
+  @Column(name = "side_B", length = 180)
   private String sideB;
 
   public ShelvingUnitEntity() {

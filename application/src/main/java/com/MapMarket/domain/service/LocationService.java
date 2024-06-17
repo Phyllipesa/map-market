@@ -83,7 +83,11 @@ public class LocationService implements UseCase<LocationRequestDto, LocationResp
 
   @Override
   public LocationResponseDto create(LocationRequestDto locationRequestDto) {
-    return null;
+    Location location = entityMapper.parseObject(locationRequestDto, Location.class);
+    Location  locationSaved = outputPort.create(location)
+        .orElseThrow(() -> new ResourceNotFoundException("Error saving location"));
+
+    return entityMapper.parseObject(outputPort.create(locationSaved), LocationResponseDto.class);
   }
 
   @Override

@@ -9,10 +9,7 @@ import com.MapMarket.domain.logic.RefreshCredentialsValidator;
 import com.MapMarket.domain.models.Location;
 import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.models.User;
-import com.MapMarket.domain.ports.output.FindAllOutput;
-import com.MapMarket.domain.ports.output.FindByUserNameOutputPort;
-import com.MapMarket.domain.ports.output.FindLocationByProductIdOutputPort;
-import com.MapMarket.domain.ports.output.OutputPort;
+import com.MapMarket.domain.ports.output.*;
 import com.MapMarket.domain.service.AuthService;
 import com.MapMarket.domain.service.LocationService;
 import com.MapMarket.domain.service.ProductService;
@@ -164,12 +161,12 @@ public class BeanConfig {
 
   @Bean
   public LocationService locationService(
-      OutputPort<Location> outputPort,
+      LocationOutputPort<Location> outputPort,
+      OutputPort<Product> productOutputPort,
       FindAllOutput<Location> findAllOutput,
-      FindLocationByProductIdOutputPort<Location> findLocationByProductIdOutputPort,
       PagedResourcesAssembler<LocationResponseDto> pagedResourcesAssembler,
       EntityMapper entityMapper
   ) {
-    return new LocationService(outputPort, findAllOutput, findLocationByProductIdOutputPort, pagedResourcesAssembler, entityMapper);
+    return new LocationService(outputPort, productOutputPort, findAllOutput, pagedResourcesAssembler, entityMapper);
   }
 }

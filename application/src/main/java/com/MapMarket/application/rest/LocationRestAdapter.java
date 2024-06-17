@@ -50,4 +50,9 @@ public class LocationRestAdapter {
   public ResponseEntity<LocationResponseDto> findLocationByProductId(@PathVariable(value = "id")Long id) {
     return ResponseEntity.ok(findLocationByProductId.findLocationByProductId(id));
   }
+
+  @PostMapping
+  public ResponseEntity<LocationResponseDto> create(@RequestBody LocationRequestDto locationRequestDto) {
+    return ResponseEntity.ok(useCase.create(locationRequestDto));
+  }
 }

@@ -71,6 +71,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
     return locationDto;
   }
 
+  @Override
   public LocationResponseDto findLocationByProductId(Long id) {
     Location location = outputPort.findLocationByProductId(id)
         .orElseThrow(() -> new ResourceNotFoundException("No product registered with id " + id));
@@ -94,7 +95,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   @Override
   public LocationResponseDto update(Long locationId, Long productId) {
     Location location =  outputPort.findById(locationId)
-        .orElseThrow(() -> new ResourceNotFoundException("No register with id " + locationId));
+        .orElseThrow(() -> new ResourceNotFoundException("No location with id " + locationId));
 
     Product product =  productOutputPort.findById(productId)
         .orElseThrow(() -> new ResourceNotFoundException("No product found with id " + productId));
@@ -103,6 +104,16 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
 
     LocationResponseDto locationDto = entityMapper.parseObject(outputPort.update(location), LocationResponseDto.class);
     locationDto.add(linkTo(methodOn(LocationRestAdapter.class).update(locationId, productId)).withSelfRel());
+    return locationDto;
+  }
+
+  @Override
+  public LocationResponseDto unsubscribingProduct(Long locationId) {
+   outputPort.findById(locationId)
+       .orElseThrow(() -> new ResourceNotFoundException("No location with id " + locationId));
+
+    LocationResponseDto locationDto = entityMapper.parseObject(outputPort.unsubscribingProduct(locationId), LocationResponseDto.class);
+    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).unsubscribingProduct(locationId)).withSelfRel());
     return locationDto;
   }
 

@@ -7,5 +7,6 @@ public interface LocationOutputPort<T> {
   Optional<T> findLocationByProductId(Long id);
   Optional<T> create(T t);
   T update(T t);
+  T unsubscribingProduct(Long id);
   void delete(Long id);
 }

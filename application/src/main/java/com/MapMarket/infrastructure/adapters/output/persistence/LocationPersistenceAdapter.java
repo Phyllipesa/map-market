@@ -57,7 +57,8 @@ public class LocationPersistenceAdapter implements LocationOutputPort<Location>,
   }
 
   @Override
-  public void delete(Long id) {
-
+  public void delete(Long locationId) {
+    logger.info("Deleting a location!");
+    locationRepository.delete(locationRepository.findById(locationId).get());
   }
 }

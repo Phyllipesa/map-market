@@ -5,5 +5,6 @@ public interface LocationUseCase<Input, OutPut> {
   OutPut findLocationByProductId(Long id);
   OutPut create(Input input);
   OutPut update(Long locationId, Long productId);
+  OutPut unsubscribingProduct(Long locationId);
   void delete(Long id);
 }

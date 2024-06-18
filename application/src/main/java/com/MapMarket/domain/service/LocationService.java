@@ -107,7 +107,8 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   }
 
   @Override
-  public void delete(Long id) {
-
+  public void delete(Long locationId) {
+    findById(locationId);
+    outputPort.delete(locationId);
   }
 }

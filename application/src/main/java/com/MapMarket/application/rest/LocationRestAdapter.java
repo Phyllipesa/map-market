@@ -57,6 +57,11 @@ public class LocationRestAdapter {
     return ResponseEntity.ok(useCase.update(locationId, productId));
   }
 
+  @PutMapping("/{id}")
+  public ResponseEntity<LocationResponseDto> unsubscribingProduct(@PathVariable Long id) {
+    return ResponseEntity.ok(useCase.unsubscribingProduct(id));
+  }
+
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable(value = "id")Long id) {
     useCase.delete(id);

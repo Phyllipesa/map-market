@@ -40,13 +40,13 @@ public class ProductRestAdapter {
   }
 
   @PostMapping
-  public ResponseEntity<ProductResponseDto> create(@RequestBody ProductRequestDto produtoDto) {
-    return ResponseEntity.status(201).body(useCase.create(produtoDto));
+  public ResponseEntity<ProductResponseDto> create(@RequestBody ProductRequestDto productDto) {
+    return ResponseEntity.status(201).body(useCase.create(productDto));
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProductResponseDto> update(@PathVariable(value = "id")Long id, @RequestBody ProductRequestDto produtoDto) {
-    return ResponseEntity.ok(useCase.update(id, produtoDto));
+  public ResponseEntity<ProductResponseDto> update(@PathVariable(value = "id")Long id, @RequestBody ProductRequestDto productDto) {
+    return ResponseEntity.ok(useCase.update(id, productDto));
   }
 
   @DeleteMapping("/{id}")

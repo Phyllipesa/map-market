@@ -57,6 +57,15 @@ public class LocationPersistenceAdapter implements LocationOutputPort<Location>,
   }
 
   @Override
+  public Location unsubscribingProduct(Long id) {
+    logger.info("Unsubscribing a product in location!");
+    LocationEntity locationEntity = locationRepository.findById(id).get();
+    locationEntity.setProduct(null);
+    return entityMapper.parseObject(locationRepository.save(locationEntity), Location.class);
+  }
+
+
+  @Override
   public void delete(Long locationId) {
     logger.info("Deleting a location!");
     locationRepository.delete(locationRepository.findById(locationId).get());

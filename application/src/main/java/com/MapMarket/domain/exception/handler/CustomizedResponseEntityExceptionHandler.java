@@ -71,6 +71,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @ExceptionHandler(ShelvingUnitCreationException.class)
+  public final ResponseEntity<ExceptionResponse> handlerShelvingUnitCreationExceptions(Exception e, WebRequest request) {
+    ExceptionResponse exceptionResponse = new ExceptionResponse(
+        new Date(),
+        e.getMessage(),
+        request.getDescription(false)
+    );
+
+    return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+
   @ExceptionHandler(RequiredObjectIsNullException.class)
   public final ResponseEntity<ExceptionResponse> handlerBadRequestExceptions(Exception e, WebRequest request) {
     ExceptionResponse exceptionResponse = new ExceptionResponse(

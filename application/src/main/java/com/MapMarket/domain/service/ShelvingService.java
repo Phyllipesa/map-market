@@ -4,6 +4,7 @@ import com.MapMarket.application.rest.ShelvingRestAdapter;
 import com.MapMarket.application.rest.requestDto.ShelvingRequestDto;
 import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
+import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.models.ShelvingUnit;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
@@ -42,7 +43,7 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
   @Override
   public PagedModel<EntityModel<ShelvingResponseDto>> findAll(Pageable pageable) {
     Page<ShelvingUnit> allShelvingUnits = findAllOutput.findAll(pageable);
-    if (allShelvingUnits.isEmpty()) throw new ResourceNotFoundException("Shelving units not found!");
+    if (allShelvingUnits.isEmpty()) throw new ResourceNotFoundException(Constant.SHELVING_UNITS_NOT_FOUND);
 
     Page<ShelvingResponseDto> allShelvingDto = allShelvingUnits.map(
         p -> entityMapper.parseObject(p, ShelvingResponseDto.class));
@@ -64,7 +65,16 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public ShelvingResponseDto findById(Long id) {
-    return null;
+    ShelvingUnit shelvingUnit = outputPort.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.SHELVING_NOT_FOUND + id));
+
+    ShelvingResponseDto  shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
+    shelvingResponseDto.add(
+        linkTo(
+            methodOn(ShelvingRestAdapter.class)
+                .findById(shelvingResponseDto.getKey())
+        ).withSelfRel());
+    return shelvingResponseDto;
   }
 
   @Override

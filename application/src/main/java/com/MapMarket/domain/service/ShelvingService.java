@@ -1,17 +1,24 @@
 package com.MapMarket.domain.service;
 
+import com.MapMarket.application.rest.ShelvingRestAdapter;
 import com.MapMarket.application.rest.requestDto.ShelvingRequestDto;
 import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
+import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.models.ShelvingUnit;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
 import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.domain.ports.output.OutputPort;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResponseDto>, FindAllUseCase<ShelvingResponseDto> {
 
@@ -34,7 +41,25 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public PagedModel<EntityModel<ShelvingResponseDto>> findAll(Pageable pageable) {
-    return null;
+    Page<ShelvingUnit> allShelvingUnits = findAllOutput.findAll(pageable);
+    if (allShelvingUnits.isEmpty()) throw new ResourceNotFoundException("Shelving units not found!");
+
+    Page<ShelvingResponseDto> allShelvingDto = allShelvingUnits.map(
+        p -> entityMapper.parseObject(p, ShelvingResponseDto.class));
+
+    allShelvingDto.map(
+        p -> p.add(
+            linkTo(methodOn(ShelvingRestAdapter.class)
+                .findById(p.getKey())).withSelfRel()));
+
+    Link link = linkTo(
+        methodOn(ShelvingRestAdapter.class)
+            .findAll(
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+            )
+    ).withSelfRel();
+    return assembler.toModel(allShelvingDto, link);
   }
 
   @Override

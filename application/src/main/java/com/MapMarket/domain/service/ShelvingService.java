@@ -95,7 +95,16 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public ShelvingResponseDto update(Long id, ShelvingRequestDto shelvingRequestDto) {
-    return null;
+    shelvingValidator.validate(shelvingRequestDto);
+    findById(id);
+    ShelvingUnit shelvingUnit = outputPort.update(id, entityMapper.parseObject(shelvingRequestDto, ShelvingUnit.class));
+    ShelvingResponseDto shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
+    shelvingResponseDto.add(
+        linkTo(
+            methodOn(ShelvingRestAdapter.class)
+                .findById(shelvingResponseDto.getKey())
+        ).withSelfRel());
+    return shelvingResponseDto;
   }
 
   @Override

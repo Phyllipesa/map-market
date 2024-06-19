@@ -3,6 +3,7 @@ package com.MapMarket.infrastructure.adapters.output.persistence;
 import com.MapMarket.domain.models.ShelvingUnit;
 import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.domain.ports.output.OutputPort;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ShelvingUnitEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ShelvingRepository;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,8 @@ public class ShelvingPersistenceAdapter implements OutputPort<ShelvingUnit>, Fin
   @Override
   public Page<ShelvingUnit> findAll(Pageable pageable) {
     logger.info("Finding all shelving units!");
-    return null;
+    Page<ShelvingUnitEntity> page = shelvingRepository.findAll(pageable);
+    return page.map(p -> entityMapper.parseObject(p, ShelvingUnit.class));
   }
 
   @Override

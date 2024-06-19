@@ -23,7 +23,6 @@ public class ShelvingPersistenceAdapter implements OutputPort<ShelvingUnit>, Fin
     this.entityMapper = entityMapper;
   }
 
-
   @Override
   public Page<ShelvingUnit> findAll(Pageable pageable) {
     logger.info("Finding all shelving units!");
@@ -40,7 +39,8 @@ public class ShelvingPersistenceAdapter implements OutputPort<ShelvingUnit>, Fin
   @Override
   public Optional<ShelvingUnit> create(ShelvingUnit shelvingUnit) {
     logger.info("Creating a shelving unit!");
-    return Optional.empty();
+    ShelvingUnitEntity entity = entityMapper.parseObject(shelvingUnit, ShelvingUnitEntity.class);
+    return Optional.ofNullable(entityMapper.parseObject(shelvingRepository.save(entity), ShelvingUnit.class));
   }
 
   @Override

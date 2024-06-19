@@ -7,6 +7,7 @@ import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
 import com.MapMarket.domain.logic.CredentialsValidator;
 import com.MapMarket.domain.logic.ProductValidator;
 import com.MapMarket.domain.logic.RefreshCredentialsValidator;
+import com.MapMarket.domain.logic.ShelvingValidator;
 import com.MapMarket.domain.models.Location;
 import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.models.ShelvingUnit;
@@ -77,6 +78,11 @@ public class BeanConfig {
   @Bean
   public ProductValidator validationProduct() {
     return new ProductValidator();
+  }
+
+  @Bean
+  public ShelvingValidator shelvingValidator() {
+    return new ShelvingValidator();
   }
 
   @Bean
@@ -194,8 +200,9 @@ public class BeanConfig {
       OutputPort<ShelvingUnit> outputPort,
       FindAllOutput<ShelvingUnit> findAllOutput,
       PagedResourcesAssembler<ShelvingResponseDto> pagedResourcesAssembler,
+      ShelvingValidator shelvingValidator,
       EntityMapper entityMapper
   ) {
-    return new ShelvingService(outputPort, findAllOutput, pagedResourcesAssembler, entityMapper);
+    return new ShelvingService(outputPort, findAllOutput, pagedResourcesAssembler, shelvingValidator, entityMapper);
   }
 }

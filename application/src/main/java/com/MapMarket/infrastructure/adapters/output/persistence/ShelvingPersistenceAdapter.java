@@ -1,8 +1,10 @@
 package com.MapMarket.infrastructure.adapters.output.persistence;
 
+import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.models.ShelvingUnit;
 import com.MapMarket.domain.ports.output.FindAllOutput;
 import com.MapMarket.domain.ports.output.OutputPort;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ShelvingUnitEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ShelvingRepository;
@@ -46,11 +48,19 @@ public class ShelvingPersistenceAdapter implements OutputPort<ShelvingUnit>, Fin
   @Override
   public ShelvingUnit update(Long id, ShelvingUnit shelvingUnit) {
     logger.info("Updating a shelving unit!");
-    return null;
+    ShelvingUnitEntity entity = shelvingRepository.getReferenceById(id);
+    updateData(entity, shelvingUnit);
+    return entityMapper.parseObject(shelvingRepository.save(entity), ShelvingUnit.class);
   }
 
   @Override
   public void delete(Long id) {
     logger.info("Deleting a shelving unit!");
+  }
+
+  private void updateData(ShelvingUnitEntity entity, ShelvingUnit shelvingUnit) {
+    entity.setUnit(shelvingUnit.getUnit());
+    entity.setSideA(shelvingUnit.getSideA());
+    entity.setSideB(shelvingUnit.getSideB());
   }
 }

@@ -4,7 +4,9 @@ import com.MapMarket.application.rest.ShelvingRestAdapter;
 import com.MapMarket.application.rest.requestDto.ShelvingRequestDto;
 import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
+import com.MapMarket.domain.exception.ShelvingUnitCreationException;
 import com.MapMarket.domain.exception.constants.Constant;
+import com.MapMarket.domain.logic.ShelvingValidator;
 import com.MapMarket.domain.models.ShelvingUnit;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.UseCase;
@@ -26,17 +28,20 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
   private final OutputPort<ShelvingUnit> outputPort;
   private final FindAllOutput<ShelvingUnit> findAllOutput;
   private final PagedResourcesAssembler<ShelvingResponseDto> assembler;
+  private final ShelvingValidator shelvingValidator;
   private final EntityMapper entityMapper;
 
   public ShelvingService(
       OutputPort<ShelvingUnit> outputPort,
       FindAllOutput<ShelvingUnit> findAllOutput,
       PagedResourcesAssembler<ShelvingResponseDto> assembler,
+      ShelvingValidator shelvingValidator,
       EntityMapper entityMapper
   ) {
     this.outputPort = outputPort;
     this.findAllOutput = findAllOutput;
     this.assembler = assembler;
+    this.shelvingValidator = shelvingValidator;
     this.entityMapper = entityMapper;
   }
 
@@ -79,7 +84,13 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public ShelvingResponseDto create(ShelvingRequestDto shelvingRequestDto) {
-    return null;
+    shelvingValidator.validate(shelvingRequestDto);
+    ShelvingUnit shelvingUnit = outputPort.create(entityMapper.parseObject(shelvingRequestDto, ShelvingUnit.class))
+        .orElseThrow(() -> new ShelvingUnitCreationException(Constant.ERROR_CREATING_SHELVING_UNIT));
+
+    ShelvingResponseDto shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
+    shelvingResponseDto.add(linkTo(methodOn(ShelvingRestAdapter.class).create(null)).withSelfRel());
+    return shelvingResponseDto;
   }
 
   @Override

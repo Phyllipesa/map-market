@@ -3,27 +3,29 @@ package com.MapMarket.infrastructure.adapters.config;
 import com.MapMarket.application.rest.AuthRestAdapter;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.application.rest.responseDto.ProductResponseDto;
+import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
 import com.MapMarket.domain.logic.CredentialsValidator;
 import com.MapMarket.domain.logic.ProductValidator;
 import com.MapMarket.domain.logic.RefreshCredentialsValidator;
 import com.MapMarket.domain.models.Location;
 import com.MapMarket.domain.models.Product;
+import com.MapMarket.domain.models.ShelvingUnit;
 import com.MapMarket.domain.models.User;
 import com.MapMarket.domain.ports.output.*;
-import com.MapMarket.domain.service.AuthService;
-import com.MapMarket.domain.service.LocationService;
-import com.MapMarket.domain.service.ProductService;
-import com.MapMarket.domain.service.UserService;
+import com.MapMarket.domain.service.*;
 import com.MapMarket.domain.service.security.jwt.JwtTokenFilter;
 import com.MapMarket.domain.service.security.jwt.JwtTokenProvider;
 import com.MapMarket.infrastructure.adapters.output.persistence.LocationPersistenceAdapter;
 import com.MapMarket.infrastructure.adapters.output.persistence.ProductPersistenceAdapter;
+import com.MapMarket.infrastructure.adapters.output.persistence.ShelvingPersistenceAdapter;
 import com.MapMarket.infrastructure.adapters.output.persistence.UserPersistenceAdapter;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.LocationEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.ProductEntity;
+import com.MapMarket.infrastructure.adapters.output.persistence.entities.ShelvingUnitEntity;
 import com.MapMarket.infrastructure.adapters.output.persistence.mapper.EntityMapper;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.LocationRepository;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ProductRepository;
+import com.MapMarket.infrastructure.adapters.output.persistence.repositories.ShelvingRepository;
 import com.MapMarket.infrastructure.adapters.output.persistence.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +56,15 @@ public class BeanConfig {
     modelMapper.typeMap(Location.class, LocationResponseDto.class)
         .addMappings(mapper -> {
           mapper.map(Location::getId, LocationResponseDto::setKey);
+        });
+
+    modelMapper.typeMap(ShelvingUnitEntity.class, ShelvingUnit.class)
+        .addMappings(mapper -> {
+          mapper.map(ShelvingUnitEntity::getId, ShelvingUnit::setId);
+        });
+    modelMapper.typeMap(ShelvingUnit.class, ShelvingResponseDto.class)
+        .addMappings(mapper -> {
+          mapper.map(ShelvingUnit::getId, ShelvingResponseDto::setKey);
         });
     return modelMapper;
   }
@@ -168,5 +179,23 @@ public class BeanConfig {
       EntityMapper entityMapper
   ) {
     return new LocationService(outputPort, productOutputPort, findAllOutput, pagedResourcesAssembler, entityMapper);
+  }
+
+  @Bean
+  public ShelvingPersistenceAdapter shelvingPersistenceAdapter(
+      ShelvingRepository shelvingRepository,
+      EntityMapper entityMapper
+  ) {
+    return new ShelvingPersistenceAdapter(shelvingRepository, entityMapper);
+  }
+
+  @Bean
+  public ShelvingService shelvingService(
+      OutputPort<ShelvingUnit> outputPort,
+      FindAllOutput<ShelvingUnit> findAllOutput,
+      PagedResourcesAssembler<ShelvingResponseDto> pagedResourcesAssembler,
+      EntityMapper entityMapper
+  ) {
+    return new ShelvingService(outputPort, findAllOutput, pagedResourcesAssembler, entityMapper);
   }
 }

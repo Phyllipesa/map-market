@@ -4,6 +4,7 @@ import com.MapMarket.application.rest.LocationRestAdapter;
 import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
+import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.models.Location;
 import com.MapMarket.domain.models.Product;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
@@ -30,7 +31,13 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   private final PagedResourcesAssembler<LocationResponseDto> assembler;
   private final EntityMapper entityMapper;
 
-  public LocationService(LocationOutputPort<Location> outputPort, OutputPort<Product> productOutputPort, FindAllOutput<Location> findAllOutput, PagedResourcesAssembler<LocationResponseDto> assembler, EntityMapper entityMapper) {
+  public LocationService(
+      LocationOutputPort<Location> outputPort,
+      OutputPort<Product> productOutputPort,
+      FindAllOutput<Location> findAllOutput,
+      PagedResourcesAssembler<LocationResponseDto> assembler,
+      EntityMapper entityMapper
+  ) {
     this.outputPort = outputPort;
     this.productOutputPort = productOutputPort;
     this.findAllOutput = findAllOutput;
@@ -41,7 +48,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   @Override
   public PagedModel<EntityModel<LocationResponseDto>> findAll(Pageable pageable) {
     Page<Location> allLocations = findAllOutput.findAll(pageable);
-    if (allLocations.isEmpty()) throw new ResourceNotFoundException("No locations found");
+    if (allLocations.isEmpty()) throw new ResourceNotFoundException(Constant.LOCATIONS_NOT_FOUND);
 
     Page<LocationResponseDto> allLocationResponseDto = allLocations.map(
         p -> entityMapper.parseObject(p, LocationResponseDto.class));
@@ -64,7 +71,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   @Override
   public LocationResponseDto findById(Long id) {
     Location location = outputPort.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("No register with id " + id));
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + id));
 
     LocationResponseDto locationDto = entityMapper.parseObject(location, LocationResponseDto.class);
     locationDto.add(linkTo(methodOn(LocationRestAdapter.class).findById(id)).withSelfRel());
@@ -74,7 +81,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   @Override
   public LocationResponseDto findLocationByProductId(Long id) {
     Location location = outputPort.findLocationByProductId(id)
-        .orElseThrow(() -> new ResourceNotFoundException("No product registered with id " + id));
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.ERROR_PRODUCT_IN_LOCATION_NOT_FOUND + id));
 
     LocationResponseDto locationDto = entityMapper.parseObject(location, LocationResponseDto.class);
     locationDto.add(linkTo(methodOn(LocationRestAdapter.class).findLocationByProductId(id)).withSelfRel());
@@ -85,7 +92,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   public LocationResponseDto create(LocationRequestDto locationRequestDto) {
     Location location = entityMapper.parseObject(locationRequestDto, Location.class);
     Location  locationSaved = outputPort.create(location)
-        .orElseThrow(() -> new ResourceNotFoundException("Error saving location"));
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.ERROR_CREATING_LOCATION));
 
     LocationResponseDto locationDto = entityMapper.parseObject(locationSaved, LocationResponseDto.class);
     locationDto.add(linkTo(methodOn(LocationRestAdapter.class).create(null)).withSelfRel());
@@ -95,10 +102,10 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   @Override
   public LocationResponseDto update(Long locationId, Long productId) {
     Location location =  outputPort.findById(locationId)
-        .orElseThrow(() -> new ResourceNotFoundException("No location with id " + locationId));
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + locationId));
 
     Product product =  productOutputPort.findById(productId)
-        .orElseThrow(() -> new ResourceNotFoundException("No product found with id " + productId));
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.PRODUCT_NOT_FOUND + productId));
 
     location.setProduct(product);
 
@@ -110,7 +117,7 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   @Override
   public LocationResponseDto unsubscribingProduct(Long locationId) {
    outputPort.findById(locationId)
-       .orElseThrow(() -> new ResourceNotFoundException("No location with id " + locationId));
+       .orElseThrow(() -> new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + locationId));
 
     LocationResponseDto locationDto = entityMapper.parseObject(outputPort.unsubscribingProduct(locationId), LocationResponseDto.class);
     locationDto.add(linkTo(methodOn(LocationRestAdapter.class).unsubscribingProduct(locationId)).withSelfRel());

@@ -19,7 +19,10 @@ public class ProductRestAdapter {
   private final UseCase<ProductRequestDto, ProductResponseDto> useCase;
   private final FindAllUseCase<ProductResponseDto> findAllUseCase;
 
-  public ProductRestAdapter(UseCase<ProductRequestDto, ProductResponseDto> useCase, FindAllUseCase<ProductResponseDto> findAllUseCase) {
+  public ProductRestAdapter(
+      UseCase<ProductRequestDto, ProductResponseDto> useCase,
+      FindAllUseCase<ProductResponseDto> findAllUseCase
+  ) {
     this.findAllUseCase = findAllUseCase;
     this.useCase = useCase;
   }
@@ -35,7 +38,7 @@ public class ProductRestAdapter {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProductResponseDto> findById(@PathVariable(value = "id")Long id) {
+  public ResponseEntity<ProductResponseDto> findById(@PathVariable Long id) {
     return ResponseEntity.ok(useCase.findById(id));
   }
 
@@ -45,12 +48,12 @@ public class ProductRestAdapter {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProductResponseDto> update(@PathVariable(value = "id")Long id, @RequestBody ProductRequestDto productDto) {
+  public ResponseEntity<ProductResponseDto> update(@PathVariable Long id, @RequestBody ProductRequestDto productDto) {
     return ResponseEntity.ok(useCase.update(id, productDto));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<ProductResponseDto> delete(@PathVariable(value = "id")Long id) {
+  public ResponseEntity<ProductResponseDto> delete(@PathVariable Long id) {
     useCase.delete(id);
     return ResponseEntity.noContent().build();
   }

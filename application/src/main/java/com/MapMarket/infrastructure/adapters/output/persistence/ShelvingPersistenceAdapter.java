@@ -34,7 +34,7 @@ public class ShelvingPersistenceAdapter implements OutputPort<ShelvingUnit>, Fin
   @Override
   public Optional<ShelvingUnit> findById(Long id) {
     logger.info("Finding a shelving unit by Id!");
-    return Optional.empty();
+    return Optional.ofNullable(entityMapper.parseObject(shelvingRepository.findById(id), ShelvingUnit.class));
   }
 
   @Override

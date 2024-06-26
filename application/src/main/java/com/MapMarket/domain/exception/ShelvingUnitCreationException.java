@@ -7,7 +7,6 @@ import java.io.Serial;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class ShelvingUnitCreationException  extends RuntimeException {
-
   @Serial
   private static final long serialVersionUID = 1L;
 

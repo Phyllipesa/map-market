@@ -7,7 +7,6 @@ import java.io.Serial;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class NegativePriceException extends RuntimeException {
-
   @Serial
   private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,5 @@
 package com.MapMarket.application.rest;
 
-import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
 import com.MapMarket.domain.ports.input.FindAllUseCase;
 import com.MapMarket.domain.ports.input.LocationUseCase;
@@ -16,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/location")
 public class LocationRestAdapter {
 
-  private final LocationUseCase<LocationRequestDto, LocationResponseDto> useCase;
+  private final LocationUseCase<LocationResponseDto> useCase;
   private final FindAllUseCase<LocationResponseDto> findAllUseCase;
 
   public LocationRestAdapter(
-      LocationUseCase<LocationRequestDto, LocationResponseDto> useCase,
+      LocationUseCase<LocationResponseDto> useCase,
       FindAllUseCase<LocationResponseDto> findAllUseCase
   ) {
     this.useCase = useCase;
@@ -47,24 +46,13 @@ public class LocationRestAdapter {
     return ResponseEntity.ok(useCase.findLocationByProductId(id));
   }
 
-  @PostMapping
-  public ResponseEntity<LocationResponseDto> create(@RequestBody LocationRequestDto locationRequestDto) {
-    return ResponseEntity.ok(useCase.create(locationRequestDto));
-  }
-
   @PutMapping("/{locationId}/{productId}")
-  public ResponseEntity<LocationResponseDto> update(@PathVariable Long locationId, @PathVariable Long productId) {
-    return ResponseEntity.ok(useCase.update(locationId, productId));
+  public ResponseEntity<LocationResponseDto> subscribingProduct(@PathVariable Long locationId, @PathVariable Long productId) {
+    return ResponseEntity.ok(useCase.subscribingProduct(locationId, productId));
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<LocationResponseDto> unsubscribingProduct(@PathVariable Long id) {
     return ResponseEntity.ok(useCase.unsubscribingProduct(id));
-  }
-
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable(value = "id")Long id) {
-    useCase.delete(id);
-    return ResponseEntity.noContent().build();
   }
 }

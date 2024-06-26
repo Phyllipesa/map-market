@@ -91,8 +91,9 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
 
   @Override
   public ProductResponseDto update(Long id, ProductRequestDto productRequestDto) {
+    existResource(id);
     productValidator.validate(productRequestDto);
-    findById(id);
+
     Product product =  outputPort.update(id, entityMapper.parseObject(productRequestDto, Product.class));
     ProductResponseDto productDto = entityMapper.parseObject(product, ProductResponseDto.class);
     productDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(productDto.getKey())).withSelfRel());
@@ -101,7 +102,13 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
 
   @Override
   public void delete(Long id) {
-    findById(id);
+    existResource(id);
     outputPort.delete(id);
+  }
+
+  private void existResource(Long id) {
+    if (outputPort.existResource(id)) {
+      throw  new ResourceNotFoundException(Constant.PRODUCT_NOT_FOUND + id);
+    }
   }
 }

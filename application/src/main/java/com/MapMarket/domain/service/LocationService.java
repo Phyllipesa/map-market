@@ -1,8 +1,8 @@
 package com.MapMarket.domain.service;
 
 import com.MapMarket.application.rest.LocationRestAdapter;
-import com.MapMarket.application.rest.requestDto.LocationRequestDto;
 import com.MapMarket.application.rest.responseDto.LocationResponseDto;
+import com.MapMarket.domain.exception.ProductAlreadyAssignedException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.exception.constants.Constant;
 import com.MapMarket.domain.models.Location;
@@ -23,7 +23,7 @@ import org.springframework.hateoas.PagedModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-public class LocationService implements LocationUseCase<LocationRequestDto, LocationResponseDto>, FindAllUseCase<LocationResponseDto> {
+public class LocationService implements LocationUseCase<LocationResponseDto>, FindAllUseCase<LocationResponseDto> {
 
   private final LocationOutputPort<Location> outputPort;
   private final OutputPort<Product> productOutputPort;
@@ -89,18 +89,8 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
   }
 
   @Override
-  public LocationResponseDto create(LocationRequestDto locationRequestDto) {
-    Location location = entityMapper.parseObject(locationRequestDto, Location.class);
-    Location  locationSaved = outputPort.create(location)
-        .orElseThrow(() -> new ResourceNotFoundException(Constant.ERROR_CREATING_LOCATION));
-
-    LocationResponseDto locationDto = entityMapper.parseObject(locationSaved, LocationResponseDto.class);
-    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).create(null)).withSelfRel());
-    return entityMapper.parseObject(outputPort.create(locationSaved), LocationResponseDto.class);
-  }
-
-  @Override
-  public LocationResponseDto update(Long locationId, Long productId) {
+  public LocationResponseDto subscribingProduct(Long locationId, Long productId) {
+    existLocationWithProduct(productId);
     Location location =  outputPort.findById(locationId)
         .orElseThrow(() -> new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + locationId));
 
@@ -109,24 +99,26 @@ public class LocationService implements LocationUseCase<LocationRequestDto, Loca
 
     location.setProduct(product);
 
-    LocationResponseDto locationDto = entityMapper.parseObject(outputPort.update(location), LocationResponseDto.class);
-    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).update(locationId, productId)).withSelfRel());
+    LocationResponseDto locationDto = entityMapper.parseObject(outputPort.subscribingProduct(location), LocationResponseDto.class);
+    locationDto.add(linkTo(methodOn(LocationRestAdapter.class).subscribingProduct(locationId, productId)).withSelfRel());
     return locationDto;
   }
 
   @Override
   public LocationResponseDto unsubscribingProduct(Long locationId) {
-   outputPort.findById(locationId)
-       .orElseThrow(() -> new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + locationId));
-
+    existResource(locationId);
     LocationResponseDto locationDto = entityMapper.parseObject(outputPort.unsubscribingProduct(locationId), LocationResponseDto.class);
     locationDto.add(linkTo(methodOn(LocationRestAdapter.class).unsubscribingProduct(locationId)).withSelfRel());
     return locationDto;
   }
 
-  @Override
-  public void delete(Long locationId) {
-    findById(locationId);
-    outputPort.delete(locationId);
+  private void existResource(Long id) {
+    if (!outputPort.existResource(id))
+      throw new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + id);
+  }
+
+  private void existLocationWithProduct(Long id) {
+    if (outputPort.existLocationWithProduct(id))
+      throw new ProductAlreadyAssignedException(Constant.THIS_PRODUCT_IS_ALREADY_REGISTERED);
   }
 }

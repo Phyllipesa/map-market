@@ -37,37 +37,34 @@ public class LocationPersistenceAdapter implements LocationOutputPort<Location>,
     return Optional.ofNullable(entityMapper.parseObject(locationRepository.findById(id), Location.class));
   }
 
+  @Override
   public Optional<Location> findLocationByProductId(Long id) {
     logger.info("Finding a register by product id!");
     return Optional.ofNullable(entityMapper.parseObject(locationRepository.findLocationByProductId(id), Location.class));
   }
 
   @Override
-  public Optional<Location> create(Location location) {
-    logger.info("Register a product!");
-    LocationEntity  locationEntity = entityMapper.parseObject(location, LocationEntity.class);
-    return Optional.ofNullable(entityMapper.parseObject(locationRepository.save(locationEntity), Location.class));
-  }
-
-  @Override
-  public Location update(Location location) {
-    logger.info("Updating a product location!");
+  public Location subscribingProduct(Location location) {
+    logger.info("Subscribing a product location!");
     LocationEntity  locationEntity = entityMapper.parseObject(location, LocationEntity.class);
     return entityMapper.parseObject(locationRepository.save(locationEntity), Location.class);
   }
 
   @Override
   public Location unsubscribingProduct(Long id) {
-    logger.info("Unsubscribing a product in location!");
+    logger.info("Unsubscribing a product in location! " + id);
     LocationEntity locationEntity = locationRepository.findById(id).get();
     locationEntity.setProduct(null);
     return entityMapper.parseObject(locationRepository.save(locationEntity), Location.class);
   }
 
-
   @Override
-  public void delete(Long locationId) {
-    logger.info("Deleting a location!");
-    locationRepository.delete(locationRepository.findById(locationId).get());
+  public boolean existLocationWithProduct(Long id) {
+    return locationRepository.existLocationWithProduct(id);
+  }
+
+  public boolean existResource(Long id) {
+    logger.info("Verify...");
+    return locationRepository.existsById(id);
   }
 }

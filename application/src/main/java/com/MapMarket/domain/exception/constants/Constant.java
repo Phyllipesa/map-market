@@ -14,6 +14,7 @@ public class Constant {
   public static final String PRODUCT_NOT_FOUND = "Product not found with id ";
   public static final String LOCATION_NOT_FOUND = "Location not found with id ";
   public static final String SHELVING_NOT_FOUND = "Shelving not found with id ";
+
   public static final double D_2 = 0.0;
   public static final int INT = 0;
 

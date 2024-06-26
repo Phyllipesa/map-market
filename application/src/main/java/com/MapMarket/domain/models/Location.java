@@ -8,7 +8,6 @@ public class Location implements Serializable {
 
   @Serial
   private static final long serialVersionUID = 1L;
-
   private Long id;
   private Long shelvingUnitId;
   private String side;

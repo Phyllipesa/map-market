@@ -73,7 +73,7 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
     ShelvingUnit shelvingUnit = outputPort.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException(Constant.SHELVING_NOT_FOUND + id));
 
-    ShelvingResponseDto  shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
+    ShelvingResponseDto shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
     shelvingResponseDto.add(
         linkTo(
             methodOn(ShelvingRestAdapter.class)
@@ -95,8 +95,8 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public ShelvingResponseDto update(Long id, ShelvingRequestDto shelvingRequestDto) {
+    existShelvingUnit(id);
     shelvingValidator.validate(shelvingRequestDto);
-    findById(id);
     ShelvingUnit shelvingUnit = outputPort.update(id, entityMapper.parseObject(shelvingRequestDto, ShelvingUnit.class));
     ShelvingResponseDto shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
     shelvingResponseDto.add(
@@ -109,6 +109,12 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public void delete(Long id) {
+    existShelvingUnit(id);
+    outputPort.delete(id);
+  }
 
+  private void existShelvingUnit(Long id) {
+    outputPort.findById(id)
+        .orElseThrow(() -> new ResourceNotFoundException(Constant.SHELVING_NOT_FOUND + id));
   }
 }

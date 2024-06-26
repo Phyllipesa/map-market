@@ -3,6 +3,7 @@ package com.MapMarket.domain.service;
 import com.MapMarket.application.rest.ShelvingRestAdapter;
 import com.MapMarket.application.rest.requestDto.ShelvingRequestDto;
 import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
+import com.MapMarket.domain.exception.ProductAlreadyAssignedException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.exception.ShelvingUnitCreationException;
 import com.MapMarket.domain.exception.constants.Constant;
@@ -95,7 +96,7 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public ShelvingResponseDto update(Long id, ShelvingRequestDto shelvingRequestDto) {
-    existShelvingUnit(id);
+    existResource(id);
     shelvingValidator.validate(shelvingRequestDto);
     ShelvingUnit shelvingUnit = outputPort.update(id, entityMapper.parseObject(shelvingRequestDto, ShelvingUnit.class));
     ShelvingResponseDto shelvingResponseDto = entityMapper.parseObject(shelvingUnit, ShelvingResponseDto.class);
@@ -109,12 +110,12 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
 
   @Override
   public void delete(Long id) {
-    existShelvingUnit(id);
+    existResource(id);
     outputPort.delete(id);
   }
 
-  private void existShelvingUnit(Long id) {
-    outputPort.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException(Constant.SHELVING_NOT_FOUND + id));
+  private void existResource(Long id) {
+    if (outputPort.existResource(id))
+      throw new ProductAlreadyAssignedException(Constant.SHELVING_UNITS_NOT_FOUND + id);
   }
 }

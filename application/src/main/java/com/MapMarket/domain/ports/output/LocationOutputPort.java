@@ -5,8 +5,8 @@ import java.util.Optional;
 public interface LocationOutputPort<T> {
   Optional<T> findById(Long id);
   Optional<T> findLocationByProductId(Long id);
-  Optional<T> create(T t);
-  T update(T t);
+  T subscribingProduct(T t);
   T unsubscribingProduct(Long id);
-  void delete(Long id);
+  boolean existLocationWithProduct(Long id);
+  boolean existResource(Long id);
 }

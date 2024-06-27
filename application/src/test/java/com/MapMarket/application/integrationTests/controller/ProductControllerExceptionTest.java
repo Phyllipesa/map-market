@@ -209,7 +209,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
     var content =
         given().spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .pathParam("id", 85)
+            .pathParam("id", 200)
             .when()
             .get("{id}")
             .then()
@@ -220,7 +220,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Product not found with id 85"));
+    assertTrue(content.contains("Product not found with id 200"));
   }
 
   @Test

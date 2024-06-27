@@ -65,6 +65,6 @@ public class ProductPersistenceAdapter implements OutputPort<Product>, FindAllOu
 
   public boolean existResource(Long id) {
     logger.info("Exist resource...");
-    return !productRepository.existsById(id);
+    return productRepository.existsById(id);
   }
 }

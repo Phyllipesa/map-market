@@ -107,7 +107,7 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
   }
 
   private void existResource(Long id) {
-    if (outputPort.existResource(id)) {
+    if (!outputPort.existResource(id)) {
       throw  new ResourceNotFoundException(Constant.PRODUCT_NOT_FOUND + id);
     }
   }

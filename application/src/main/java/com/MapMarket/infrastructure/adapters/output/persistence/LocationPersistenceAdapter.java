@@ -59,12 +59,20 @@ public class LocationPersistenceAdapter implements LocationOutputPort<Location>,
   }
 
   @Override
+  public boolean existResource(Long id) {
+    logger.info("Verificando se existe location com o id " + id);
+    return locationRepository.existsById(id);
+  }
+
+  @Override
   public boolean existLocationWithProduct(Long id) {
+    logger.info("Verificando se já existe location com o product id " + id);
     return locationRepository.existLocationWithProduct(id);
   }
 
-  public boolean existResource(Long id) {
-    logger.info("Verify...");
-    return locationRepository.existsById(id);
+  @Override
+  public boolean existProductInLocation(Long id) {
+    logger.info("Verificando se já existe um produto registrado na location " + id);
+    return locationRepository.existProductInLocation(id);
   }
 }

@@ -115,7 +115,7 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
   }
 
   private void existResource(Long id) {
-    if (outputPort.existResource(id))
+    if (!outputPort.existResource(id))
       throw new ProductAlreadyAssignedException(Constant.SHELVING_UNITS_NOT_FOUND + id);
   }
 }

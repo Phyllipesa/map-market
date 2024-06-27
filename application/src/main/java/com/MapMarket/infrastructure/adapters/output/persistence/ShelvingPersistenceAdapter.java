@@ -65,6 +65,6 @@ public class ShelvingPersistenceAdapter implements OutputPort<ShelvingUnit>, Fin
 
   public boolean existResource(Long id) {
     logger.info("Exist resource...");
-    return !shelvingRepository.existsById(id);
+    return shelvingRepository.existsById(id);
   }
 }

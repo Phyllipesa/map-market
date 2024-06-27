@@ -91,6 +91,7 @@ public class LocationService implements LocationUseCase<LocationResponseDto>, Fi
   @Override
   public LocationResponseDto subscribingProduct(Long locationId, Long productId) {
     existLocationWithProduct(productId);
+    existProductInLocation(locationId);
     Location location =  outputPort.findById(locationId)
         .orElseThrow(() -> new ResourceNotFoundException(Constant.LOCATION_NOT_FOUND + locationId));
 
@@ -120,5 +121,10 @@ public class LocationService implements LocationUseCase<LocationResponseDto>, Fi
   private void existLocationWithProduct(Long id) {
     if (outputPort.existLocationWithProduct(id))
       throw new ProductAlreadyAssignedException(Constant.THIS_PRODUCT_IS_ALREADY_REGISTERED);
+  }
+
+  private void existProductInLocation(Long id) {
+    if (outputPort.existProductInLocation(id))
+      throw new ProductAlreadyAssignedException(Constant.THIS_LOCATION_WITH_PRODUCT_REGISTERED + id);
   }
 }

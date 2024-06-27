@@ -9,4 +9,5 @@ public interface LocationOutputPort<T> {
   T unsubscribingProduct(Long id);
   boolean existLocationWithProduct(Long id);
   boolean existResource(Long id);
+  boolean existProductInLocation(Long id);
 }

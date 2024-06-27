@@ -18,4 +18,7 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Long> 
 
   @Query("SELECT COUNT(l) > 0 FROM LocationEntity l WHERE l.product.id = :productId")
   boolean existLocationWithProduct(@Param("productId") Long productId);
+
+  @Query("SELECT COUNT(l) > 0 FROM LocationEntity l WHERE l.id = :locationId AND l.product IS NOT NULL")
+  boolean existProductInLocation(@Param("locationId") Long locationId);
 }

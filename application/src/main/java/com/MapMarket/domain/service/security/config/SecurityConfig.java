@@ -5,6 +5,7 @@ import com.MapMarket.domain.service.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,13 +17,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 
-  private Logger logger = Logger.getLogger(SecurityConfig.class.getName());
   @Autowired
   private JwtTokenProvider tokenProvider;
 
@@ -40,7 +39,6 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     JwtTokenFilter customFilter = new JwtTokenFilter(tokenProvider);
-    logger.info("Security 1");
 
     return http
         .httpBasic(basic -> basic.disable())
@@ -50,11 +48,35 @@ public class SecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers("/auth/signin",
+                .requestMatchers(
+                    "/auth/signin",
                     "/auth/refresh/**",
                     "/swagger-ui/**",
-                    "/v3/api-docs/**"
-                ).permitAll()
+                    "/v3/api-docs/**").permitAll()
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/v1/location",
+                    "/api/v1/location/**",
+                    "/api/v1/product",
+                    "/api/v1/product/**",
+                    "/api/v1/shelvingUnit",
+                    "/api/v1/shelvingUnit/**").hasAnyRole("COMMON_USER", "MANAGER", "ADMIN")
+                .requestMatchers(
+                    HttpMethod.PUT,
+                    "/api/v1/location/{locationId}/{productId}",
+                    "/api/v1/location/{id}").hasRole("ADMIN")
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/api/v1/product",
+                    "/api/v1/shelvingUnit").hasAnyRole("MANAGER", "ADMIN")
+                .requestMatchers(
+                    HttpMethod.PUT,
+                    "/api/v1/product/{id}",
+                    "/api/v1/shelvingUnit/{id}").hasAnyRole("MANAGER", "ADMIN")
+                .requestMatchers(
+                    HttpMethod.DELETE,
+                    "/api/v1/product/{id}",
+                    "/api/v1/shelvingUnit/{id}").hasRole("ADMIN")
                 .requestMatchers("/api/**").authenticated()
                 .requestMatchers("/users").denyAll()
         )

@@ -2,6 +2,7 @@ package com.MapMarket.domain.models;
 
 import com.MapMarket.infrastructure.adapters.output.persistence.entities.PermissionEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class User implements UserDetails, Serializable {
@@ -40,7 +42,9 @@ public class User implements UserDetails, Serializable {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return null;
+    return this.permissions.stream()
+        .map(permission -> new SimpleGrantedAuthority("ROLE_" + permission.getDescription()))
+        .collect(Collectors.toList());
   }
 
   @Override

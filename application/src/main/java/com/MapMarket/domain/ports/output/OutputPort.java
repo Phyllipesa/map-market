@@ -8,4 +8,5 @@ public interface OutputPort<T> {
   Optional<T> create(T t);
   T update(Long id, T t);
   void delete(Long id);
+  boolean existResource(Long id);
 }

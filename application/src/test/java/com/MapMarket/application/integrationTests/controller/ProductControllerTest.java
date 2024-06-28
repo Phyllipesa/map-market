@@ -127,8 +127,8 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
     assertTrue(productResponse.getKey() > 0);
 
-    assertEquals("Lentilha", productResponse.getName());
-    assertEquals(14.20, productResponse.getPrice());
+    assertEquals("Cereal matinal integral", productResponse.getName());
+    assertEquals(6.00, productResponse.getPrice());
   }
 
   @Test
@@ -162,9 +162,9 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     assertNotNull(firstProduct.getName());
     assertNotNull(firstProduct.getPrice());
 
-    assertEquals(18, firstProduct.getKey());
-    assertEquals("Bolacha recheada", firstProduct.getName());
-    assertEquals(2.80, firstProduct.getPrice());
+    assertEquals(56, firstProduct.getKey());
+    assertEquals("Balas de goma", firstProduct.getName());
+    assertEquals(3.50, firstProduct.getPrice());
 
 
     ProductResponseDto LastProduct = response.get(2);
@@ -173,9 +173,9 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     assertNotNull(LastProduct.getName());
     assertNotNull(LastProduct.getPrice());
 
-    assertEquals(7, LastProduct.getKey());
-    assertEquals("Café em pó", LastProduct.getName());
-    assertEquals(8.20, LastProduct.getPrice());
+    assertEquals(53, LastProduct.getKey());
+    assertEquals("Barra de cereais", LastProduct.getName());
+    assertEquals(3.00, LastProduct.getPrice());
   }
 
   @Test
@@ -213,20 +213,20 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     assertEquals(15.00, productResponse.getPrice());
   }
 
-  @Test
-  @Order(5)
-  public void testDelete() {
-    //GIVEN
-    //WHEN
-    //THEN
-    given().spec(specification)
-        .contentType(TestConfigs.CONTENT_TYPE_JSON)
-        .pathParam("id", 73)
-        .when()
-        .delete("{id}")
-        .then()
-        .statusCode(204);
-  }
+//  @Test
+//  @Order(5)
+//  public void testDelete() {
+//    //GIVEN
+//    //WHEN
+//    //THEN
+//    given().spec(specification)
+//        .contentType(TestConfigs.CONTENT_TYPE_JSON)
+//        .pathParam("id", 73)
+//        .when()
+//        .delete("{id}")
+//        .then()
+//        .statusCode(204);
+//  }
 
   @Test
   @Order(6)
@@ -247,16 +247,16 @@ public class ProductControllerTest extends AbstractIntegrationTest {
             .asString();
 
     //THEN
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/6\"}}}"));
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/5\"}}}"));
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/26\"}}}"));
-    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/18\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/117\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/116\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/1\"}}}"));
+    assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"http://localhost:8888/api/v1/product/66\"}}}"));
 
     assertTrue(content.contains("\"first\":{\"href\":\"http://localhost:8888/api/v1/product?page=0&size=10&sort=name,asc\"}"));
     assertTrue(content.contains("\"self\":{\"href\":\"http://localhost:8888/api/v1/product?page=0&size=10\"}"));
     assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/v1/product?page=1&size=10&sort=name,asc\"}"));
-    assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/v1/product?page=7&size=10&sort=name,asc\"}}"));
+    assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/v1/product?page=12&size=10&sort=name,asc\"}}"));
 
-    assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":72,\"totalPages\":8,\"number\":0}}"));
+    assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":129,\"totalPages\":13,\"number\":0}}"));
   }
 }

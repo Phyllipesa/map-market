@@ -31,7 +31,13 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
   private final PagedResourcesAssembler<ProductResponseDto> assembler;
   private final EntityMapper entityMapper;
 
-  public ProductService(OutputPort<Product> outputPort, FindAllOutput<Product> findAllOutput, ProductValidator productValidator, PagedResourcesAssembler<ProductResponseDto> assembler, EntityMapper entityMapper) {
+  public ProductService(
+      OutputPort<Product> outputPort,
+      FindAllOutput<Product> findAllOutput,
+      ProductValidator productValidator,
+      PagedResourcesAssembler<ProductResponseDto> assembler,
+      EntityMapper entityMapper
+  ) {
     this.findAllOutput = findAllOutput;
     this.assembler = assembler;
     this.outputPort = outputPort;
@@ -42,7 +48,7 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
   @Override
   public PagedModel<EntityModel<ProductResponseDto>> findAll(Pageable pageable) {
     Page<Product> allProducts = findAllOutput.findAll(pageable);
-    if (allProducts.isEmpty()) throw new ResourceNotFoundException("Não foram encontrados produtos");
+    if (allProducts.isEmpty()) throw new ResourceNotFoundException(Constant.PRODUCTS_NOT_FOUND);
 
     Page<ProductResponseDto> allProductsDto = allProducts.map(
         p -> entityMapper.parseObject(p, ProductResponseDto.class));
@@ -85,8 +91,9 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
 
   @Override
   public ProductResponseDto update(Long id, ProductRequestDto productRequestDto) {
+    existResource(id);
     productValidator.validate(productRequestDto);
-    findById(id);
+
     Product product =  outputPort.update(id, entityMapper.parseObject(productRequestDto, Product.class));
     ProductResponseDto productDto = entityMapper.parseObject(product, ProductResponseDto.class);
     productDto.add(linkTo(methodOn(ProductRestAdapter.class).findById(productDto.getKey())).withSelfRel());
@@ -95,7 +102,13 @@ public class ProductService implements UseCase<ProductRequestDto, ProductRespons
 
   @Override
   public void delete(Long id) {
-    findById(id);
+    existResource(id);
     outputPort.delete(id);
+  }
+
+  private void existResource(Long id) {
+    if (!outputPort.existResource(id)) {
+      throw  new ResourceNotFoundException(Constant.PRODUCT_NOT_FOUND + id);
+    }
   }
 }

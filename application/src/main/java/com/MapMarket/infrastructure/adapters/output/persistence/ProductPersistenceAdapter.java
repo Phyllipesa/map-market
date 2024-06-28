@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class ProductPersistenceAdapter implements OutputPort<Product>, FindAllOutput<Product> {
 
-  private Logger logger = Logger.getLogger(ProductPersistenceAdapter.class.getName());
+  private final Logger logger = Logger.getLogger(ProductPersistenceAdapter.class.getName());
   private final ProductRepository productRepository;
   private final EntityMapper entityMapper;
 
@@ -55,11 +55,16 @@ public class ProductPersistenceAdapter implements OutputPort<Product>, FindAllOu
   @Override
   public void delete(Long id) {
     logger.info("Deleting a product!");
-    productRepository.delete(productRepository.findById(id).get());
+    productRepository.deleteById(id);
   }
 
   private void updateData(ProductEntity entity, Product product) {
     entity.setName(product.getName());
     entity.setPrice(product.getPrice());
+  }
+
+  public boolean existResource(Long id) {
+    logger.info("Exist resource...");
+    return productRepository.existsById(id);
   }
 }

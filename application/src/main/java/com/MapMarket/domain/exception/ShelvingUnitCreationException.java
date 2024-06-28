@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.Serial;
 
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class InvalidCredentialsException extends RuntimeException {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ShelvingUnitCreationException  extends RuntimeException {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  public InvalidCredentialsException(String message) {
-    super(message);
+  public ShelvingUnitCreationException(String e) {
+    super(e);
   }
 }

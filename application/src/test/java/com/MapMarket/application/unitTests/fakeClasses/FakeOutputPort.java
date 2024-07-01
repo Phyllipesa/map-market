@@ -39,11 +39,11 @@ public class FakeOutputPort implements OutputPort<Product> {
 
   @Override
   public void delete(Long id) {
-    findById(id);
+
   }
 
   @Override
   public boolean existResource(Long id) {
-    return false;
+    return id == 1;
   }
 }

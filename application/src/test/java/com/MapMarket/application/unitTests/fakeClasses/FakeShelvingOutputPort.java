@@ -15,7 +15,6 @@ public class FakeShelvingOutputPort implements OutputPort<ShelvingUnit> {
   public Optional<ShelvingUnit> findById(Long id) {
     if (id == 1) {
       ShelvingUnit shelvingUnit = mockShelving.mockModel();
-      shelvingUnit.setId(1L);
       return Optional.of(shelvingUnit);
     }
     return Optional.empty();

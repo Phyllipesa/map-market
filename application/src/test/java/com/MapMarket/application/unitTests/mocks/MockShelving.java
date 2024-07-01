@@ -3,33 +3,19 @@ package com.MapMarket.application.unitTests.mocks;
 import com.MapMarket.application.rest.requestDto.ShelvingRequestDto;
 import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
 import com.MapMarket.domain.models.ShelvingUnit;
-import com.MapMarket.infrastructure.adapters.output.persistence.entities.ShelvingUnitEntity;
 
 public class MockShelving {
 
-  public ShelvingUnitEntity mockEntity() {
-    return mockEntity(0);
-  }
-
   public ShelvingUnit mockModel() {
-    return mockModel(0);
+    return mockModel(1);
   }
 
   public ShelvingRequestDto mockRequestDto() {
-    return  mockRequestDto(0);
+    return  mockRequestDto(1);
   }
 
   public ShelvingResponseDto mockResponseDto() {
-    return mockResponseDto(0);
-  }
-
-  public ShelvingUnitEntity mockEntity(Integer number) {
-    ShelvingUnitEntity shelvingUnit = new ShelvingUnitEntity();
-    shelvingUnit.setId(number.longValue());
-    shelvingUnit.setUnit(number.longValue());
-    shelvingUnit.setSideA("Test side A");
-    shelvingUnit.setSideB("Test side B");
-    return shelvingUnit;
+    return mockResponseDto(1);
   }
 
   public ShelvingUnit mockModel(Integer number) {

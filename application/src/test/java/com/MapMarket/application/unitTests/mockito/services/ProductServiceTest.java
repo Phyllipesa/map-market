@@ -50,7 +50,7 @@ class ProductServiceTest {
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test0", result.getName());
+    assertEquals("Product Name Test 1", result.getName());
     assertEquals(14.50, result.getPrice());
   }
 
@@ -74,7 +74,7 @@ class ProductServiceTest {
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(2L, result.getKey());
-    assertEquals("Product Name Test2", result.getName());
+    assertEquals("Product Name Test 2", result.getName());
     assertEquals(14.50, result.getPrice());
   }
 
@@ -98,7 +98,7 @@ class ProductServiceTest {
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test3", result.getName());
+    assertEquals("Product Name Test 3", result.getName());
     assertEquals(11.20, result.getPrice());
   }
 
@@ -110,11 +110,11 @@ class ProductServiceTest {
     var service = new ProductService(fakeOutputPort, null, null, null, entityMapper);
 
     //WHEN
-    when(fakeOutputPort.findById(1L)).thenReturn(Optional.of(mock(Product.class)));
+    when(fakeOutputPort.existResource(1L)).thenReturn(true);
     service.delete(1L);
 
     //THEN
-    verify(fakeOutputPort, times(1)).findById(1L);
+    verify(fakeOutputPort, times(1)).existResource(1L);
     verify(fakeOutputPort, times(1)).delete(1L);
   }
 

@@ -10,14 +10,6 @@ public class MockShelving {
     return mockModel(1);
   }
 
-  public ShelvingRequestDto mockRequestDto() {
-    return  mockRequestDto(1);
-  }
-
-  public ShelvingResponseDto mockResponseDto() {
-    return mockResponseDto(1);
-  }
-
   public ShelvingUnit mockModel(Integer number) {
     ShelvingUnit shelvingUnit = new ShelvingUnit();
     shelvingUnit.setId(number.longValue());
@@ -27,20 +19,11 @@ public class MockShelving {
     return shelvingUnit;
   }
 
-  public ShelvingRequestDto mockRequestDto(Integer number) {
+  public ShelvingRequestDto mockRequestDto() {
     ShelvingRequestDto shelvingRequestDto = new ShelvingRequestDto();
-    shelvingRequestDto.setUnit(number.longValue());
+    shelvingRequestDto.setUnit(2L);
     shelvingRequestDto.setSideA("Test side A");
-    shelvingRequestDto.setSideB("Test side B");
+    shelvingRequestDto.setSideB(null);
     return shelvingRequestDto;
-  }
-
-  public ShelvingResponseDto mockResponseDto(Integer number) {
-    ShelvingResponseDto shelvingResponseDto = new ShelvingResponseDto();
-    shelvingResponseDto.setKey(number.longValue());
-    shelvingResponseDto.setUnit(number.longValue());
-    shelvingResponseDto.setSideA("Test side A");
-    shelvingResponseDto.setSideB("Test side B");
-    return shelvingResponseDto;
   }
 }

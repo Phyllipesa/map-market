@@ -80,7 +80,13 @@ class ProductServiceTest {
   @Order(2)
   void update() {
     //GIVEN
-    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(
+        new FakeOutputPort(),
+        null,
+        new ProductValidator(),
+        null,
+        entityMapper
+    );
     ProductRequestDto productRequestDto = input.mockRequestDto(3);
 
     //WHEN

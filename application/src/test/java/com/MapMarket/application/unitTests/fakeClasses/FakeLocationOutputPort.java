@@ -15,13 +15,15 @@ public class FakeLocationOutputPort implements LocationOutputPort<Location> {
   public Optional<Location> findById(Long id) {
     if (id == 1) {
       return Optional.of(location);
+    } else if (id == 2) {
+      return Optional.of(mockLocation.mockModelWithoutProduct(2L));
     }
     return Optional.empty();
   }
 
   @Override
   public Optional<Location> findLocationByProductId(Long id) {
-    if (id == 1) {
+    if (id == 2) {
       return Optional.of(location);
     }
     return Optional.empty();
@@ -29,13 +31,7 @@ public class FakeLocationOutputPort implements LocationOutputPort<Location> {
 
   @Override
   public Location subscribingProduct(Location newlocation) {
-    location.setId(newlocation.getId());
-    location.setShelvingUnitId(newlocation.getShelvingUnitId());
-    location.setSide(newlocation.getSide());
-    location.setPart(newlocation.getPart());
-    location.setShelf(newlocation.getShelf());
-    location.setProduct(newlocation.getProduct());
-    return location;
+    return newlocation;
   }
 
   @Override
@@ -52,7 +48,7 @@ public class FakeLocationOutputPort implements LocationOutputPort<Location> {
 
   @Override
   public boolean existLocationWithProduct(Long id) {
-    return id == 1;
+    return id != 1;
   }
 
   @Override

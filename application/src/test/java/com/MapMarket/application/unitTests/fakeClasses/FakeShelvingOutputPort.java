@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class FakeShelvingOutputPort implements OutputPort<ShelvingUnit> {
 
-  MockShelving mockShelving = new MockShelving();
+  public MockShelving mockShelving = new MockShelving();
 
   @Override
   public Optional<ShelvingUnit> findById(Long id) {
@@ -33,9 +33,7 @@ public class FakeShelvingOutputPort implements OutputPort<ShelvingUnit> {
   public ShelvingUnit update(Long id, ShelvingUnit shelvingUnit) {
     existResource(id);
     shelvingUnit.setId(id);
-    shelvingUnit.setUnit(id);
-    shelvingUnit.setSideA("Updated");
-    shelvingUnit.setSideB("Updated");
+    shelvingUnit.setSideB("Test side B");
     return shelvingUnit;
   }
 
@@ -43,8 +41,7 @@ public class FakeShelvingOutputPort implements OutputPort<ShelvingUnit> {
   public void delete(Long id) {
   }
 
-  @Override
   public boolean existResource(Long id) {
-    return id == 1;
+    return true;
   }
 }

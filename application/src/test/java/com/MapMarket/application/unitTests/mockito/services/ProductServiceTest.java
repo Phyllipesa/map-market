@@ -13,8 +13,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -106,8 +104,14 @@ class ProductServiceTest {
   @Order(3)
   void delete() {
     //GIVEN
-    FakeOutputPort  fakeOutputPort = mock(FakeOutputPort.class);
-    var service = new ProductService(fakeOutputPort, null, null, null, entityMapper);
+    FakeOutputPort fakeOutputPort = mock(FakeOutputPort.class);
+    var service = new ProductService(
+        fakeOutputPort,
+        null,
+        null,
+        null,
+        null
+    );
 
     //WHEN
     when(fakeOutputPort.existResource(1L)).thenReturn(true);

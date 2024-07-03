@@ -48,7 +48,7 @@ class ProductServiceTest {
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test 1", result.getName());
+    assertEquals("Product Name Test 2", result.getName());
     assertEquals(14.50, result.getPrice());
   }
 

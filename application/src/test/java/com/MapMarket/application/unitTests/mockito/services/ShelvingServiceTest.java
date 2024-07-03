@@ -19,12 +19,12 @@ import static org.mockito.Mockito.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ShelvingServiceTest {
 
-  private MockShelving input;
+  private MockShelving mockShelving;
   private final EntityMapper entityMapper = entityMapper();
 
   @BeforeEach
   void setUpMocks() {
-    input = new MockShelving();
+    mockShelving = new MockShelving();
     MockitoAnnotations.openMocks(this);
   }
 
@@ -57,7 +57,7 @@ public class ShelvingServiceTest {
   void create() {
     //GIVEN
     var service = service();
-    var request = input.mockRequestDto();
+    var request = mockShelving.mockRequestDto();
 
     //WHEN
     var result = service.create(request);
@@ -81,7 +81,7 @@ public class ShelvingServiceTest {
   @Order(2)
   void update() {
     //GIVEN
-    var request = input.mockRequestDto();
+    var request = mockShelving.mockRequestDto();
     var service = service();
 
     //WHEN

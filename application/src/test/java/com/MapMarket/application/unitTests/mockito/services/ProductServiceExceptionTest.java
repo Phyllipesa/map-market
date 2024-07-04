@@ -35,7 +35,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(4)
+  @Order(0)
   void findById_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, null, null, entityMapper);
@@ -51,7 +51,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(5)
+  @Order(1)
   void create_PARAMETER_name_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
@@ -69,7 +69,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(6)
+  @Order(2)
   void create_NEGATIVE_price_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
@@ -87,7 +87,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(7)
+  @Order(3)
   void create_PARAMETER_price_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
@@ -105,7 +105,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(8)
+  @Order(4)
   void create_PRODUCT_CREATION_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
@@ -123,7 +123,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(9)
+  @Order(5)
   void update_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
@@ -140,7 +140,7 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(10)
+  @Order(6)
   void delete_PRODUCT_NOT_FOUND_EXCEPTION() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);

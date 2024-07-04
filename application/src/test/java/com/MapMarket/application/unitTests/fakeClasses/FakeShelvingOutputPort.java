@@ -42,6 +42,6 @@ public class FakeShelvingOutputPort implements OutputPort<ShelvingUnit> {
   }
 
   public boolean existResource(Long id) {
-    return true;
+    return id == 1;
   }
 }

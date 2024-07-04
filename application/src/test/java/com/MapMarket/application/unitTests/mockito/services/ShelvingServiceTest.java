@@ -85,7 +85,7 @@ public class ShelvingServiceTest {
     var service = service();
 
     //WHEN
-    var result = service.update(3L, request);
+    var result = service.update(1L, request);
 
     //THEN
     assertNotNull(result);
@@ -96,7 +96,7 @@ public class ShelvingServiceTest {
 
     assertTrue(result.getLinks().toString().contains("self"));
 
-    assertEquals(3L, result.getKey());
+    assertEquals(1L, result.getKey());
     assertEquals(2L, result.getUnit());
     assertEquals("Test side A", result.getSideA());
     assertEquals("Test side B", result.getSideB());

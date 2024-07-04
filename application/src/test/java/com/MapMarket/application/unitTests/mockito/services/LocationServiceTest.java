@@ -28,7 +28,7 @@ public class LocationServiceTest {
     var service = service();
 
     //WHEN
-    var result = service.findById(1L);
+    var result = service.findById(2L);
 
     //THEN
     assertNotNull(result);
@@ -94,7 +94,7 @@ public class LocationServiceTest {
     var service = service();
 
     //WHEN
-    var result = service.subscribingProduct(2L, 1L);
+    var result = service.subscribingProduct(2L, 3L);
 
     //THEN
     assertNotNull(result);
@@ -110,13 +110,13 @@ public class LocationServiceTest {
 
     assertTrue(result.getLinks().toString().contains("self"));
 
-    assertEquals(2L, result.getKey());
-    assertEquals(2L, result.getShelvingUnit());
+    assertEquals(1L, result.getKey());
+    assertEquals(1L, result.getShelvingUnit());
     assertEquals("Side A Test", result.getSide());
-    assertEquals(2L, result.getPart());
-    assertEquals(2L, result.getShelf());
-    assertEquals(1L, result.getProduct().getKey());
-    assertEquals("Product Name Test 2", result.getProduct().getName());
+    assertEquals(1L, result.getPart());
+    assertEquals(1L, result.getShelf());
+    assertEquals(3L, result.getProduct().getKey());
+    assertEquals("Product Name Test 3", result.getProduct().getName());
     assertEquals(14.50, result.getProduct().getPrice());
   }
 

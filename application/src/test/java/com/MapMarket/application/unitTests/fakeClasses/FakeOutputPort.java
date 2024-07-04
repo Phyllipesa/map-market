@@ -13,9 +13,9 @@ public class FakeOutputPort implements OutputPort<Product> {
 
   @Override
   public Optional<Product> findById(Long id) {
-    if (id == 1) {
+    if (id == 3) {
       Product product = mockProduct.mockModel();
-      product.setId(1L);
+      product.setId(id);
       return Optional.of(product);
     }
     return Optional.empty();

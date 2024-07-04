@@ -7,7 +7,7 @@ import com.MapMarket.domain.models.Product;
 public class MockProduct {
 
   public Product mockModel() {
-    return mockModel(2);
+    return mockModel(3);
   }
 
   public ProductRequestDto mockRequestDto() {

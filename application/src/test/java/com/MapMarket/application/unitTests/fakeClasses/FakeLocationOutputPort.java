@@ -13,9 +13,9 @@ public class FakeLocationOutputPort implements LocationOutputPort<Location> {
 
   @Override
   public Optional<Location> findById(Long id) {
-    if (id == 1) {
+    if (id == 2) {
       return Optional.of(location);
-    } else if (id == 2) {
+    } else if (id == 4) {
       return Optional.of(mockLocation.mockModelWithoutProduct(2L));
     }
     return Optional.empty();
@@ -48,7 +48,7 @@ public class FakeLocationOutputPort implements LocationOutputPort<Location> {
 
   @Override
   public boolean existLocationWithProduct(Long id) {
-    return id != 1;
+    return id == 1;
   }
 
   @Override

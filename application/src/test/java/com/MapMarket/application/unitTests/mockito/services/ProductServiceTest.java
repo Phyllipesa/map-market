@@ -36,7 +36,7 @@ class ProductServiceTest {
     var service = new ProductService(new FakeOutputPort(), null, null, null, entityMapper);
 
     //WHEN
-    var result = service.findById(1L);
+    var result = service.findById(3L);
 
     //THEN
     assertNotNull(result);
@@ -47,8 +47,8 @@ class ProductServiceTest {
 
     assertTrue(result.getLinks().toString().contains("self"));
 
-    assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test 2", result.getName());
+    assertEquals(3L, result.getKey());
+    assertEquals("Product Name Test 3", result.getName());
     assertEquals(14.50, result.getPrice());
   }
 

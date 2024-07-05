@@ -35,8 +35,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(4)
-  void findById_PRODUCT_NOT_FOUND_EXCEPTION() {
+  @Order(0)
+  void findById_PRODUCT_NOT_FOUND() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, null, null, entityMapper);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;
@@ -51,8 +51,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(5)
-  void create_PARAMETER_name_NOT_FOUND_EXCEPTION() {
+  @Order(1)
+  void create_PARAMETER_name_NOT_FOUND() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.requiredParameterMessage("name");
@@ -69,8 +69,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(6)
-  void create_NEGATIVE_price_EXCEPTION() {
+  @Order(2)
+  void create_NEGATIVE_price() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.NEGATIVE_NOT_ALLOWED;
@@ -87,8 +87,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(7)
-  void create_PARAMETER_price_NOT_FOUND_EXCEPTION() {
+  @Order(3)
+  void create_PARAMETER_price_NOT_FOUND() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.requiredParameterMessage("price");
@@ -105,8 +105,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(8)
-  void create_PRODUCT_CREATION_EXCEPTION() {
+  @Order(4)
+  void create_ERROR_CREATION_PRODUCT() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.ERROR_CREATING_PRODUCT;
@@ -123,8 +123,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(9)
-  void update_PRODUCT_NOT_FOUND_EXCEPTION() {
+  @Order(5)
+  void update_PRODUCT_NOT_FOUND() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     ProductRequestDto productRequestDto = input.mockRequestDto(3);
@@ -140,8 +140,8 @@ class ProductServiceExceptionTest {
   }
 
   @Test
-  @Order(10)
-  void delete_PRODUCT_NOT_FOUND_EXCEPTION() {
+  @Order(6)
+  void delete_PRODUCT_NOT_FOUND() {
     //GIVEN
     var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
     String expectedMessage = Constant.PRODUCT_NOT_FOUND + 2L;

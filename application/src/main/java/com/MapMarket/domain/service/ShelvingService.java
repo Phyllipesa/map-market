@@ -3,7 +3,6 @@ package com.MapMarket.domain.service;
 import com.MapMarket.application.rest.ShelvingRestAdapter;
 import com.MapMarket.application.rest.requestDto.ShelvingRequestDto;
 import com.MapMarket.application.rest.responseDto.ShelvingResponseDto;
-import com.MapMarket.domain.exception.ProductAlreadyAssignedException;
 import com.MapMarket.domain.exception.ResourceNotFoundException;
 import com.MapMarket.domain.exception.ShelvingUnitCreationException;
 import com.MapMarket.domain.exception.constants.Constant;
@@ -114,8 +113,8 @@ public class ShelvingService implements UseCase<ShelvingRequestDto, ShelvingResp
     outputPort.delete(id);
   }
 
-  private void existResource(Long id) {
+  public void existResource(Long id) {
     if (!outputPort.existResource(id))
-      throw new ProductAlreadyAssignedException(Constant.SHELVING_UNITS_NOT_FOUND + id);
+      throw new ResourceNotFoundException(Constant.SHELVING_NOT_FOUND + id);
   }
 }

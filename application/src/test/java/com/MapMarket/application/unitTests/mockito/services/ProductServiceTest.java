@@ -13,8 +13,6 @@ import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -38,7 +36,7 @@ class ProductServiceTest {
     var service = new ProductService(new FakeOutputPort(), null, null, null, entityMapper);
 
     //WHEN
-    var result = service.findById(1L);
+    var result = service.findById(3L);
 
     //THEN
     assertNotNull(result);
@@ -49,8 +47,8 @@ class ProductServiceTest {
 
     assertTrue(result.getLinks().toString().contains("self"));
 
-    assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test0", result.getName());
+    assertEquals(3L, result.getKey());
+    assertEquals("Product Name Test 3", result.getName());
     assertEquals(14.50, result.getPrice());
   }
 
@@ -74,7 +72,7 @@ class ProductServiceTest {
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(2L, result.getKey());
-    assertEquals("Product Name Test2", result.getName());
+    assertEquals("Product Name Test 2", result.getName());
     assertEquals(14.50, result.getPrice());
   }
 
@@ -82,7 +80,13 @@ class ProductServiceTest {
   @Order(2)
   void update() {
     //GIVEN
-    var service = new ProductService(new FakeOutputPort(), null, new ProductValidator(), null, entityMapper);
+    var service = new ProductService(
+        new FakeOutputPort(),
+        null,
+        new ProductValidator(),
+        null,
+        entityMapper
+    );
     ProductRequestDto productRequestDto = input.mockRequestDto(3);
 
     //WHEN
@@ -98,7 +102,7 @@ class ProductServiceTest {
     assertTrue(result.getLinks().toString().contains("self"));
 
     assertEquals(1L, result.getKey());
-    assertEquals("Product Name Test3", result.getName());
+    assertEquals("Product Name Test 3", result.getName());
     assertEquals(11.20, result.getPrice());
   }
 
@@ -106,15 +110,21 @@ class ProductServiceTest {
   @Order(3)
   void delete() {
     //GIVEN
-    FakeOutputPort  fakeOutputPort = mock(FakeOutputPort.class);
-    var service = new ProductService(fakeOutputPort, null, null, null, entityMapper);
+    FakeOutputPort fakeOutputPort = mock(FakeOutputPort.class);
+    var service = new ProductService(
+        fakeOutputPort,
+        null,
+        null,
+        null,
+        null
+    );
 
     //WHEN
-    when(fakeOutputPort.findById(1L)).thenReturn(Optional.of(mock(Product.class)));
+    when(fakeOutputPort.existResource(1L)).thenReturn(true);
     service.delete(1L);
 
     //THEN
-    verify(fakeOutputPort, times(1)).findById(1L);
+    verify(fakeOutputPort, times(1)).existResource(1L);
     verify(fakeOutputPort, times(1)).delete(1L);
   }
 

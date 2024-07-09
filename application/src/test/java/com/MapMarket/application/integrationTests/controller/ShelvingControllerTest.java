@@ -160,41 +160,42 @@ public class ShelvingControllerTest extends AbstractIntegrationTest {
     //THEN
     assertNotNull(response);
 
-    ShelvingResponseDto firstShelving = response.get(0);
-    assertNotNull(firstShelving);
-    assertNotNull(firstShelving.getKey());
-    assertNotNull(firstShelving.getUnit());
-    assertNotNull(firstShelving.getSideA());
-    assertNotNull(firstShelving.getSideB());
+    shelvingResponse = response.get(0);
+    assertNotNull(shelvingResponse);
+    assertNotNull(shelvingResponse.getKey());
+    assertNotNull(shelvingResponse.getUnit());
+    assertNotNull(shelvingResponse.getSideA());
+    assertNotNull(shelvingResponse.getSideB());
 
-    assertEquals(1, firstShelving.getKey());
-    assertEquals(1, firstShelving.getUnit());
-    assertEquals("Grãos", firstShelving.getSideA());
-    assertEquals("Farinhas", firstShelving.getSideB());
+    assertEquals(1, shelvingResponse.getKey());
+    assertEquals(1, shelvingResponse.getUnit());
+    assertEquals("Grãos", shelvingResponse.getSideA());
+    assertEquals("Farinhas", shelvingResponse.getSideB());
 
 
-    ShelvingResponseDto middleShelving = response.get(2);
-    assertNotNull(middleShelving);
-    assertNotNull(middleShelving.getKey());
-    assertNotNull(middleShelving.getUnit());
-    assertNotNull(middleShelving.getSideA());
-    assertNotNull(middleShelving.getSideB());
+    shelvingResponse = response.get(2);
+    assertNotNull(shelvingResponse);
+    assertNotNull(shelvingResponse.getKey());
+    assertNotNull(shelvingResponse.getUnit());
+    assertNotNull(shelvingResponse.getSideA());
+    assertNotNull(shelvingResponse.getSideB());
 
-    assertEquals(3, middleShelving.getKey());
-    assertEquals(3, middleShelving.getUnit());
-    assertEquals("Cereais", middleShelving.getSideA());
-    assertEquals("Laticínios", middleShelving.getSideB());
+    assertEquals(3, shelvingResponse.getKey());
+    assertEquals(3, shelvingResponse.getUnit());
+    assertEquals("Cereais", shelvingResponse.getSideA());
+    assertEquals("Laticínios", shelvingResponse.getSideB());
 
-    ShelvingResponseDto lastShelving = response.get(4);
-    assertNotNull(lastShelving);
-    assertNotNull(lastShelving.getKey());
-    assertNotNull(lastShelving.getUnit());
-    assertNotNull(lastShelving.getSideA());
-    assertNull(lastShelving.getSideB());
 
-    assertEquals(5, lastShelving.getKey());
-    assertEquals(5, lastShelving.getUnit());
-    assertEquals("Esportes", lastShelving.getSideA());
+    shelvingResponse = response.get(4);
+    assertNotNull(shelvingResponse);
+    assertNotNull(shelvingResponse.getKey());
+    assertNotNull(shelvingResponse.getUnit());
+    assertNotNull(shelvingResponse.getSideA());
+    assertNull(shelvingResponse.getSideB());
+
+    assertEquals(5, shelvingResponse.getKey());
+    assertEquals(5, shelvingResponse.getUnit());
+    assertEquals("Esportes", shelvingResponse.getSideA());
   }
 
   @Test

@@ -1,4 +1,4 @@
-package com.MapMarket.application.integrationTests.controller;
+package com.MapMarket.application.integrationTests.controller.exceptions;
 
 import com.MapMarket.application.configs.TestConfigs;
 import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;

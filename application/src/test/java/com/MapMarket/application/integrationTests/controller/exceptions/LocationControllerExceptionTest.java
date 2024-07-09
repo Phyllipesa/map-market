@@ -1,9 +1,9 @@
-package com.MapMarket.application.integrationTests.controller;
+package com.MapMarket.application.integrationTests.controller.exceptions;
 
 import com.MapMarket.application.configs.TestConfigs;
-import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import com.MapMarket.application.integrationTests.dto.AccountCredentialsDto;
 import com.MapMarket.application.integrationTests.dto.TokenDto;
+import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductControllerExceptionTest extends AbstractIntegrationTest {
+public class LocationControllerExceptionTest extends AbstractIntegrationTest {
 
   private static RequestSpecification specification;
 
@@ -47,7 +47,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     specification = new RequestSpecBuilder()
         .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
-        .setBasePath("api/v1/product")
+        .setBasePath("api/v1/location")
         .setPort(TestConfigs.SERVER_PORT)
         .addFilter(new RequestLoggingFilter(LogDetail.ALL))
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -56,158 +56,12 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
   @Test
   @Order(1)
-  public void test_create_WITH_PARAMETER_name_NULL() {
-    //GIVEN
-    String payloadNameNull = "{\"price\": \"14.20\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNameNull)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'name' is null or blank!"));
-  }
-
-  @Test
-  @Order(2)
-  public void test_create_WITH_PARAMETER_price_NULL() {
-    //GIVEN
-    String payloadPriceNull = "{\"name\": \"Lentilha\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadPriceNull)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'price' is null or blank!"));
-  }
-
-  @Test
-  @Order(3)
-  public void test_create_WITH_PARAMETER_name_BLANK() {
-    //GIVEN
-    String payloadBlanckName = "{\"name\": \"\", \"price\": \"14.20\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadBlanckName)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'name' is null or blank!"));
-  }
-
-  @Test
-  @Order(4)
-  public void test_create_WITH_PARAMETER_price_BLANK() {
-    //GIVEN
-    String payloadBlanckPrice = "{\"name\": \"Lentilha\", \"price\": \"\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadBlanckPrice)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'price' is null or blank!"));
-  }
-
-  @Test
-  @Order(5)
-  public void test_create_PARAMETER_price_WITH_NEGATIVE_NUMBER() {
-    //GIVEN
-    String payloadNegativePrice = "{\"name\": \"Lentilha\", \"price\": \"-1.0\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNegativePrice)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("It is not allowed negative numbers!"));
-  }
-
-  @Test
-  @Order(6)
-  public void test_create_WITH_NULL_REQUEST() {
+  public void test_findById_LOCATION_NOT_FOUND() {
     //GIVEN
     //WHEN
     var content =
         given()
             .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body("")
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Failed to read request"));
-  }
-
-  @Test
-  @Order(7)
-  public void test_findById_NOT_FOUND() {
-    //WHEN
-    var content =
-        given().spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .pathParam("id", 200)
             .when()
@@ -220,7 +74,149 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Product not found with id 200"));
+    assertTrue(content.contains("Location not found with id 200"));
+  }
+
+  @Test
+  @Order(2)
+  public void test_findLocationByProductId_ERROR_PRODUCT_IN_LOCATION_NOT_FOUND() {
+    //GIVEN
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 200)
+            .when()
+            .get("/product/{id}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("There is no location with the product id 200"));
+  }
+
+  @Test
+  @Order(3)
+  public void test_subscribingProduct_THIS_PRODUCT_IS_ALREADY_REGISTERED() {
+    //GIVEN
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("locationId", 128)
+            .pathParam("productId", 1)
+            .when()
+            .put("{locationId}/{productId}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("This Product is already registered!"));
+  }
+
+  @Test
+  @Order(4)
+  public void test_subscribingProduct_THIS_LOCATION_WITH_PRODUCT_REGISTERED() {
+    //GIVEN
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("locationId", 1)
+            .pathParam("productId", 128)
+            .when()
+            .put("{locationId}/{productId}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("There is already a product registered in location with id 1"));
+  }
+
+  @Test
+  @Order(5)
+  public void test_subscribingProduct_LOCATION_NOT_FOUND() {
+    //GIVEN
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("locationId", 130)
+            .pathParam("productId", 130)
+            .when()
+            .put("{locationId}/{productId}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Location not found with id 130"));
+  }
+
+  @Test
+  @Order(6)
+  public void test_subscribingProduct_PRODUCT_NOT_FOUND() {
+    //GIVEN
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("locationId", 128)
+            .pathParam("productId", 131)
+            .when()
+            .put("{locationId}/{productId}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Product not found with id 131"));
+  }
+
+  @Test
+  @Order(7)
+  public void test_unsubscribingProduct_LOCATION_NOT_FOUND() {
+    //GIVEN
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 130)
+            .when()
+            .put("{id}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Location not found with id 130"));
   }
 
   @Test
@@ -228,7 +224,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
   public void test_findAll_WITHOUT_TOKEN() {
     //WHEN
     RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
-        .setBasePath("api/v1/product")
+        .setBasePath("api/v1/location")
         .setPort(TestConfigs.SERVER_PORT)
         .addFilter(new RequestLoggingFilter(LogDetail.ALL))
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))

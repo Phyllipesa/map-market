@@ -126,4 +126,5 @@ INSERT INTO `products` (`name`, `price`) VALUES
     ('Vassoura', 10.00),
     ('Balde', 12.00),
     ('Saco de lixo', 4.00),
-    ('Luvas de limpeza', 5.00);
+    ('Luvas de limpeza', 5.00),
+    ('Cloro', 12.24);

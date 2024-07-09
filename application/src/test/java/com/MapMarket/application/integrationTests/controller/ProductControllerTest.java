@@ -156,26 +156,26 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     //THEN
     assertNotNull(response);
 
-    ProductResponseDto firstProduct = response.get(0);
-    assertNotNull(firstProduct);
-    assertNotNull(firstProduct.getKey());
-    assertNotNull(firstProduct.getName());
-    assertNotNull(firstProduct.getPrice());
+    productResponse = response.get(0);
+    assertNotNull(productResponse);
+    assertNotNull(productResponse.getKey());
+    assertNotNull(productResponse.getName());
+    assertNotNull(productResponse.getPrice());
 
-    assertEquals(56, firstProduct.getKey());
-    assertEquals("Balas de goma", firstProduct.getName());
-    assertEquals(3.50, firstProduct.getPrice());
+    assertEquals(56, productResponse.getKey());
+    assertEquals("Balas de goma", productResponse.getName());
+    assertEquals(3.50, productResponse.getPrice());
 
 
-    ProductResponseDto LastProduct = response.get(2);
-    assertNotNull(LastProduct);
-    assertNotNull(LastProduct.getKey());
-    assertNotNull(LastProduct.getName());
-    assertNotNull(LastProduct.getPrice());
+    productResponse = response.get(2);
+    assertNotNull(productResponse);
+    assertNotNull(productResponse.getKey());
+    assertNotNull(productResponse.getName());
+    assertNotNull(productResponse.getPrice());
 
-    assertEquals(53, LastProduct.getKey());
-    assertEquals("Barra de cereais", LastProduct.getName());
-    assertEquals(3.00, LastProduct.getPrice());
+    assertEquals(53, productResponse.getKey());
+    assertEquals("Barra de cereais", productResponse.getName());
+    assertEquals(3.00, productResponse.getPrice());
   }
 
   @Test
@@ -213,20 +213,20 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     assertEquals(15.00, productResponse.getPrice());
   }
 
-//  @Test
-//  @Order(5)
-//  public void testDelete() {
-//    //GIVEN
-//    //WHEN
-//    //THEN
-//    given().spec(specification)
-//        .contentType(TestConfigs.CONTENT_TYPE_JSON)
-//        .pathParam("id", 73)
-//        .when()
-//        .delete("{id}")
-//        .then()
-//        .statusCode(204);
-//  }
+  @Test
+  @Order(5)
+  public void testDelete() {
+    //GIVEN
+    //WHEN
+    //THEN
+    given().spec(specification)
+        .contentType(TestConfigs.CONTENT_TYPE_JSON)
+        .pathParam("id", 129)
+        .when()
+        .delete("{id}")
+        .then()
+        .statusCode(204);
+  }
 
   @Test
   @Order(6)

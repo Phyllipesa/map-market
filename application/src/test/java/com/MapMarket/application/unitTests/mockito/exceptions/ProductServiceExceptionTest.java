@@ -1,4 +1,4 @@
-package com.MapMarket.application.unitTests.mockito.services;
+package com.MapMarket.application.unitTests.mockito.exceptions;
 
 import com.MapMarket.application.rest.requestDto.ProductRequestDto;
 import com.MapMarket.application.rest.responseDto.ProductResponseDto;

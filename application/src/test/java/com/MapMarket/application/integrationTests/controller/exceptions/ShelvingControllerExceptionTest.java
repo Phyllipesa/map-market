@@ -1,18 +1,16 @@
-package com.MapMarket.application.integrationTests.controller;
+package com.MapMarket.application.integrationTests.controller.exceptions;
 
 import com.MapMarket.application.configs.TestConfigs;
-import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import com.MapMarket.application.integrationTests.dto.AccountCredentialsDto;
+import com.MapMarket.application.integrationTests.dto.ShelvingRequestDto;
 import com.MapMarket.application.integrationTests.dto.TokenDto;
+import com.MapMarket.application.integrationTests.testContainers.AbstractIntegrationTest;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static io.restassured.RestAssured.given;
@@ -21,9 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ProductControllerExceptionTest extends AbstractIntegrationTest {
+public class ShelvingControllerExceptionTest extends AbstractIntegrationTest {
 
   private static RequestSpecification specification;
+  private static ShelvingRequestDto shelvingRequest;
+
+  @BeforeEach
+  public void setup() {
+    shelvingRequest = new ShelvingRequestDto();
+  }
 
   @Test
   @Order(0)
@@ -47,7 +51,7 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     specification = new RequestSpecBuilder()
         .addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
-        .setBasePath("api/v1/product")
+        .setBasePath("api/v1/shelvingUnit")
         .setPort(TestConfigs.SERVER_PORT)
         .addFilter(new RequestLoggingFilter(LogDetail.ALL))
         .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
@@ -56,154 +60,6 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
   @Test
   @Order(1)
-  public void test_create_WITH_PARAMETER_name_NULL() {
-    //GIVEN
-    String payloadNameNull = "{\"price\": \"14.20\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNameNull)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'name' is null or blank!"));
-  }
-
-  @Test
-  @Order(2)
-  public void test_create_WITH_PARAMETER_price_NULL() {
-    //GIVEN
-    String payloadPriceNull = "{\"name\": \"Lentilha\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadPriceNull)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'price' is null or blank!"));
-  }
-
-  @Test
-  @Order(3)
-  public void test_create_WITH_PARAMETER_name_BLANK() {
-    //GIVEN
-    String payloadBlanckName = "{\"name\": \"\", \"price\": \"14.20\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadBlanckName)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'name' is null or blank!"));
-  }
-
-  @Test
-  @Order(4)
-  public void test_create_WITH_PARAMETER_price_BLANK() {
-    //GIVEN
-    String payloadBlanckPrice = "{\"name\": \"Lentilha\", \"price\": \"\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadBlanckPrice)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Required parameter 'price' is null or blank!"));
-  }
-
-  @Test
-  @Order(5)
-  public void test_create_PARAMETER_price_WITH_NEGATIVE_NUMBER() {
-    //GIVEN
-    String payloadNegativePrice = "{\"name\": \"Lentilha\", \"price\": \"-1.0\"}";
-
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body(payloadNegativePrice)
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("It is not allowed negative numbers!"));
-  }
-
-  @Test
-  @Order(6)
-  public void test_create_WITH_NULL_REQUEST() {
-    //GIVEN
-    //WHEN
-    var content =
-        given()
-            .spec(specification)
-            .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .body("")
-            .when()
-            .post()
-            .then()
-            .statusCode(400)
-            .extract()
-            .body()
-            .asString();
-
-    //THEN
-    assertNotNull(content);
-    assertTrue(content.contains("Failed to read request"));
-  }
-
-  @Test
-  @Order(7)
   public void test_findById_NOT_FOUND() {
     //WHEN
     var content =
@@ -220,27 +76,234 @@ public class ProductControllerExceptionTest extends AbstractIntegrationTest {
 
     //THEN
     assertNotNull(content);
-    assertTrue(content.contains("Product not found with id 200"));
+    assertTrue(content.contains("Shelving not found with id 200"));
+  }
+
+  @Test
+  @Order(2)
+  public void test_create_WITH_PARAMETER_unit_NULL() {
+    //GIVEN
+    shelvingRequest.setSideA("Test");
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(shelvingRequest)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'unit' is null or blank!"));
+  }
+
+  @Test
+  @Order(3)
+  public void test_create_WITH_PARAMETER_sideA_NULL() {
+    //GIVEN
+    shelvingRequest.setUnit(1L);
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(shelvingRequest)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'sideA' is null or blank!"));
+  }
+
+  @Test
+  @Order(4)
+  public void test_create_WITH_PARAMETER_sideA_BLANK() {
+    //GIVEN
+    shelvingRequest.setUnit(1L);
+    shelvingRequest.setSideA("");
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(shelvingRequest)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'sideA' is null or blank!"));
+  }
+
+  @Test
+  @Order(5)
+  public void test_create_PARAMETER_unit_WITH_NEGATIVE_NUMBER() {
+    //GIVEN
+    shelvingRequest.setUnit(-1L);
+    shelvingRequest.setSideA("Test");
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(shelvingRequest)
+            .when()
+            .post()
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("It is not allowed negative numbers!"));
+  }
+
+  @Test
+  @Order(6)
+  public void test_update_NOT_FOUND() {
+    //GIVEN
+    shelvingRequest.setUnit(1L);
+    shelvingRequest.setSideA("Test");
+
+    //WHEN
+    var content =
+        given().spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .body(shelvingRequest)
+            .pathParam("id", 200)
+            .when()
+            .put("{id}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Shelving not found with id 200"));
+  }
+
+  @Test
+  @Order(7)
+  public void test_update_WITH_PARAMETER_unit_NULL() {
+    //GIVEN
+    shelvingRequest.setSideA("Test");
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 1)
+            .body(shelvingRequest)
+            .when()
+            .put("{id}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'unit' is null or blank!"));
   }
 
   @Test
   @Order(8)
-  public void test_findAll_WITHOUT_TOKEN() {
+  public void test_update_WITH_PARAMETER_sideA_NULL() {
+    //GIVEN
+    shelvingRequest.setUnit(1L);
+
     //WHEN
-    RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
-        .setBasePath("api/v1/product")
-        .setPort(TestConfigs.SERVER_PORT)
-        .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-        .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-        .build();
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 1)
+            .body(shelvingRequest)
+            .when()
+            .put("{id}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
 
     //THEN
-    given()
-        .spec(specificationWithoutToken)
-        .contentType(TestConfigs.CONTENT_TYPE_JSON)
-        .when()
-        .get()
-        .then()
-        .statusCode(403);
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'sideA' is null or blank!"));
+  }
+
+  @Test
+  @Order(9)
+  public void test_update_WITH_PARAMETER_sideA_BLANK() {
+    //GIVEN
+    shelvingRequest.setUnit(1L);
+    shelvingRequest.setSideA("");
+
+    //WHEN
+    var content =
+        given()
+            .spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 1)
+            .body(shelvingRequest)
+            .when()
+            .put("{id}")
+            .then()
+            .statusCode(400)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Required parameter 'sideA' is null or blank!"));
+  }
+
+  @Test
+  @Order(10)
+  public void test_delete_NOT_FOUND() {
+    //WHEN
+    var content =
+        given().spec(specification)
+            .contentType(TestConfigs.CONTENT_TYPE_JSON)
+            .pathParam("id", 200)
+            .when()
+            .delete("{id}")
+            .then()
+            .statusCode(404)
+            .extract()
+            .body()
+            .asString();
+
+    //THEN
+    assertNotNull(content);
+    assertTrue(content.contains("Shelving not found with id 200"));
   }
 }

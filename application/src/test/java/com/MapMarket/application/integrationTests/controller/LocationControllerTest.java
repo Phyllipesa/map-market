@@ -219,8 +219,8 @@ public class LocationControllerTest extends AbstractIntegrationTest {
     var content =
         given().spec(specification)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
-            .pathParam("locationId", 128)
-            .pathParam("productId", 128)
+            .pathParam("locationId", 127)
+            .pathParam("productId", 127)
             .when()
             .put("{locationId}/{productId}")
             .then()
@@ -249,10 +249,10 @@ public class LocationControllerTest extends AbstractIntegrationTest {
     assertEquals(4, locationResponse.getShelvingUnit());
     assertEquals("B", locationResponse.getSide());
     assertEquals(4, locationResponse.getPart());
-    assertEquals(4, locationResponse.getShelf());
-    assertEquals(128, locationResponse.getProduct().getKey());
-    assertEquals("Luvas de limpeza", locationResponse.getProduct().getName());
-    assertEquals(5.00, locationResponse.getProduct().getPrice());
+    assertEquals(3, locationResponse.getShelf());
+    assertEquals(127, locationResponse.getProduct().getKey());
+    assertEquals("Saco de lixo", locationResponse.getProduct().getName());
+    assertEquals(4.00, locationResponse.getProduct().getPrice());
   }
 
   @Test
@@ -282,6 +282,6 @@ public class LocationControllerTest extends AbstractIntegrationTest {
     assertTrue(content.contains("\"next\":{\"href\":\"http://localhost:8888/api/v1/location?page=1&size=10&sort=id,asc\"}"));
     assertTrue(content.contains("\"last\":{\"href\":\"http://localhost:8888/api/v1/location?page=12&size=10&sort=id,asc\"}}"));
 
-    assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":128,\"totalPages\":13,\"number\":0}}"));
+    assertTrue(content.contains("\"page\":{\"size\":10,\"totalElements\":127,\"totalPages\":13,\"number\":0}}"));
   }
 }

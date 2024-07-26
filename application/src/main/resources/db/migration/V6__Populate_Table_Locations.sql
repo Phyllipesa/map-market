@@ -125,5 +125,5 @@ INSERT INTO locations (shelving_unit_id, side, part, shelf, product_id) VALUES
 (4, 'B', 3, 4, 124),
 (4, 'B', 4, 1, 125),
 (4, 'B', 4, 2, 126),
-(4, 'B', 4, 3, 127),
+(4, 'B', 4, 3, null),
 (4, 'B', 4, 4, null);

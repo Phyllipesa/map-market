@@ -22,8 +22,8 @@ public class AuthRestAdapter {
     this.refreshCredentialsValidator = refreshCredentialsValidator;
   }
 
-  @PostMapping("/signin")
-  public ResponseEntity<TokenDto> signin(@RequestBody AccountCredentialsDto data) {
+  @PostMapping("/sign-in")
+  public ResponseEntity<TokenDto> signIn(@RequestBody AccountCredentialsDto data) {
     credentialsValidator.checkIfParamsIsNotNull(data);
     TokenDto token = authUseCase.signIn(data);
     return ResponseEntity.ok(token);

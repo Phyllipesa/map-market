@@ -28,7 +28,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
 
     //WHEN
     tokenDto = given()
-        .basePath("/auth/signin")
+        .basePath("/auth/sign-in")
         .port(TestConfigs.SERVER_PORT)
         .contentType(TestConfigs.CONTENT_TYPE_JSON)
         .body(user)
@@ -53,7 +53,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     //WHEN
     var content =
         given()
-            .basePath("/auth/signin")
+            .basePath("/auth/sign-in")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .when()
@@ -78,7 +78,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     //WHEN
     var content =
         given()
-            .basePath("/auth/signin")
+            .basePath("/auth/sign-in")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .body(payloadWithNullPass)
@@ -104,7 +104,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     //WHEN
     var content =
         given()
-            .basePath("/auth/signin")
+            .basePath("/auth/sign-in")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .body(payloadWithNullPass)
@@ -130,7 +130,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     //WHEN
     var content =
         given()
-            .basePath("/auth/signin")
+            .basePath("/auth/sign-in")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .body(payloadWithNullPass)
@@ -156,7 +156,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
     //WHEN
     var content =
         given()
-            .basePath("/auth/signin")
+            .basePath("/auth/sign-in")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .body(payloadWithNullPass)

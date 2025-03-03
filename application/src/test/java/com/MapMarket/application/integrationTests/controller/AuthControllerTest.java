@@ -21,13 +21,13 @@ public class AuthControllerTest extends AbstractIntegrationTest {
 
   @Test
   @Order(1)
-  public void testSignin() {
+  public void testSignIn() {
     //GIVEN
     AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
 
     //WHEN
     tokenDto = given()
-        .basePath("/auth/signin")
+        .basePath("/auth/sign-in")
           .port(TestConfigs.SERVER_PORT)
           .contentType(TestConfigs.CONTENT_TYPE_JSON)
           .body(user)

@@ -47,7 +47,7 @@ public class ShelvingControllerTest extends AbstractIntegrationTest {
 
     var accessToken =
         given()
-            .basePath("/auth/signin")
+            .basePath("/auth/sign-in")
             .port(TestConfigs.SERVER_PORT)
             .contentType(TestConfigs.CONTENT_TYPE_JSON)
             .body(user)

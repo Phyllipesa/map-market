@@ -1,9 +1,9 @@
 package com.MapMarket.domain.ports.input;
 
 import com.MapMarket.application.rest.requestDto.AccountCredentialsDto;
-import com.MapMarket.application.rest.responseDto.TokenDto;
+import com.MapMarket.domain.models.Token;
 
 public interface AuthUseCase {
-  TokenDto signIn(AccountCredentialsDto data);
-  TokenDto refreshToken(String username, String refreshToken);
+  Token signIn(AccountCredentialsDto data);
+  Token refreshToken(String username, String refreshToken);
 }

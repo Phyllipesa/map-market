@@ -55,7 +55,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
         .basePath("/auth/refresh")
         .port(TestConfigs.SERVER_PORT)
         .contentType(TestConfigs.CONTENT_TYPE_JSON)
-          .pathParam("username", tokenDto.getUsername())
+          .pathParam("username", user.getUsername())
           .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + tokenDto.getRefreshToken())
         .when()
           .put("{username}")

@@ -2,6 +2,7 @@ package com.MapMarket.application.rest;
 
 import com.MapMarket.application.rest.requestDto.AccountCredentialsDto;
 import com.MapMarket.application.rest.responseDto.TokenDto;
+import com.MapMarket.domain.models.Token;
 import com.MapMarket.domain.logic.CredentialsValidator;
 import com.MapMarket.domain.logic.RefreshCredentialsValidator;
 import com.MapMarket.domain.ports.input.AuthUseCase;
@@ -25,14 +26,16 @@ public class AuthRestAdapter {
   @PostMapping("/sign-in")
   public ResponseEntity<TokenDto> signIn(@RequestBody AccountCredentialsDto data) {
     credentialsValidator.checkIfParamsIsNotNull(data);
-    TokenDto token = authUseCase.signIn(data);
-    return ResponseEntity.ok(token);
+    Token token = authUseCase.signIn(data);
+    TokenDto tokenDto = new TokenDto(token.getAccessToken(), token.getRefreshToken());
+    return ResponseEntity.ok(tokenDto);
   }
 
   @PutMapping("/refresh/{username}")
   public ResponseEntity<TokenDto> refreshToken(@PathVariable("username") String username, @RequestHeader("Authorization") String refreshToken) {
     refreshCredentialsValidator.checkIfParamsIsNotNull(username, refreshToken);
-    TokenDto token = authUseCase.refreshToken(username, refreshToken);
-    return ResponseEntity.ok(token);
+    Token token = authUseCase.refreshToken(username, refreshToken);
+    TokenDto tokenDto = new TokenDto(token.getAccessToken(), token.getRefreshToken());
+    return ResponseEntity.ok(tokenDto);
   }
 }

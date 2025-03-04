@@ -24,7 +24,7 @@ public class AuthControllerExceptionTest extends AbstractIntegrationTest {
   @Order(0)
   public void test_signing() {
     //GIVEN
-    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("john", "admin123");
 
     //WHEN
     tokenDto = given()

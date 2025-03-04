@@ -23,7 +23,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
   @Order(1)
   public void testSignIn() {
     //GIVEN
-    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("john", "admin123");
 
     //WHEN
     tokenDto = given()
@@ -48,7 +48,7 @@ public class AuthControllerTest extends AbstractIntegrationTest {
   @Order(2)
   public void testRefresh() {
     //GIVEN
-    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("john", "admin123");
 
     //WHEN
     var newtokenVO = given()

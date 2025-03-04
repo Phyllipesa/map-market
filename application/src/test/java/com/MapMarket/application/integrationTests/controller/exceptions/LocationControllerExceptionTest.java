@@ -28,7 +28,7 @@ public class LocationControllerExceptionTest extends AbstractIntegrationTest {
   @Test
   @Order(0)
   public void authorization() {
-    AccountCredentialsDto user = new AccountCredentialsDto("phyllipe", "admin123");
+    AccountCredentialsDto user = new AccountCredentialsDto("john", "admin123");
 
     var accessToken =
         given()
